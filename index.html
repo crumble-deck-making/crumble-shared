@@ -474,6 +474,9 @@ body{
 </style><style>
 .savedDeckPanel{margin-top:12px;padding:12px;border-radius:16px;background:#fffaf1;border:2px solid #ead9bf;box-shadow:0 5px 0 #e5d3b7}
 .savedDeckPanelTitle{font-size:12px;font-weight:950;color:#65483a}
+.deckSearchWrap{margin:9px 0 10px}
+.deckSearchWrap .input{padding:10px 12px;font-size:12px}
+.deckSearchResult{font-size:9px;color:#9a877a;margin-top:5px}
 .emptySavedDeck{padding:18px 10px;text-align:center;border:1.5px dashed #dfcdb4;border-radius:12px;background:#fff}
 .emptySavedDeck b{display:block;font-size:12px;color:#725544}
 .emptySavedDeck span{display:block;font-size:9px;color:#9a877a;margin-top:5px;line-height:1.45}
@@ -561,6 +564,10 @@ body{
 <div class="deckListHeader"><div><b>저장된 덱</b><span id="deckSavedCount">0개</span></div><button class="primary" type="button" onclick="editDeck()">＋ 새 덱 만들기</button></div>
 <div class="savedDeckPanel">
       <div class="savedDeckPanelTitle">내가 저장한 덱</div>
+      <div class="deckSearchWrap">
+        <input id="deckTitleSearch" class="input" type="search" placeholder="덱 제목 검색" autocomplete="off" oninput="filterDeckTitles()">
+        <div id="deckSearchResult" class="deckSearchResult"></div>
+      </div>
       <div id="deckList" style="margin-top:8px"></div>
     </div></section>
 <section id="deckedit" class="screen"><div class="bar"><button class="back" onclick="go('decks')">←</button><div class="title">덱 편집</div></div>
@@ -904,6 +911,10 @@ function mergeDeckRows(cloudRows, localRows){
   return [...merged,...locals.values()];
 }
 
+function filterDeckTitles(){
+  loadDecks();
+}
+
 async function loadDecks(){
   let localRows=getLocalDeckRows();
   let rows=[...localRows];
@@ -929,14 +940,21 @@ async function loadDecks(){
   const el=document.getElementById('deckList');
   if(!el)return rows;
 
-  if(!rows.length){
-    el.innerHTML='<div class="emptySavedDeck"><b>아직 저장된 덱이 없습니다.</b><span>새 덱 만들기에서 덱을 저장하면 여기에 표시됩니다.</span></div>';
-    renderSavedDecksInEditor([]);
+  const q=String(document.getElementById('deckTitleSearch')?.value||'').trim().toLocaleLowerCase();
+  const displayRows=q ? rows.filter(d=>String(d?.name||'').toLocaleLowerCase().includes(q)) : rows;
+  const searchResult=document.getElementById('deckSearchResult');
+  if(searchResult)searchResult.textContent=q ? `검색 결과 ${displayRows.length}개 / 전체 ${rows.length}개` : '';
+
+  if(!displayRows.length){
+    el.innerHTML=q
+      ? '<div class="emptySavedDeck"><b>검색 결과가 없습니다.</b><span>다른 덱 제목으로 검색해보세요.</span></div>'
+      : '<div class="emptySavedDeck"><b>아직 저장된 덱이 없습니다.</b><span>새 덱 만들기에서 덱을 저장하면 여기에 표시됩니다.</span></div>';
+    renderSavedDecksInEditor(rows);
     return rows;
   }
 
   el.innerHTML='';
-  rows.forEach((d,i)=>{
+  displayRows.forEach((d,i)=>{
     try{
       const cookies=Array.isArray(d.cookies)?d.cookies:[];
       const ims=cookies.slice(0,12)
