@@ -562,6 +562,31 @@ body{
 .runeViewRow{display:grid;grid-template-columns:42px minmax(100px,auto) 1fr;align-items:center;gap:9px;border-bottom:1px solid var(--line);padding:9px 0}.runeViewRow:last-child{border-bottom:0}.runeViewRow img{width:42px;height:42px;border-radius:9px;object-fit:cover}.runeViewName b{display:block;font-size:12px}.runeViewName small{display:block;font-size:8px;color:var(--sub);margin-top:2px}.runeViewRow .savedRuneChips{margin-top:0}.runeEditorSelect{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;margin:10px 0}.runeEditResults{display:grid;gap:4px;margin-top:7px;max-height:180px;overflow:auto}.runeEditResult{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px;text-align:left;color:var(--ink)}.runeEditResult img{width:32px;height:32px;border-radius:7px;object-fit:cover}.runeEditResult b{font-size:10px}.runeEditCurrent{font-size:10px;font-weight:900;color:#6555e9;margin-bottom:7px}
 .stageCombined{margin-top:8px}.stageCombinedTitle{font-size:11px;font-weight:950;margin:12px 0 6px}.guildList{display:grid;gap:8px}.guildRecord{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px}.guildRecordTop{display:flex;justify-content:space-between;gap:8px}.guildRecord strong{font-size:15px}.guildRecordMeta{font-size:10px;color:var(--sub);margin-top:5px}.guildPower{font-weight:950;color:#5b51d8}.guildForm .row{margin-top:7px}.linkedDeck{margin-top:7px;border:1px solid #dcd7ff;background:#f5f3ff;border-radius:10px;padding:9px;font-size:11px}.deckLinkList{display:grid;gap:8px;margin-top:8px;max-height:360px;overflow:auto}.deckLinkChoice{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;text-align:left;font-size:11px}.deckLinkChoice:active{transform:scale(.995)}.guildDeckName{font-size:12px;font-weight:950;margin-bottom:7px}.guildMiniGroup{display:flex;align-items:center;gap:5px;margin-top:5px;min-width:0}.guildMiniLabel{width:28px;flex:0 0 28px;font-size:8px;font-weight:900;color:var(--sub)}.guildMiniImgs{display:flex;gap:3px;flex-wrap:wrap}.guildMiniImgs img{width:24px;height:24px;border-radius:6px;object-fit:cover;background:#f4f4f7;border:1px solid #ececf1}.guildMiniImgs.cards img{border-radius:5px}.guildEmpty{font-size:11px;color:var(--sub);padding:10px;text-align:center}.homeQuickLinks{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}.homeQuickLinks .naverCafe{margin-top:0}.homeRankBtn{border:1px solid #e2dcff;background:#f7f5ff;color:#5b51d8;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900}.naverCafe{display:inline-flex;align-items:center;gap:5px;border:1px solid #cfe9d5;background:#f4fff6;color:#17843b;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;text-decoration:none;margin-top:10px}
 @media(max-width:430px){.runeCookieCheckList{grid-template-columns:1fr}.powerHighlights{grid-template-columns:1fr 1fr}.guildForm .row{display:grid;grid-template-columns:1fr 1fr}}
+/* Mobile home: keep the main tools close to the top */
+@media(max-width:760px){
+  #home .hubIntro{padding:12px 0 10px!important}
+  #home .hubIntro .release{font-size:9px!important;margin-bottom:6px!important}
+  #home .hubIntro h1{font-size:24px!important;margin:4px 0 4px!important;line-height:1.2!important}
+  #home .hubIntro p{font-size:11px!important;margin:0!important;line-height:1.45!important}
+  #home .lastUpdate{margin-top:5px!important;font-size:9px!important}
+  #home .menu{margin-top:8px!important}
+  #home .menu button{min-height:122px!important;padding:12px!important}
+  #home .menu .ico{margin-bottom:9px!important}
+  #home .homeQuickLinks{margin:10px 0 4px!important;justify-content:center!important}
+  #home .hero{display:none!important}
+  #home .dataStatus{margin-top:12px!important}
+}
+@media(max-width:430px){
+  #home .menu{gap:7px!important}
+  #home .menu button{min-height:112px!important;padding:11px!important}
+  #home .menu strong{font-size:13px!important;margin-bottom:5px!important}
+  #home .menu span{font-size:9px!important;line-height:1.45!important}
+  #home .ico{width:34px!important;height:34px!important;font-size:16px!important}
+  #home .homeQuickLinks{gap:5px!important}
+  #home .naverCafe,#home .homeRankBtn{font-size:8px!important;padding:6px 8px!important}
+  #home .dataStatus{grid-template-columns:1fr!important;gap:6px!important}
+  #home .dataStatus>div{padding:9px 10px!important}
+}
 </style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
 <section id="home" class="screen active">
@@ -569,18 +594,21 @@ body{
       <div class="release">2026. 07. 30 정식 출시</div>
       <h1>쿠키런: 크럼블 공용 도구</h1>
       <p>덱 구성, 쿠키별 슈가룬, 스테이지 정보, 메모를 한곳에서</p>
-      <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div><div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
+      <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div>
     </div>
-    <div class="hero"><div class="ey">QUICK START</div><h1>오늘은 무엇을 준비할까요?</h1><p>필요한 기능을 골라 바로 시작하세요.</p></div>
-<div class="dataStatus">
-  <div><b>공용 데이터 상태</b><span id="syncText">DB 설정 전 · 이 기기에서만 테스트</span></div>
-  <div><b>게임 데이터 기준</b><span>v1.2.002 · 쿠키 73 · 펫 55 · 스테이지 248장 기준</span></div>
-</div>
 <div class="menu">
 <button onclick="go('decks')"><div class="ico">⚔️</div><strong>덱 구성하기</strong><span>쿠키 12 · 펫 3 · 단장 · 카드 2</span></button>
 <button onclick="go('runes')"><div class="ico">✦</div><strong>쿠키별 슈가룬</strong><span>쿠키 하나당 설정 1개 · 복수 룬 선택</span></button>
 <button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button>
-<button onclick="go('memo')"><div class="ico">📝</div><strong>메모</strong><span>모두가 함께 보는 자유 메모</span></button></div></section>
+<button onclick="go('memo')"><div class="ico">📝</div><strong>메모</strong><span>모두가 함께 보는 자유 메모</span></button>
+</div>
+<div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
+<div class="hero"><div class="ey">QUICK START</div><h1>오늘은 무엇을 준비할까요?</h1><p>필요한 기능을 골라 바로 시작하세요.</p></div>
+<div class="dataStatus">
+  <div><b>공용 데이터 상태</b><span id="syncText">DB 설정 전 · 이 기기에서만 테스트</span></div>
+  <div><b>게임 데이터 기준</b><span>v1.2.002 · 쿠키 73 · 펫 55 · 스테이지 248장 기준</span></div>
+</div>
+</section>
 
 <section id="decks" class="screen"><div class="bar"><button class="back" onclick="go('home')">←</button><div class="title">덱 구성하기</div></div>
 <div class="deckListHeader"><div><b>저장된 덱</b><span id="deckSavedCount">0개</span></div><button class="primary" type="button" onclick="editDeck()">＋ 새 덱 만들기</button></div>
