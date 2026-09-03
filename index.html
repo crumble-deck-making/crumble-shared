@@ -572,9 +572,12 @@ body{
   #home .menu{margin-top:8px!important}
   #home .menu button{min-height:122px!important;padding:12px!important}
   #home .menu .ico{margin-bottom:9px!important}
-  #home .homeQuickLinks{margin:10px 0 4px!important;justify-content:center!important}
+  #home .homeQuickLinks{margin:18px 0 4px!important;justify-content:center!important}
   #home .hero{display:none!important}
-  #home .dataStatus{margin-top:12px!important}
+  #home .dataStatus{margin-top:22px!important;gap:7px!important}
+  #home .dataStatus>div{padding:8px 10px!important;border-radius:10px!important}
+  #home .dataStatus b{font-size:9px!important}
+  #home .dataStatus span{font-size:8px!important;line-height:1.35!important}
 }
 @media(max-width:430px){
   #home .menu{gap:7px!important}
@@ -582,11 +585,16 @@ body{
   #home .menu strong{font-size:13px!important;margin-bottom:5px!important}
   #home .menu span{font-size:9px!important;line-height:1.45!important}
   #home .ico{width:34px!important;height:34px!important;font-size:16px!important}
-  #home .homeQuickLinks{gap:5px!important}
+  #home .homeQuickLinks{gap:6px!important;margin-top:20px!important}
   #home .naverCafe,#home .homeRankBtn{font-size:8px!important;padding:6px 8px!important}
-  #home .dataStatus{grid-template-columns:1fr!important;gap:6px!important}
-  #home .dataStatus>div{padding:9px 10px!important}
+  #home .dataStatus{grid-template-columns:1fr!important;gap:5px!important;margin-top:24px!important}
+  #home .dataStatus>div{padding:7px 9px!important}
+  #home .dataStatus b{font-size:8px!important}
+  #home .dataStatus span{font-size:7.5px!important}
 }
+
+/* Deck video upload / playback */
+.deckVideoBox{margin-top:12px;padding:12px;border:1px solid #eadfce;border-radius:14px;background:#fffaf2}.deckVideoPick{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.deckVideoPick input[type=file]{max-width:100%;font-size:12px}.deckVideoState{margin-top:7px;font-size:11px;color:#766b60}.deckVideoRemove{font-size:11px;padding:7px 10px}.deckVideoView{margin-top:14px;padding:12px;border-radius:16px;background:#171717}.deckVideoView video{display:block;width:100%;max-height:70vh;border-radius:11px;background:#000}.deckVideoTitle{display:flex;align-items:center;justify-content:space-between;gap:8px;color:white;margin-bottom:9px}.deckVideoTitle b{font-size:13px}.deckVideoPlayLink{display:inline-flex;align-items:center;justify-content:center;margin-top:9px;padding:9px 12px;border:0;border-radius:10px;background:white;color:#222;font-weight:800;text-decoration:none}.deckVideoBadge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;margin-top:5px;padding:4px 7px;border-radius:999px;background:#f2eee7;color:#645b51}
 </style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
 <section id="home" class="screen active">
@@ -631,6 +639,11 @@ body{
   <input id="deckName" class="input" placeholder="예: 34-30 보스덱"><div class="label" style="margin-top:12px">카테고리</div><div id="deckCategoryPick" class="deckCategoryPick"></div>
   <div class="label" style="margin-top:12px">덱 메모 · 파훼법</div>
   <textarea id="deckMemo" class="input deckMemoInput" rows="7" placeholder="예: 2페이즈 진입 전에 스킬 아끼기 / 보스 광역기 후 힐 사용"></textarea>
+  <div class="deckVideoBox">
+    <div class="label">플레이 동영상</div>
+    <div class="deckVideoPick"><input id="deckVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><button id="deckVideoRemoveBtn" class="secondary deckVideoRemove" type="button" onclick="removeDeckVideoSelection()" style="display:none">동영상 제거</button></div>
+    <div id="deckVideoState" class="deckVideoState">동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 50MB)</div>
+  </div>
 </div><div class="stickySel"><div class="summaryrow"><b>선택 현황</b><span id="counts">쿠키 0/12 · 펫 0/3 · 카드 0/2</span></div><div id="cookieSlots" class="slotgrid"></div><div id="petSlots" class="petrow"></div><div id="cardSlots" class="cardrow"></div><div class="note" style="margin-top:7px">첫 번째로 고른 쿠키가 자동으로 단장이 됩니다. 다른 쿠키 슬롯을 누르면 단장을 바꿀 수 있어요.</div></div><div class="tabs"><button id="tabC" class="secondary" onclick="setTab('cookie')">쿠키</button><button id="tabP" class="secondary" onclick="setTab('pet')">펫</button><button id="tabK" class="secondary" onclick="setTab('card')">카드</button></div><input id="search" class="input" placeholder="이름 검색" oninput="renderPicker()" style="margin-bottom:10px"><div id="picker" class="grid"></div><div class="deckSaveHint">쿠키 12 · 펫 3 · 단장 1명이 채워지면 저장할 수 있어요. 카드는 0~2장 선택 가능.</div>
 <div id="deckSaveStatus" class="deckSaveStatus"></div>
 <div class="row" style="margin-top:10px"><button class="secondary" type="button" onclick="go('decks')">취소</button><button id="deckSaveBtn" class="primary" type="button" onclick="saveDeck(event)">덱 저장</button></div></section>
@@ -806,10 +819,12 @@ function renderSavedDecksInEditor(rows=null){
 }
 
 function editDeck(d=null){
-  edit=d?{id:d.id,cookies:[...d.cookies],pets:[...d.pets],cards:[...(d.cards||[])],leader:d.leader,memo:d.memo||'',category:d.category||'',tab:'cookie'}:{id:null,cookies:[],pets:[],cards:[],leader:null,memo:'',category:'',tab:'cookie'};
+  edit=d?{id:d.id,cookies:[...d.cookies],pets:[...d.pets],cards:[...(d.cards||[])],leader:d.leader,memo:d.memo||'',category:d.category||'',video_url:d.video_url||'',video_path:d.video_path||'',remove_video:false,tab:'cookie'}:{id:null,cookies:[],pets:[],cards:[],leader:null,memo:'',category:'',video_url:'',video_path:'',remove_video:false,tab:'cookie'};
   go('deckedit');
   document.getElementById('deckName').value=d?.name||'';
   document.getElementById('deckMemo').value=d?.memo||'';
+  const vf=document.getElementById('deckVideoFile'); if(vf)vf.value='';
+  renderDeckVideoState();
   renderDeckCategoryPick();
   setTab('cookie');renderSelected();renderSavedDecksInEditor();
 }
@@ -831,6 +846,33 @@ function togglePick(id){
   }
   renderSelected();
 }
+function renderDeckVideoState(){
+  const st=document.getElementById('deckVideoState');
+  const rm=document.getElementById('deckVideoRemoveBtn');
+  if(!st||!rm)return;
+  const f=document.getElementById('deckVideoFile')?.files?.[0];
+  if(f){st.textContent=`새 동영상: ${f.name} · ${(f.size/1024/1024).toFixed(1)}MB`;rm.style.display='inline-flex';return;}
+  if(edit?.video_url&&!edit?.remove_video){st.textContent='현재 이 덱에 동영상이 첨부되어 있습니다. 새 파일을 선택하면 교체됩니다.';rm.style.display='inline-flex';return;}
+  st.textContent='동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 50MB)';rm.style.display='none';
+}
+function removeDeckVideoSelection(){
+  const vf=document.getElementById('deckVideoFile'); if(vf)vf.value='';
+  if(edit){edit.remove_video=true;edit.video_url='';}
+  renderDeckVideoState();
+}
+document.addEventListener('change',e=>{if(e.target?.id==='deckVideoFile'){if(edit)edit.remove_video=false;renderDeckVideoState();}});
+async function uploadDeckVideo(file){
+  if(!file)return null;
+  if(file.size>50*1024*1024)throw new Error('동영상은 50MB 이하만 업로드할 수 있어.');
+  if(!String(file.type||'').startsWith('video/'))throw new Error('동영상 파일을 선택해줘.');
+  if(!remote||!sb)throw new Error('공용 DB 연결 후 동영상을 업로드할 수 있어.');
+  const ext=(file.name.split('.').pop()||'mp4').replace(/[^a-zA-Z0-9]/g,'').toLowerCase()||'mp4';
+  const path=`${Date.now()}_${Math.random().toString(36).slice(2,10)}.${ext}`;
+  const {error}=await sb.storage.from('deck-videos').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type||undefined});
+  if(error)throw error;
+  const {data}=sb.storage.from('deck-videos').getPublicUrl(path);
+  return {path,url:data?.publicUrl||''};
+}
 async function saveDeck(ev){
   if(ev&&ev.preventDefault)ev.preventDefault();
   const status=document.getElementById('deckSaveStatus');
@@ -846,6 +888,7 @@ async function saveDeck(ev){
   try{
     const name=(document.getElementById('deckName')?.value||'').trim();
     const memo=(document.getElementById('deckMemo')?.value||'').trim();
+    const videoFile=document.getElementById('deckVideoFile')?.files?.[0]||null;
 
     if(!name){show('덱 이름을 입력해줘.','bad');return false}
     if(!edit || !Array.isArray(edit.cookies) || !Array.isArray(edit.pets)){
@@ -860,6 +903,15 @@ async function saveDeck(ev){
     show('저장 중…');
 
     const localId=edit.id||('deck_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));
+    const oldVideoPath=edit.video_path||'';
+    let video_url=(edit.remove_video?'':(edit.video_url||''));
+    let video_path=(edit.remove_video?'':(edit.video_path||''));
+    let uploadedVideo=null;
+    if(videoFile){
+      show('동영상 업로드 중…');
+      uploadedVideo=await uploadDeckVideo(videoFile);
+      video_url=uploadedVideo.url; video_path=uploadedVideo.path;
+    }
     const row={
       id:localId,
       name,
@@ -869,6 +921,8 @@ async function saveDeck(ev){
       cards:[...(edit.cards||[])].slice(0,2),
       memo,
       category:edit.category||'',
+      video_url,
+      video_path,
       updated_at:new Date().toISOString()
     };
 
@@ -894,7 +948,7 @@ async function saveDeck(ev){
         const isLocalId=String(row.id).startsWith('deck_');
         let cloudRow={
           name:row.name,cookies:row.cookies,pets:row.pets,leader:row.leader,
-          cards:row.cards,memo:row.memo,category:row.category||null,updated_at:row.updated_at
+          cards:row.cards,memo:row.memo,category:row.category||null,video_url:row.video_url||null,video_path:row.video_path||null,updated_at:row.updated_at
         };
         let result=(edit.id&&!isLocalId)
           ? await sb.from('decks').update(cloudRow).eq('id',edit.id).select()
@@ -907,6 +961,9 @@ async function saveDeck(ev){
           result=(edit.id&&!isLocalId)
             ? await sb.from('decks').update(cloudRow).eq('id',edit.id).select()
             : await sb.from('decks').insert(cloudRow).select();
+        }
+        if(result?.error && /video_url|video_path/i.test(String(result.error.message||''))){
+          throw new Error('동영상용 DB 컬럼이 아직 없어. 제공한 Supabase SQL을 먼저 실행해줘.');
         }
 
         if(result?.error){
@@ -921,6 +978,9 @@ async function saveDeck(ev){
             saveLocal(db2);
             DECK_CACHE=[synced,...(DECK_CACHE||[]).filter(x=>String(x.id)!==String(row.id)&&String(x.id)!==String(synced.id))];
             row.id=cloudSaved.id;
+          }
+          if(oldVideoPath && oldVideoPath!==row.video_path){
+            try{await sb.storage.from('deck-videos').remove([oldVideoPath]);}catch(e){console.warn('old video remove',e)}
           }
           if(memoColumnMissing){
             show('✓ 덱 저장 완료 · 메모는 이 브라우저에 저장됨','warn');
@@ -954,7 +1014,7 @@ function mergeDeckRows(cloudRows, localRows){
     const l=locals.get(String(c.id));
     if(!l)return c;
     locals.delete(String(c.id));
-    return {...c, memo:(l.memo!==undefined?l.memo:c.memo), category:(l.category!==undefined?l.category:c.category), updated_at:(l.updated_at||c.updated_at)};
+    return {...c, memo:(l.memo!==undefined?l.memo:c.memo), category:(l.category!==undefined?l.category:c.category), video_url:(l.video_url!==undefined?l.video_url:c.video_url), video_path:(l.video_path!==undefined?l.video_path:c.video_path), updated_at:(l.updated_at||c.updated_at)};
   });
   return [...merged,...locals.values()];
 }
@@ -1042,7 +1102,7 @@ async function loadDecks(){
       const card=document.createElement('div');
       card.className='listitem deckListCard';
       card.innerHTML=`<div class="listtop">
-        <div class="deckListName"><b>${esc(d.name||'이름 없는 덱')}</b>${d.category?`<div class="tagPill">${esc(d.category)}</div>`:''}<div class="stamp">최종 저장 ${fmt(d.updated_at)}</div></div>
+        <div class="deckListName"><b>${esc(d.name||'이름 없는 덱')}</b>${d.category?`<div class="tagPill">${esc(d.category)}</div>`:''}${d.video_url?'<div class="deckVideoBadge">▶ 동영상</div>':''}<div class="stamp">최종 저장 ${fmt(d.updated_at)}</div></div>
         <div class="deckActions">
           <button class="deckViewBtn" data-v type="button">보기</button>
           <button class="secondary" data-e type="button">수정</button>
@@ -1086,6 +1146,7 @@ function viewDeck(d){
       <div class="deckViewSection"><div class="sectionHead"><b>펫</b><span>3</span></div><div class="viewPetGrid">${petHtml}</div></div>
       <div class="deckViewSection"><div class="sectionHead"><b>용병단 카드</b><span>${cards.length}/2</span></div><div class="viewCardGrid">${cardHtml}</div></div>
     </div>
+    ${d.video_url?`<div class="deckVideoView"><div class="deckVideoTitle"><b>▶ 플레이 동영상</b><span>덱 첨부 영상</span></div><video controls playsinline preload="metadata" src="${esc(d.video_url)}"></video><a class="deckVideoPlayLink" href="${esc(d.video_url)}" target="_blank" rel="noopener">▶ 재생하기</a></div>`:''}
     <div class="strategyBox">
       <div class="strategyTitle">📜 파훼법 · 덱 메모</div>
       <div class="strategyText">${d.memo?esc(d.memo).replace(/\n/g,'<br>'):'등록된 메모가 없습니다.'}</div>
@@ -1096,6 +1157,8 @@ function viewDeck(d){
 }
 async function deleteDeck(id){
   if(!confirm('이 덱을 삭제할까?'))return;
+  const target=(DECK_CACHE||[]).find(x=>String(x.id)===String(id));
+  if(remote&&sb&&target?.video_path){try{await sb.storage.from('deck-videos').remove([target.video_path]);}catch(e){console.warn('video delete',e)}}
   let db=localDB();db.decks=(db.decks||[]).filter(x=>String(x.id)!==String(id));saveLocal(db);
   if(remote&&sb&&!String(id).startsWith('deck_')){
     try{await sb.from('decks').delete().eq('id',id)}catch(e){console.warn(e)}
