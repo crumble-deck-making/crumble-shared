@@ -552,13 +552,24 @@ body{
 .powerMiniTwo{grid-template-columns:repeat(2,1fr)!important}
 @media(max-width:430px){.powerHighlight{padding:12px 8px}.powerHighlight strong{font-size:22px!important}}
 </style>
+
+<style>
+/* 2026-09 feature update */
+.tagFilterBox,.deckCategoryPick,.runeChooser,.guildSort,.guildForm{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:10px}
+.tagChecks{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.tagChecks label,.deckCategoryPick label,.guildSort label{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:10px;background:#faf9ff}.tagPill{display:inline-block;border-radius:999px;padding:4px 8px;background:#f0efff;color:#5b51d8;font-size:9px;font-weight:900;margin-top:6px}
+.deckTopTools{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}.smallToolBtn{padding:8px 10px!important;font-size:10px!important}.rankingList{display:grid;gap:7px}.rankRow{display:grid;grid-template-columns:30px 38px 1fr auto;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:7px;background:#fff}.rankRow img{width:38px;height:38px;object-fit:cover;border-radius:8px}.rankNo{font-weight:950;text-align:center}.rankCount{font-size:11px;font-weight:900;color:#5b51d8}
+.runeChooserHead{display:flex;justify-content:space-between;align-items:center;gap:8px}.runeChooserGroups{display:none;margin-top:10px;max-height:420px;overflow:auto}.runeChooserGroups.open{display:block}.runeRarity{margin:10px 0 5px;font-size:11px;font-weight:950;color:#6555e9}.runeCookieCheckList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.runeCookieCheck{display:grid;grid-template-columns:32px 1fr 18px;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:5px;background:#fff;cursor:pointer}.runeCookieCheck img{width:32px;height:32px;object-fit:cover;border-radius:7px}.runeCookieCheck b{font-size:10px}.runeCookieCheck input{pointer-events:none}.runeCookieCheck.active{border-color:#7669ef;background:#f4f2ff}
+.runeViewRow{display:grid;grid-template-columns:42px minmax(100px,auto) 1fr;align-items:center;gap:9px;border-bottom:1px solid var(--line);padding:9px 0}.runeViewRow:last-child{border-bottom:0}.runeViewRow img{width:42px;height:42px;border-radius:9px;object-fit:cover}.runeViewName b{display:block;font-size:12px}.runeViewName small{display:block;font-size:8px;color:var(--sub);margin-top:2px}.runeViewRow .savedRuneChips{margin-top:0}.runeEditorSelect{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;margin:10px 0}.runeEditResults{display:grid;gap:4px;margin-top:7px;max-height:180px;overflow:auto}.runeEditResult{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px;text-align:left;color:var(--ink)}.runeEditResult img{width:32px;height:32px;border-radius:7px;object-fit:cover}.runeEditResult b{font-size:10px}.runeEditCurrent{font-size:10px;font-weight:900;color:#6555e9;margin-bottom:7px}
+.stageCombined{margin-top:8px}.stageCombinedTitle{font-size:11px;font-weight:950;margin:12px 0 6px}.guildList{display:grid;gap:8px}.guildRecord{border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px}.guildRecordTop{display:flex;justify-content:space-between;gap:8px}.guildRecord strong{font-size:15px}.guildRecordMeta{font-size:10px;color:var(--sub);margin-top:5px}.guildPower{font-weight:950;color:#5b51d8}.guildForm .row{margin-top:7px}.linkedDeck{margin-top:7px;border:1px solid #dcd7ff;background:#f5f3ff;border-radius:10px;padding:9px;font-size:11px}.deckLinkList{display:grid;gap:8px;margin-top:8px;max-height:360px;overflow:auto}.deckLinkChoice{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px;text-align:left;font-size:11px}.deckLinkChoice:active{transform:scale(.995)}.guildDeckName{font-size:12px;font-weight:950;margin-bottom:7px}.guildMiniGroup{display:flex;align-items:center;gap:5px;margin-top:5px;min-width:0}.guildMiniLabel{width:28px;flex:0 0 28px;font-size:8px;font-weight:900;color:var(--sub)}.guildMiniImgs{display:flex;gap:3px;flex-wrap:wrap}.guildMiniImgs img{width:24px;height:24px;border-radius:6px;object-fit:cover;background:#f4f4f7;border:1px solid #ececf1}.guildMiniImgs.cards img{border-radius:5px}.guildEmpty{font-size:11px;color:var(--sub);padding:10px;text-align:center}.homeQuickLinks{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px}.homeQuickLinks .naverCafe{margin-top:0}.homeRankBtn{border:1px solid #e2dcff;background:#f7f5ff;color:#5b51d8;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900}.naverCafe{display:inline-flex;align-items:center;gap:5px;border:1px solid #cfe9d5;background:#f4fff6;color:#17843b;border-radius:999px;padding:6px 9px;font-size:9px;font-weight:900;text-decoration:none;margin-top:10px}
+@media(max-width:430px){.runeCookieCheckList{grid-template-columns:1fr}.powerHighlights{grid-template-columns:1fr 1fr}.guildForm .row{display:grid;grid-template-columns:1fr 1fr}}
+</style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
       <h1>쿠키런: 크럼블 공용 도구</h1>
       <p>덱 구성, 쿠키별 슈가룬, 스테이지 정보, 메모를 한곳에서</p>
-      <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div>
+      <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div><div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
     </div>
     <div class="hero"><div class="ey">QUICK START</div><h1>오늘은 무엇을 준비할까요?</h1><p>필요한 기능을 골라 바로 시작하세요.</p></div>
 <div class="dataStatus">
@@ -568,8 +579,7 @@ body{
 <div class="menu">
 <button onclick="go('decks')"><div class="ico">⚔️</div><strong>덱 구성하기</strong><span>쿠키 12 · 펫 3 · 단장 · 카드 2</span></button>
 <button onclick="go('runes')"><div class="ico">✦</div><strong>쿠키별 슈가룬</strong><span>쿠키 하나당 설정 1개 · 복수 룬 선택</span></button>
-<button onclick="go('power')"><div class="ico">📈</div><strong>스테이지별 적정투력</strong><span>35% · 55% · 75% · 100%</span></button>
-<button onclick="go('accuracy')"><div class="ico">🎯</div><strong>명중 / 집중 요구치</strong><span>스테이지 요구치 빠른 확인</span></button>
+<button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button>
 <button onclick="go('memo')"><div class="ico">📝</div><strong>메모</strong><span>모두가 함께 보는 자유 메모</span></button></div></section>
 
 <section id="decks" class="screen"><div class="bar"><button class="back" onclick="go('home')">←</button><div class="title">덱 구성하기</div></div>
@@ -578,6 +588,7 @@ body{
       <div class="savedDeckPanelTitle">내가 저장한 덱</div>
       <div class="deckSearchWrap">
         <input id="deckTitleSearch" class="input" type="search" placeholder="덱 제목 검색" autocomplete="off" oninput="filterDeckTitles()">
+        <div class="tagFilterBox"><b style="font-size:11px">카테고리로 찾기</b><div class="tagChecks" id="deckTagFilters"></div></div>
         <div id="deckSearchResult" class="deckSearchResult"></div>
       </div>
       <div id="deckList" style="margin-top:8px"></div>
@@ -589,7 +600,7 @@ body{
 </div>
 <div class="card deckMetaCard">
   <div class="label">덱 이름</div>
-  <input id="deckName" class="input" placeholder="예: 34-30 보스덱">
+  <input id="deckName" class="input" placeholder="예: 34-30 보스덱"><div class="label" style="margin-top:12px">카테고리</div><div id="deckCategoryPick" class="deckCategoryPick"></div>
   <div class="label" style="margin-top:12px">덱 메모 · 파훼법</div>
   <textarea id="deckMemo" class="input deckMemoInput" rows="7" placeholder="예: 2페이즈 진입 전에 스킬 아끼기 / 보스 광역기 후 힐 사용"></textarea>
 </div><div class="stickySel"><div class="summaryrow"><b>선택 현황</b><span id="counts">쿠키 0/12 · 펫 0/3 · 카드 0/2</span></div><div id="cookieSlots" class="slotgrid"></div><div id="petSlots" class="petrow"></div><div id="cardSlots" class="cardrow"></div><div class="note" style="margin-top:7px">첫 번째로 고른 쿠키가 자동으로 단장이 됩니다. 다른 쿠키 슬롯을 누르면 단장을 바꿀 수 있어요.</div></div><div class="tabs"><button id="tabC" class="secondary" onclick="setTab('cookie')">쿠키</button><button id="tabP" class="secondary" onclick="setTab('pet')">펫</button><button id="tabK" class="secondary" onclick="setTab('card')">카드</button></div><input id="search" class="input" placeholder="이름 검색" oninput="renderPicker()" style="margin-bottom:10px"><div id="picker" class="grid"></div><div class="deckSaveHint">쿠키 12 · 펫 3 · 단장 1명이 채워지면 저장할 수 있어요. 카드는 0~2장 선택 가능.</div>
@@ -605,10 +616,9 @@ body{
 <section id="runes" class="screen">
       <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">쿠키별 슈가룬</div></div>
 
-      <div class="card runeCookieFinder">
-        <div class="label">쿠키 찾기</div>
-        <input id="runeCookieSearch" class="input" placeholder="쿠키 이름 검색" autocomplete="off" oninput="renderRuneCookieResults()">
-        <div id="runeCookieResults" class="runeCookieResults"></div>
+      <div class="runeChooser">
+        <div class="runeChooserHead"><div><b>쿠키 선택</b><div class="note">확인하고 싶은 쿠키를 여러 명 체크하면 저장된 슈가룬을 한 번에 볼 수 있어요.</div></div><button class="primary" type="button" onclick="toggleRuneChooser()">쿠키 선택하기</button></div>
+        <div id="runeChooserGroups" class="runeChooserGroups"></div>
         <input id="runeCookie" type="hidden">
       </div>
 
@@ -616,15 +626,21 @@ body{
         <div class="emptyRune">위에서 쿠키를 먼저 선택하세요.</div>
       </div>
 
+      <div class="runeEditorSelect">
+        <div class="label">슈가룬 설정할 쿠키</div>
+        <div id="runeEditCurrent" class="runeEditCurrent">설정할 쿠키를 검색해서 선택하세요.</div>
+        <input id="runeEditSearch" class="input" placeholder="쿠키 이름 검색" oninput="renderRuneEditSearch()">
+        <div id="runeEditResults" class="runeEditResults"></div>
+      </div>
       <div class="runePickHead">
-        <div><b>슈가룬 선택</b><span id="runeCount">0개 선택</span></div>
+        <div><b>슈가룬 설정</b><span id="runeCount">0개 선택</span></div>
         <button class="secondary runeClear" type="button" onclick="clearRunes()">전체 해제</button>
       </div>
       <div id="runeGrid" class="runeGrid"></div>
       <button class="primary runeSaveBtn" type="button" onclick="saveRunes()">현재 설정 저장</button>
     </section>
 <section id="power" class="screen">
-      <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">스테이지별 적정투력</div></div>
+      <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">스테이지 정보</div></div>
       <form class="card stageSearch" onsubmit="return doPowerLookup(event)">
         <div class="label">스테이지</div>
         <div class="stageInputRow">
@@ -634,18 +650,6 @@ body{
         <div class="quickStage"><button type="button" onclick="setPowerStage('1-1')">1-1</button><button type="button" onclick="setPowerStage('34-30')">34-30</button><button type="button" onclick="setPowerStage('248-30')">248-30</button></div>
       </form>
       <div id="powerResult" class="card stageResult"><div class="lookupReady">데이터 준비 완료 · 7,440 스테이지</div><div class="note">스테이지를 입력하고 조회하세요.</div></div>
-    </section>
-<section id="accuracy" class="screen">
-      <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">명중 / 집중 요구치</div></div>
-      <form class="card stageSearch" onsubmit="return doAccuracyLookup(event)">
-        <div class="label">스테이지</div>
-        <div class="stageInputRow">
-          <input id="accStage" class="input" inputmode="numeric" autocomplete="off" placeholder="예: 34-30 또는 3430">
-          <button class="primary" type="submit">조회</button>
-        </div>
-        <div class="quickStage"><button type="button" onclick="setAccStage('1-1')">1-1</button><button type="button" onclick="setAccStage('34-30')">34-30</button><button type="button" onclick="setAccStage('248-30')">248-30</button></div>
-      </form>
-      <div id="accResult" class="card stageResult"><div class="lookupReady">데이터 준비 완료 · 7,440 스테이지</div><div class="note">스테이지를 입력하고 조회하세요.</div></div>
     </section>
 <section id="memo" class="screen">
   <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">메모</div></div>
@@ -678,7 +682,7 @@ if(CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY){
       const st=document.getElementById('syncText');if(st)st.textContent='공용 DB 연결됨됨 · 변경사항 자동 동기화';
       sb.channel('crumble-public-sync')
         .on('postgres_changes',{event:'*',schema:'public',table:'decks'},()=>{if(document.getElementById('decks').classList.contains('active'))loadDecks()})
-        .on('postgres_changes',{event:'*',schema:'public',table:'sugar_runes'},()=>{if(document.getElementById('runes').classList.contains('active'))loadRune()})
+        .on('postgres_changes',{event:'*',schema:'public',table:'sugar_runes'},async()=>{if(document.getElementById('runes').classList.contains('active')){await refreshSelectedRuneCache();renderRuneSummary();if(activeRuneCookie)loadRune();}})
         .on('postgres_changes',{event:'*',schema:'public',table:'memos'},()=>{if(document.getElementById('memo').classList.contains('active'))loadMemos()})
         .subscribe();
     }catch(e){console.error(e)}
@@ -686,7 +690,7 @@ if(CFG.SUPABASE_URL&&CFG.SUPABASE_ANON_KEY){
   document.head.appendChild(supaScript);
 }
 const LS='crumbleSharedDemoV1';
-let MEMDB={decks:[],runes:{},memos:[]};
+let MEMDB={decks:[],runes:{},memos:[],guild_records:[]};
 let STORAGE_READY=false;
 
 function initLocalDB(){
@@ -737,6 +741,8 @@ function esc(v){
 }
 let edit={id:null,cookies:[],pets:[],cards:[],leader:null,tab:'cookie'};
 
+const DECK_CATEGORIES=['스테이지','보스','아레나','길드토벌전','일일던전','타워'];
+let ACTIVE_DECK_TAGS=[];
 let DECK_CACHE=[];
 function getLocalDeckRows(){
   try{
@@ -772,10 +778,11 @@ function renderSavedDecksInEditor(rows=null){
 }
 
 function editDeck(d=null){
-  edit=d?{id:d.id,cookies:[...d.cookies],pets:[...d.pets],cards:[...(d.cards||[])],leader:d.leader,memo:d.memo||'',tab:'cookie'}:{id:null,cookies:[],pets:[],cards:[],leader:null,memo:'',tab:'cookie'};
+  edit=d?{id:d.id,cookies:[...d.cookies],pets:[...d.pets],cards:[...(d.cards||[])],leader:d.leader,memo:d.memo||'',category:d.category||'',tab:'cookie'}:{id:null,cookies:[],pets:[],cards:[],leader:null,memo:'',category:'',tab:'cookie'};
   go('deckedit');
   document.getElementById('deckName').value=d?.name||'';
   document.getElementById('deckMemo').value=d?.memo||'';
+  renderDeckCategoryPick();
   setTab('cookie');renderSelected();renderSavedDecksInEditor();
 }
 function renderSelected(){
@@ -833,12 +840,13 @@ async function saveDeck(ev){
       leader:edit.leader,
       cards:[...(edit.cards||[])].slice(0,2),
       memo,
+      category:edit.category||'',
       updated_at:new Date().toISOString()
     };
 
     // 1. Save to the current browser immediately.
     let db=localDB();
-    if(!db || typeof db!=='object') db={decks:[],runes:{},memos:[]};
+    if(!db || typeof db!=='object') db={decks:[],runes:{},memos:[],guild_records:[]};
     if(!Array.isArray(db.decks)) db.decks=[];
     const idx=db.decks.findIndex(x=>String(x.id)===String(row.id));
     if(idx>=0) db.decks[idx]=row;
@@ -858,7 +866,7 @@ async function saveDeck(ev){
         const isLocalId=String(row.id).startsWith('deck_');
         let cloudRow={
           name:row.name,cookies:row.cookies,pets:row.pets,leader:row.leader,
-          cards:row.cards,memo:row.memo,updated_at:row.updated_at
+          cards:row.cards,memo:row.memo,category:row.category||null,updated_at:row.updated_at
         };
         let result=(edit.id&&!isLocalId)
           ? await sb.from('decks').update(cloudRow).eq('id',edit.id).select()
@@ -918,11 +926,39 @@ function mergeDeckRows(cloudRows, localRows){
     const l=locals.get(String(c.id));
     if(!l)return c;
     locals.delete(String(c.id));
-    return {...c, memo:(l.memo!==undefined?l.memo:c.memo), updated_at:(l.updated_at||c.updated_at)};
+    return {...c, memo:(l.memo!==undefined?l.memo:c.memo), category:(l.category!==undefined?l.category:c.category), updated_at:(l.updated_at||c.updated_at)};
   });
   return [...merged,...locals.values()];
 }
 
+
+function renderDeckCategoryPick(){
+ const box=document.getElementById('deckCategoryPick'); if(!box)return;
+ box.innerHTML=DECK_CATEGORIES.map(c=>`<label><input type="radio" name="deckCategory" value="${c}" ${edit.category===c?'checked':''} onchange="edit.category=this.value"> ${c}</label>`).join('');
+}
+function renderDeckTagFilters(){
+ const box=document.getElementById('deckTagFilters');if(!box)return;
+ box.innerHTML=DECK_CATEGORIES.map(c=>`<label><input type="checkbox" ${ACTIVE_DECK_TAGS.includes(c)?'checked':''} onchange="toggleDeckTagFilter('${c}',this.checked)"> ${c}</label>`).join('');
+}
+function toggleDeckTagFilter(c,on){if(on&&!ACTIVE_DECK_TAGS.includes(c))ACTIVE_DECK_TAGS.push(c);if(!on)ACTIVE_DECK_TAGS=ACTIVE_DECK_TAGS.filter(x=>x!==c);loadDecks()}
+async function showCookieRanking(){
+ // 메인 화면에서 바로 눌러도 Supabase의 최신 저장 덱을 먼저 불러온다.
+ try{ await loadDecks(); }catch(e){ console.warn('ranking deck load',e); }
+ const source=(Array.isArray(DECK_CACHE)&&DECK_CACHE.length)?DECK_CACHE:getLocalDeckRows();
+ const counts={};
+ (source||[]).forEach(d=>{
+   const cookieIds=Array.isArray(d?.cookies)?d.cookies:[];
+   cookieIds.forEach(v=>{
+     const id=typeof v==='string'?v:(v?.id||'');
+     if(id)counts[id]=(counts[id]||0)+1;
+   });
+ });
+ const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0])));
+ const html=rows.length?rows.map(([id,n],i)=>{const c=D.cookies.find(x=>x.id===id);return c?`<div class="rankRow"><span class="rankNo">${i+1}</span><img src="${c.image}" alt=""><b>${esc(c.name)}</b><span class="rankCount">${n}회</span></div>`:''}).join(''):'저장된 덱이 없습니다.';
+ document.getElementById('rankingTemp')?.remove();
+ const w=document.createElement('div');w.className='card';w.innerHTML=`<div class="bar"><button class="back" type="button">←</button><div class="title">쿠키 사용 랭킹</div></div><div class="note" style="margin:0 0 10px">현재 저장된 덱 ${source.length}개 기준</div><div class="rankingList">${html}</div>`;
+ const sec=document.createElement('section');sec.id='rankingTemp';sec.className='screen active';sec.appendChild(w);document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.querySelector('main.wrap').appendChild(sec);w.querySelector('.back').onclick=()=>{sec.remove();go('home')};scrollTo(0,0);
+}
 function filterDeckTitles(){
   loadDecks();
 }
@@ -953,9 +989,10 @@ async function loadDecks(){
   if(!el)return rows;
 
   const q=String(document.getElementById('deckTitleSearch')?.value||'').trim().toLocaleLowerCase();
-  const displayRows=q ? rows.filter(d=>String(d?.name||'').toLocaleLowerCase().includes(q)) : rows;
+  renderDeckTagFilters();
+  const displayRows=rows.filter(d=>(!q||String(d?.name||'').toLocaleLowerCase().includes(q))&&(!ACTIVE_DECK_TAGS.length||ACTIVE_DECK_TAGS.includes(String(d?.category||''))));
   const searchResult=document.getElementById('deckSearchResult');
-  if(searchResult)searchResult.textContent=q ? `검색 결과 ${displayRows.length}개 / 전체 ${rows.length}개` : '';
+  if(searchResult)searchResult.textContent=(q||ACTIVE_DECK_TAGS.length)?`검색 결과 ${displayRows.length}개 / 전체 ${rows.length}개`:'';
 
   if(!displayRows.length){
     el.innerHTML=q
@@ -977,7 +1014,7 @@ async function loadDecks(){
       const card=document.createElement('div');
       card.className='listitem deckListCard';
       card.innerHTML=`<div class="listtop">
-        <div class="deckListName"><b>${esc(d.name||'이름 없는 덱')}</b><div class="stamp">최종 저장 ${fmt(d.updated_at)}</div></div>
+        <div class="deckListName"><b>${esc(d.name||'이름 없는 덱')}</b>${d.category?`<div class="tagPill">${esc(d.category)}</div>`:''}<div class="stamp">최종 저장 ${fmt(d.updated_at)}</div></div>
         <div class="deckActions">
           <button class="deckViewBtn" data-v type="button">보기</button>
           <button class="secondary" data-e type="button">수정</button>
@@ -1040,13 +1077,18 @@ async function deleteDeck(id){
 const RUNES=["공격력 증폭","방어력 증폭","체력 증폭","치명확률 증가","치명저항 증가","치명피해 증가","명중률 증가","회피율 증가","집중확률 증가","저항확률 증가","스킬증폭 증가","피해 감소","이동속도 증가","스킬가속 증가"];
 let runeSel=[];
 let activeRuneCookie=null;
+let selectedRuneCookies=[];
 
 function initRunes(){
-  const q=document.getElementById('runeCookieSearch');
-  if(q && !activeRuneCookie) q.value='';
-  renderRuneCookieResults();
-  if(activeRuneCookie) loadRune();
-  else { runeSel=[]; renderRuneButtons(); updateRuneCount(); }
+  renderRuneChooser();
+  renderRuneEditSearch();
+  if(activeRuneCookie) loadRune(); else {runeSel=[];renderRuneButtons();updateRuneCount();renderRuneSummary();}
+}
+function toggleRuneChooser(){const b=document.getElementById('runeChooserGroups');if(b)b.classList.toggle('open')}
+function renderRuneChooser(){
+ const box=document.getElementById('runeChooserGroups');if(!box)return;
+ const order=['TSSR','SSR','SR','R','U','C'];
+ box.innerHTML=order.map(r=>{const cs=D.cookies.filter(c=>c.rarity===r);if(!cs.length)return '';return `<div class="runeRarity">${r}</div><div class="runeCookieCheckList">${cs.map(c=>`<label class="runeCookieCheck ${selectedRuneCookies.includes(c.id)?'active':''}"><img src="${c.image}" alt=""><b>${esc(c.name)}</b><input type="checkbox" ${selectedRuneCookies.includes(c.id)?'checked':''} onchange="setRuneCookieChecked('${c.id}',this.checked)"></label>`).join('')}</div>`}).join('');
 }
 function savedRunesForCookie(cookieId){
   try{
@@ -1054,27 +1096,46 @@ function savedRunesForCookie(cookieId){
     return Array.isArray(row?.runes)?row.runes:[];
   }catch(e){return []}
 }
-function renderRuneCookieResults(){
-  const q=(document.getElementById('runeCookieSearch')?.value||'').trim().toLowerCase();
-  const box=document.getElementById('runeCookieResults');
-  if(!box) return;
-  const items=D.cookies.filter(c=>!q||c.name.toLowerCase().includes(q)).slice(0,20);
-  box.innerHTML=items.map(c=>{
-    const saved=savedRunesForCookie(c.id);
-    const chips=saved.length?saved.map(r=>`<em>${esc(r)}</em>`).join(''):'<small class="noRune">설정 없음</small>';
-    return `<button type="button" class="runeCookieRow ${activeRuneCookie===c.id?'active':''} ${saved.length?'hasSaved':''}" onclick="chooseRuneCookie('${c.id}')">
-      <img src="${c.image}" alt="">
-      <span class="runeSearchInfo"><b>${esc(c.name)}${saved.length?` <strong>${saved.length}</strong>`:''}</b><span class="runeSearchSaved">${chips}</span></span>
-      <i>선택</i>
-    </button>`;
-  }).join('');
+async function setRuneCookieChecked(id,checked){
+  id=String(id);
+  if(checked){
+    if(!selectedRuneCookies.includes(id)) selectedRuneCookies.push(id);
+  }else{
+    selectedRuneCookies=selectedRuneCookies.filter(x=>String(x)!==id);
+  }
+  renderRuneChooser();
+  renderRuneSummary();
+  await refreshSelectedRuneCache([id]);
+  renderRuneSummary();
 }
 async function chooseRuneCookie(id){
+  const sid=String(id);
+  return setRuneCookieChecked(sid,!selectedRuneCookies.includes(sid));
+}
+async function refreshSelectedRuneCache(ids=selectedRuneCookies){
+  const targets=(ids||[]).map(String).filter(Boolean);
+  if(!remote||!sb||!targets.length)return;
+  try{
+    const {data,error}=await sb.from('sugar_runes').select('*').in('cookie_id',targets);
+    if(error){console.warn('sugar rune lookup failed',error);return;}
+    let db=localDB(); if(!db.runes||typeof db.runes!=='object')db.runes={};
+    (data||[]).forEach(row=>{db.runes[String(row.cookie_id)]=row;});
+    saveLocal(db);
+  }catch(e){console.warn('sugar rune lookup failed',e)}
+}
+function renderRuneEditSearch(){
+  const box=document.getElementById('runeEditResults');if(!box)return;
+  const q=String(document.getElementById('runeEditSearch')?.value||'').trim().toLocaleLowerCase();
+  const list=D.cookies.filter(c=>!q||c.name.toLocaleLowerCase().includes(q)).slice(0,q?30:12);
+  box.innerHTML=list.map(c=>`<button type="button" class="runeEditResult" onclick="selectRuneForEdit('${c.id}')"><img src="${c.image}" alt=""><b>${esc(c.name)}</b><span class="stamp">${c.rarity}</span></button>`).join('');
+}
+async function selectRuneForEdit(id){
   activeRuneCookie=id;
   document.getElementById('runeCookie').value=id;
   const c=D.cookies.find(x=>x.id===id);
-  if(c) document.getElementById('runeCookieSearch').value=c.name;
-  renderRuneCookieResults();
+  const cur=document.getElementById('runeEditCurrent');if(cur)cur.textContent=c?`설정 중 · ${c.name}`:'설정 중';
+  const search=document.getElementById('runeEditSearch');if(search)search.value=c?.name||'';
+  const results=document.getElementById('runeEditResults');if(results)results.innerHTML='';
   await loadRune();
 }
 function renderRuneButtons(){
@@ -1086,19 +1147,22 @@ function renderRuneButtons(){
 function toggleRune(r){
   const i=runeSel.indexOf(r);
   if(i>=0) runeSel.splice(i,1); else runeSel.push(r);
-  renderRuneButtons(); updateRuneCount(); renderRuneSummary(null,true);
+  renderRuneButtons(); updateRuneCount();
 }
-function clearRunes(){runeSel=[];renderRuneButtons();updateRuneCount();renderRuneSummary(null,true);}
+function clearRunes(){runeSel=[];renderRuneButtons();updateRuneCount();}
 function updateRuneCount(){const e=document.getElementById('runeCount');if(e)e.textContent=`${runeSel.length}개 선택`;}
-function renderRuneSummary(row=null, unsaved=false){
+function renderRuneSummary(){
   const box=document.getElementById('runeSavedSummary'); if(!box) return;
-  const c=D.cookies.find(x=>x.id===activeRuneCookie);
-  if(!c){box.innerHTML='<div class="emptyRune">위에서 쿠키를 먼저 선택하세요.</div>';return}
-  const chips=runeSel.length?runeSel.map(r=>`<span>${r}</span>`).join(''):'<em>설정된 슈가룬 없음</em>';
-  const stamp=row?.updated_at?`최종 저장 ${fmt(row.updated_at)}`:(unsaved?'저장 전 변경사항':'저장된 설정 없음');
-  box.innerHTML=`<div class="savedRuneTitle">현재 설정</div>
-    <div class="savedRuneCookie"><img src="${c.image}" alt=""><div><b>${c.name}</b><small>${stamp}</small></div></div>
-    <div class="savedRuneChips">${chips}</div>`;
+  if(!selectedRuneCookies.length){box.innerHTML='<div class="emptyRune">위의 쿠키 선택하기에서 확인할 쿠키를 체크하세요.</div>';return}
+  const db=localDB();
+  box.innerHTML=`<div class="savedRuneTitle">선택한 쿠키 현재 설정 · ${selectedRuneCookies.length}명</div>`+selectedRuneCookies.map(id=>{
+    const c=D.cookies.find(x=>x.id===id); if(!c)return '';
+    const localRow=db?.runes?.[id]||null;
+    const rs=Array.isArray(localRow?.runes)?localRow.runes:[];
+    const chips=rs.length?rs.map(r=>`<span>${r}</span>`).join(''):'<em>설정된 슈가룬 없음</em>';
+    const stamp=localRow?.updated_at?`최종 저장 ${fmt(localRow.updated_at)}`:'저장된 설정 없음';
+    return `<div class="runeViewRow"><img src="${c.image}" alt=""><div class="runeViewName"><b>${esc(c.name)}</b><small>${stamp}</small></div><div class="savedRuneChips">${chips}</div></div>`;
+  }).join('');
 }
 async function loadRune(){
   if(!activeRuneCookie){renderRuneSummary();return}
@@ -1111,7 +1175,7 @@ async function loadRune(){
     }
   } else row=localDB().runes[activeRuneCookie];
   runeSel=row?.runes?[...row.runes]:[];
-  renderRuneButtons();updateRuneCount();renderRuneSummary(row);
+  renderRuneButtons();updateRuneCount();
 }
 async function saveRunes(){
   if(!activeRuneCookie)return alert('쿠키를 먼저 선택해줘.');
@@ -1122,8 +1186,7 @@ async function saveRunes(){
   db.runes[activeRuneCookie]=row;
   saveLocal(db);
 
-  renderRuneCookieResults();
-  renderRuneSummary(row);
+  renderRuneChooser();
 
   if(remote&&sb){
     const {error}=await sb.from('sugar_runes').upsert(row);
@@ -1131,7 +1194,7 @@ async function saveRunes(){
   }
 
   await loadRune();
-  renderRuneCookieResults();
+  renderRuneChooser();
   alert('슈가룬 설정을 저장했어.');
 }
 
@@ -1177,6 +1240,11 @@ function doPowerLookup(ev){
     <div class="powerMini powerMiniTwo">
       <div><span>75%</span><b>${d["75"]}</b></div>
       <div><span>100%</span><b>${d["100"]}</b></div>
+    </div>
+    <div class="stageCombinedTitle">명중 / 집중 요구치</div>
+    <div class="requireCards stageCombined">
+      <div><span>명중</span><strong>${(window.STAGE_ACCURACY_FOCUS||{})[key]?.accuracy ?? '-'}</strong></div>
+      <div><span>집중</span><strong>${(window.STAGE_ACCURACY_FOCUS||{})[key]?.focus ?? '-'}</strong></div>
     </div>`;
   return false;
 }
@@ -1229,7 +1297,7 @@ async function addMemo(ev){
     if(btn){btn.disabled=true;btn.textContent=MEMO_EDIT_ID?'수정 저장 중…':'저장 중…'}
     const now=new Date().toISOString();
     let db=localDB();
-    if(!db||typeof db!=='object')db={decks:[],runes:{},memos:[]};
+    if(!db||typeof db!=='object')db={decks:[],runes:{},memos:[],guild_records:[]};
     if(!Array.isArray(db.memos))db.memos=[];
 
     let row;
