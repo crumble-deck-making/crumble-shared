@@ -616,7 +616,13 @@ body{
   .boardRow .boardAuthor{font-size:9px!important;font-weight:900!important;color:#111!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 }
 </style>
-</head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
+
+<style>
+.bgmToggle{border:1px solid #e5e5ea;background:#fff;color:#222;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap}
+.bgmToggle:active{transform:scale(.97)}
+@media(max-width:640px){.bgmToggle{padding:6px 8px;font-size:11px}.topin{gap:8px}}
+</style>
+</head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px"><button id="bgmToggle" class="bgmToggle" type="button" aria-label="배경음악 켜기/끄기">🔊 BGM</button><div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
@@ -1451,4 +1457,4 @@ try {
 window.addEventListener('DOMContentLoaded',()=>{
   console.log('STAGE_POWER',Object.keys(window.STAGE_POWER||{}).length,'AF',Object.keys(window.STAGE_ACCURACY_FOCUS||{}).length);
 });
-</script></body></html>
+</script>\n<audio id="siteBgm" preload="auto"></audio>\n<script>\n(()=>{\n  const audio=document.getElementById('siteBgm');\n  const btn=document.getElementById('bgmToggle');\n  if(!audio||!btn)return;\n  const playlist=[\n    ['Floral Life','https://hiy9.net/ms-ost/music/FloralLife.mp3'],\n    ['When The Morning Comes','https://hiy9.net/ms-ost/music/WhenTheMorningComes.mp3'],\n    ['Bad Guys','https://hiy9.net/ms-ost/music/BadGuys.mp3'],\n    ["Shinin' Harbor","https://hiy9.net/ms-ost/music/Shinin'Harbor.mp3"],\n    ['Fantastic Thinking','https://hiy9.net/ms-ost/music/FantasticThinking.mp3'],\n    ['Aquarium','https://hiy9.net/ms-ost/music/Aquarium.mp3'],\n    ['Mureung Hill','https://hiy9.net/ms-ost/music/MureungHill.mp3'],\n    ['Leafre','https://hiy9.net/ms-ost/music/Leafre.mp3']\n  ];\n  let track=0,userMuted=false;\n  audio.volume=0.35;\n  const loadTrack=()=>{audio.src=playlist[track][1];audio.load();btn.title='현재 곡: '+playlist[track][0];};\n  const sync=()=>{\n    const playing=!audio.paused && !audio.muted;\n    btn.textContent=playing?'🔊 BGM':'🔇 BGM';\n    btn.setAttribute('aria-pressed',playing?'true':'false');\n    btn.title='현재 곡: '+playlist[track][0];\n  };\n  const tryPlay=async()=>{if(userMuted)return false;try{await audio.play();sync();return true}catch(e){sync();return false}};\n  btn.addEventListener('click',async()=>{\n    if(!audio.paused&&!audio.muted){userMuted=true;audio.pause();sync();}\n    else{userMuted=false;audio.muted=false;try{await audio.play()}catch(e){}sync();}\n  });\n  audio.addEventListener('ended',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  audio.addEventListener('play',sync);\n  audio.addEventListener('pause',sync);\n  audio.addEventListener('error',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  loadTrack();\n  tryPlay();\n  const unlock=()=>{tryPlay();};\n  ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,unlock,{once:true,capture:true}));\n  sync();\n})();\n</script>\n</body></html>
