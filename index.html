@@ -607,6 +607,15 @@ body{
 
 .boardIdentityGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2px}.boardPasswordHint{font-size:12px;color:#8a7769;margin-top:6px}.commentBox{margin-top:18px;border-top:1px solid #eadfd6;padding-top:16px}.commentTitle{font-weight:900;font-size:16px;margin-bottom:10px}.commentComposer{display:grid;grid-template-columns:120px 140px 1fr auto;gap:8px;align-items:center}.commentComposer .input{min-width:0}.commentList{margin-top:12px}.commentItem{padding:12px 4px;border-top:1px solid #eee3da}.commentMeta{display:flex;align-items:center;gap:8px;font-size:12px;color:#8a7769;margin-bottom:6px}.commentMeta b{font-size:13px;color:#4e3b30}.commentBody{white-space:pre-wrap;word-break:break-word;line-height:1.55}.commentActions{margin-left:auto;display:flex;gap:5px}.commentActions button{font-size:11px;padding:4px 7px}.commentEmpty{padding:14px 0;color:#9a887d;font-size:13px}.passwordModal{position:fixed;inset:0;background:#0007;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.passwordCard{width:min(360px,100%);background:#fff;border-radius:18px;padding:18px;box-shadow:0 15px 50px #0003}.passwordCard b{display:block;margin-bottom:10px}.passwordCard .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}@media(max-width:700px){.boardIdentityGrid{grid-template-columns:1fr}.commentComposer{grid-template-columns:1fr 1fr}.commentComposer textarea{grid-column:1/-1}.commentComposer button{grid-column:1/-1}.boardTableHead,.boardRow{grid-template-columns:56px minmax(0,1fr) 76px 64px 48px!important}}
 </style>
+
+<style>
+/* 모바일 자유게시판에서도 작성자 표시 */
+@media(max-width:640px){
+  .boardTableHead span:nth-child(3), .boardRow .boardAuthor{display:block!important;}
+  .boardTableHead,.boardRow{grid-template-columns:46px minmax(0,1fr) 62px 58px 42px!important;}
+  .boardRow .boardAuthor{font-size:9px!important;font-weight:900!important;color:#111!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+}
+</style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
