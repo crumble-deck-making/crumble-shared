@@ -622,7 +622,26 @@ body{
 .bgmToggle:active{transform:scale(.97)}
 @media(max-width:640px){.bgmToggle{padding:6px 8px;font-size:11px}.topin{gap:8px}}
 </style>
-</head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px"><button id="bgmToggle" class="bgmToggle" type="button" aria-label="배경음악 켜기/끄기">🔊 BGM</button><div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
+</head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
+<div id="bgmPickerWrap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+  <button type="button" id="bgmToggle" class="bgm-toggle" aria-pressed="false">🔇 BGM</button>
+  <select id="bgmPicker" aria-label="배경음악 선택" style="max-width:190px;padding:8px 10px;border-radius:10px;border:1px solid #d8d8d8;background:#fff;font:inherit">
+    <option value="0">Floral Life</option>
+    <option value="1">When The Morning Comes</option>
+    <option value="2">Bad Guys</option>
+    <option value="3">Shinin' Harbor</option>
+    <option value="4">Fantastic Thinking</option>
+    <option value="5">Aquarium</option>
+    <option value="6">Mureung Hill</option>
+    <option value="7">Let's March</option>
+    <option value="8">Snowy Village</option>
+    <option value="9">Go Picnic</option>
+    <option value="10">Above The Treetops</option>
+  </select>
+  <button type="button" id="bgmPrev" class="bgm-toggle" aria-label="이전 곡">⏮</button>
+  <button type="button" id="bgmNext" class="bgm-toggle" aria-label="다음 곡">⏭</button>
+</div>
+<div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
@@ -1463,7 +1482,10 @@ window.addEventListener('DOMContentLoaded',()=>{
 (() => {
   const audio = document.getElementById('siteBgm');
   const btn = document.getElementById('bgmToggle');
-  if (!audio || !btn) return;
+  const picker = document.getElementById('bgmPicker');
+  const prevBtn = document.getElementById('bgmPrev');
+  const nextBtn = document.getElementById('bgmNext');
+  if (!audio || !btn || !picker) return;
 
   const playlist = [
     ["Floral Life", "music/FloralLife.mp3"],
@@ -1483,10 +1505,13 @@ window.addEventListener('DOMContentLoaded',()=>{
   let userMuted = false;
   audio.volume = 0.35;
 
-  function loadTrack() {
+  function loadTrack(index, autoplay = true) {
+    track = (index + playlist.length) % playlist.length;
+    picker.value = String(track);
     audio.src = playlist[track][1];
     audio.load();
     btn.title = "현재 곡: " + playlist[track][0];
+    if (autoplay && !userMuted) playBgm();
   }
 
   function syncButton() {
@@ -1514,16 +1539,29 @@ window.addEventListener('DOMContentLoaded',()=>{
     syncButton();
   });
 
-  audio.addEventListener("ended", async () => {
-    track = (track + 1) % playlist.length;
-    loadTrack();
-    await playBgm();
+  picker.addEventListener("change", () => {
+    userMuted = false;
+    loadTrack(Number(picker.value), true);
+  });
+
+  if (prevBtn) prevBtn.addEventListener("click", () => {
+    userMuted = false;
+    loadTrack(track - 1, true);
+  });
+
+  if (nextBtn) nextBtn.addEventListener("click", () => {
+    userMuted = false;
+    loadTrack(track + 1, true);
+  });
+
+  audio.addEventListener("ended", () => {
+    loadTrack(track + 1, true);
   });
 
   audio.addEventListener("play", syncButton);
   audio.addEventListener("pause", syncButton);
 
-  loadTrack();
+  loadTrack(0, false);
   playBgm();
 
   const unlock = async () => {
