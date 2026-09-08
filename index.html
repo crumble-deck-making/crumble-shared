@@ -17,6 +17,11 @@
 @media(max-width:430px){.menu{grid-template-columns:1fr 1fr;gap:9px}.menu button{min-height:118px;padding:14px}.menu strong{font-size:14px}.menu span{font-size:10px}.ico{margin-bottom:11px}.grid{grid-template-columns:repeat(4,1fr);gap:6px}.runeGrid{grid-template-columns:repeat(2,1fr)}.hero{padding-top:10px}.hero h1{font-size:25px}}
 
 .stageEnemyBox{margin:0 0 10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fffaf0}.stageEnemyLabel{font-size:9px;font-weight:900;color:var(--sub);margin-bottom:3px}.stageEnemyName{font-size:13px;font-weight:950;line-height:1.45;word-break:keep-all}
+
+/* Community board */
+.boardTop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 14px}.boardTop>b{font-size:17px;color:#523c31}.boardWriteOpen{padding:8px 13px!important;font-size:11px!important}.boardComposer{margin-bottom:16px}.boardComposerHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.boardComposerHead>b{font-size:15px}.boardAttachGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.boardAttach{display:block;padding:10px;border:1.5px solid #eadfce;border-radius:12px;background:#fffaf2;cursor:pointer}.boardAttach b{display:block;font-size:11px;margin-bottom:7px}.boardAttach input{display:block;width:100%;font-size:10px}.boardAttach span{display:block;margin-top:6px;font-size:9px;color:#88776a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.boardExistingMedia{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;font-size:10px}.boardExistingMedia button{font-size:9px!important;padding:6px 8px!important}.boardListWrap{background:#fff;border:1px solid #e5ddd5;border-radius:10px;overflow:hidden}.boardTableHead,.boardRow{display:grid;grid-template-columns:64px minmax(0,1fr) 92px 90px 58px;align-items:center;min-height:38px;border-bottom:1px solid #eee8e2}.boardTableHead{min-height:34px;background:#faf8f5;font-size:9px;font-weight:900;color:#6e625a;text-align:center}.boardRow{font-size:10px;color:#554b45}.boardRow>span{padding:8px 6px}.boardRow .boardKind{text-align:center}.boardKind em{font-style:normal;border:1px solid #ffb8b8;color:#ff5d5d;background:#fff4f4;border-radius:3px;padding:3px 7px;font-size:8px;font-weight:900}.boardRow .boardTitle{font-size:11px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#3e3834}.boardRow .boardTitle:hover{text-decoration:underline}.boardRow .boardAuthor,.boardRow .boardDate,.boardRow .boardViews{text-align:center;color:#746960;font-size:9px}.boardMediaMark{margin-left:5px;font-size:9px}.boardFoot{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#faf8f5}.boardFoot>span{font-size:9px;color:#85776d}.boardDetail{background:#fff;border:1px solid #e5ddd5;border-radius:12px;padding:15px;margin-bottom:14px}.boardDetailTop{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}.boardDetailTitle{font-size:17px;font-weight:900;color:#493a32;word-break:break-word}.boardDetailMeta{font-size:9px;color:#8b7c72;margin-top:5px}.boardDetailBody{padding:15px 2px;font-size:12px;line-height:1.8;color:#54463e;word-break:break-word;border-top:1px solid #eee7e1}.boardDetailMedia{display:grid;gap:10px;margin-top:10px}.boardDetailMedia img{display:block;max-width:100%;max-height:70vh;margin:auto;border-radius:10px}.boardDetailMedia video{display:block;width:100%;max-height:70vh;background:#000;border-radius:10px}.boardDetailActions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}.boardBackList{font-size:10px!important;padding:7px 10px!important}
+@media(max-width:640px){.boardAttachGrid{grid-template-columns:1fr}.boardTableHead,.boardRow{grid-template-columns:48px minmax(0,1fr) 68px 48px}.boardTableHead span:nth-child(3),.boardRow .boardAuthor{display:none}.boardTableHead{font-size:8px}.boardRow .boardTitle{font-size:10px}.boardRow>span{padding:8px 4px}.boardRow .boardDate,.boardRow .boardViews{font-size:8px}.boardKind em{padding:3px 5px}.boardDetailTitle{font-size:15px}}
+
 </style>
 <style>
 :root{
@@ -598,20 +603,22 @@ body{
 
 /* Deck video upload / playback */
 .deckVideoBox{margin-top:12px;padding:12px;border:1px solid #eadfce;border-radius:14px;background:#fffaf2}.deckVideoPick{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.deckVideoPick input[type=file]{max-width:100%;font-size:12px}.deckVideoState{margin-top:7px;font-size:11px;color:#766b60}.deckVideoRemove{font-size:11px;padding:7px 10px}.deckVideoView{margin-top:14px;padding:12px;border-radius:16px;background:#171717}.deckVideoView video{display:block;width:100%;max-height:70vh;border-radius:11px;background:#000}.deckVideoTitle{display:flex;align-items:center;justify-content:space-between;gap:8px;color:white;margin-bottom:9px}.deckVideoTitle b{font-size:13px}.deckVideoPlayLink{display:inline-flex;align-items:center;justify-content:center;margin-top:9px;padding:9px 12px;border:0;border-radius:10px;background:white;color:#222;font-weight:800;text-decoration:none}.deckVideoBadge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;margin-top:5px;padding:4px 7px;border-radius:999px;background:#f2eee7;color:#645b51}
+
+.boardIdentityGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2px}.boardPasswordHint{font-size:12px;color:#8a7769;margin-top:6px}.commentBox{margin-top:18px;border-top:1px solid #eadfd6;padding-top:16px}.commentTitle{font-weight:900;font-size:16px;margin-bottom:10px}.commentComposer{display:grid;grid-template-columns:120px 140px 1fr auto;gap:8px;align-items:center}.commentComposer .input{min-width:0}.commentList{margin-top:12px}.commentItem{padding:12px 4px;border-top:1px solid #eee3da}.commentMeta{display:flex;align-items:center;gap:8px;font-size:12px;color:#8a7769;margin-bottom:6px}.commentMeta b{font-size:13px;color:#4e3b30}.commentBody{white-space:pre-wrap;word-break:break-word;line-height:1.55}.commentActions{margin-left:auto;display:flex;gap:5px}.commentActions button{font-size:11px;padding:4px 7px}.commentEmpty{padding:14px 0;color:#9a887d;font-size:13px}.passwordModal{position:fixed;inset:0;background:#0007;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px}.passwordCard{width:min(360px,100%);background:#fff;border-radius:18px;padding:18px;box-shadow:0 15px 50px #0003}.passwordCard b{display:block;margin-bottom:10px}.passwordCard .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}@media(max-width:700px){.boardIdentityGrid{grid-template-columns:1fr}.commentComposer{grid-template-columns:1fr 1fr}.commentComposer textarea{grid-column:1/-1}.commentComposer button{grid-column:1/-1}.boardTableHead,.boardRow{grid-template-columns:56px minmax(0,1fr) 76px 64px 48px!important}}
 </style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div id="dbBadge" class="dbbadge">로컬 데모</div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
       <h1>쿠키런: 크럼블 공용 도구</h1>
-      <p>덱 구성, 쿠키별 슈가룬, 스테이지 정보, 메모를 한곳에서</p>
+      <p>덱 구성, 쿠키별 슈가룬, 스테이지 정보, 자유게시판을 한곳에서</p>
       <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div>
     </div>
 <div class="menu">
 <button onclick="go('decks')"><div class="ico">⚔️</div><strong>덱 구성하기</strong><span>쿠키 12 · 펫 3 · 단장 · 카드 2</span></button>
 <button onclick="go('runes')"><div class="ico">✦</div><strong>쿠키별 슈가룬</strong><span>쿠키 하나당 설정 1개 · 복수 룬 선택</span></button>
 <button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button>
-<button onclick="go('memo')"><div class="ico">📝</div><strong>메모</strong><span>모두가 함께 보는 자유 메모</span></button>
+<button onclick="go('memo')"><div class="ico">📝</div><strong>자유게시판</strong><span>제목 · 내용 · 사진 · 동영상 공유</span></button>
 </div>
 <div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
 <div class="hero"><div class="ey">QUICK START</div><h1>오늘은 무엇을 준비할까요?</h1><p>필요한 기능을 골라 바로 시작하세요.</p></div>
@@ -696,20 +703,33 @@ body{
       <div id="powerResult" class="card stageResult"><div class="lookupReady">데이터 준비 완료 · 7,440 스테이지</div><div class="note">스테이지를 입력하고 조회하세요.</div></div>
     </section>
 <section id="memo" class="screen">
-  <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">메모</div></div>
+  <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">자유게시판</div></div>
+  <div class="boardTop"><b>자유게시판</b><button class="primary boardWriteOpen" type="button" onclick="toggleBoardWrite(true)">✎ 글쓰기</button></div>
 
-  <div class="card memoComposer">
-    <div class="label">새 메모</div>
-    <textarea id="memoText" class="input memoTextInput" rows="6" placeholder="공략, 파훼법, 참고사항 등을 적어주세요."></textarea>
+  <div id="boardComposer" class="card boardComposer" style="display:none">
+    <div class="boardComposerHead"><b id="boardComposerTitle">새 글 작성</b><button class="secondary" type="button" onclick="toggleBoardWrite(false)">닫기</button></div>
+    <div class="boardIdentityGrid">
+      <div><div class="label">작성자</div><input id="memoAuthor" class="input" maxlength="30" placeholder="작성자 이름"></div>
+      <div><div class="label">비밀번호</div><input id="memoPassword" class="input" type="password" maxlength="50" autocomplete="new-password" placeholder="수정·삭제용 비밀번호"></div>
+    </div>
+    <div class="label" style="margin-top:10px">제목</div>
+    <input id="memoTitle" class="input" maxlength="100" placeholder="제목을 입력하세요">
+    <div class="label" style="margin-top:10px">내용</div>
+    <textarea id="memoText" class="input memoTextInput" rows="8" placeholder="내용을 입력하세요."></textarea>
+    <div class="boardAttachGrid">
+      <label class="boardAttach"><b>📷 사진 첨부</b><input id="boardImageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><span id="boardImageState">선택 안 함 · 최대 10MB</span></label>
+      <label class="boardAttach"><b>🎬 동영상 첨부</b><input id="boardVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><span id="boardVideoState">선택 안 함 · 최대 50MB</span></label>
+    </div>
+    <div id="boardExistingMedia" class="boardExistingMedia"></div>
     <div id="memoSaveStatus" class="memoSaveStatus"></div>
-    <button id="memoSaveBtn" class="primary memoAddBtn" type="button" onclick="addMemo(event)">메모 추가</button>
+    <button id="memoSaveBtn" class="primary memoAddBtn" type="button" onclick="addMemo(event)">등록</button>
   </div>
 
-  <div class="memoListPanel">
-    <div class="memoListHead"><b>저장된 메모</b><span id="memoSavedCount">0개</span></div>
-    <div id="memoList" class="memoList">
-      <div class="memoEmpty">아직 저장된 메모가 없습니다.</div>
-    </div>
+  <div id="boardDetail" class="boardDetail" style="display:none"></div>
+  <div id="boardListWrap" class="boardListWrap">
+    <div class="boardTableHead"><span>구분</span><span>제목</span><span>작성자</span><span>작성일</span><span>조회수</span></div>
+    <div id="memoList" class="boardRows"><div class="memoEmpty">게시글을 불러오는 중입니다.</div></div>
+    <div class="boardFoot"><span id="memoSavedCount">0개</span></div>
   </div>
 </section>
 </main><script>
@@ -1368,141 +1388,47 @@ function lookupAcc(){return doAccuracyLookup();}
 
 
 let MEMO_EDIT_ID=null;
+let BOARD_EDIT_ROW=null;
+let BOARD_REMOVE_IMAGE=false, BOARD_REMOVE_VIDEO=false;
+let BOARD_ACTIVE_POST=null;
 
-function memoRowsLocal(){
-  try{
-    const db=localDB();
-    return Array.isArray(db?.memos)?db.memos:[];
-  }catch(e){return []}
-}
-function memoStatus(msg,type=''){
-  const el=document.getElementById('memoSaveStatus');
-  if(!el)return;
-  el.className='memoSaveStatus '+type;
-  el.textContent=msg||'';
-  el.style.display=msg?'block':'none';
-}
+function memoRowsLocal(){try{const db=localDB();return Array.isArray(db?.memos)?db.memos:[]}catch(e){return []}}
+function memoStatus(msg,type=''){const el=document.getElementById('memoSaveStatus');if(!el)return;el.className='memoSaveStatus '+type;el.textContent=msg||'';el.style.display=msg?'block':'none'}
+function toggleBoardWrite(show){const box=document.getElementById('boardComposer');if(!box)return;box.style.display=show?'block':'none';if(show&&!MEMO_EDIT_ID){resetBoardForm();setTimeout(()=>document.getElementById('memoAuthor')?.focus(),50)}if(show)window.scrollTo({top:0,behavior:'smooth'})}
+function resetBoardForm(){MEMO_EDIT_ID=null;BOARD_EDIT_ROW=null;BOARD_REMOVE_IMAGE=false;BOARD_REMOVE_VIDEO=false;['memoAuthor','memoPassword','memoTitle','memoText'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});['boardImageFile','boardVideoFile'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const h=document.getElementById('boardComposerTitle');if(h)h.textContent='새 글 작성';const btn=document.getElementById('memoSaveBtn');if(btn)btn.textContent='등록';const ex=document.getElementById('boardExistingMedia');if(ex)ex.innerHTML='';memoStatus('');updateBoardFileStates()}
+function updateBoardFileStates(){const im=document.getElementById('boardImageFile'),vi=document.getElementById('boardVideoFile'),is=document.getElementById('boardImageState'),vs=document.getElementById('boardVideoState');if(is)is.textContent=im?.files?.[0]?.name||'선택 안 함 · 최대 10MB';if(vs)vs.textContent=vi?.files?.[0]?.name||'선택 안 함 · 최대 50MB'}
+setTimeout(()=>{document.getElementById('boardImageFile')?.addEventListener('change',updateBoardFileStates);document.getElementById('boardVideoFile')?.addEventListener('change',updateBoardFileStates)},0);
+function safeFileName(name){return String(name||'file').replace(/[^a-zA-Z0-9._-]/g,'_').slice(-90)}
+async function uploadBoardFile(file,kind){if(!remote||!sb)throw new Error('공용 DB 연결 후 첨부파일을 업로드할 수 있어요.');const max=kind==='image'?10*1024*1024:50*1024*1024;if(file.size>max)throw new Error(kind==='image'?'사진은 최대 10MB까지 가능해요.':'동영상은 최대 50MB까지 가능해요.');const path=`${kind}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeFileName(file.name)}`;const {error}=await sb.storage.from('board-media').upload(path,file,{upsert:false,contentType:file.type||undefined});if(error)throw error;const {data}=sb.storage.from('board-media').getPublicUrl(path);return {path,url:data.publicUrl}}
+function boardPasswordPrompt(label='비밀번호를 입력하세요'){return new Promise(resolve=>{const wrap=document.createElement('div');wrap.className='passwordModal';wrap.innerHTML=`<div class="passwordCard"><b>${esc(label)}</b><input class="input" type="password" maxlength="50" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="secondary" type="button" data-cancel>취소</button><button class="primary" type="button" data-ok>확인</button></div></div>`;document.body.appendChild(wrap);const input=wrap.querySelector('input');input.focus();const done=v=>{wrap.remove();resolve(v)};wrap.querySelector('[data-cancel]').onclick=()=>done(null);wrap.querySelector('[data-ok]').onclick=()=>done(input.value);input.onkeydown=e=>{if(e.key==='Enter')done(input.value);if(e.key==='Escape')done(null)};wrap.onclick=e=>{if(e.target===wrap)done(null)}})}
 async function addMemo(ev){
-  if(ev&&ev.preventDefault)ev.preventDefault();
-  const ta=document.getElementById('memoText');
-  const btn=document.getElementById('memoSaveBtn');
-  const body=(ta?.value||'').trim();
-  if(!body){memoStatus('메모 내용을 입력해줘.','bad');return false}
-
-  try{
-    if(btn){btn.disabled=true;btn.textContent=MEMO_EDIT_ID?'수정 저장 중…':'저장 중…'}
-    const now=new Date().toISOString();
-    let db=localDB();
-    if(!db||typeof db!=='object')db={decks:[],runes:{},memos:[],guild_records:[]};
-    if(!Array.isArray(db.memos))db.memos=[];
-
-    let row;
-    if(MEMO_EDIT_ID){
-      const idx=db.memos.findIndex(x=>String(x.id)===String(MEMO_EDIT_ID));
-      row={id:MEMO_EDIT_ID,body,updated_at:now};
-      if(idx>=0)db.memos[idx]=row; else db.memos.unshift(row);
-    }else{
-      row={id:'memo_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),body,updated_at:now};
-      db.memos.unshift(row);
-    }
-    saveLocal(db);
-
-    // Cloud mirror, but local rendering never depends on it.
-    if(remote&&sb){
-      try{
-        if(MEMO_EDIT_ID && !String(MEMO_EDIT_ID).startsWith('memo_')){
-          const {error}=await sb.from('memos').update({body,updated_at:now}).eq('id',MEMO_EDIT_ID);
-          if(error)console.warn(error);
-        }else{
-          const {data,error}=await sb.from('memos').insert({body,updated_at:now}).select();
-          if(!error&&Array.isArray(data)&&data[0]){
-            const db2=localDB();
-            const i=db2.memos.findIndex(x=>String(x.id)===String(row.id));
-            if(i>=0)db2.memos[i]={...row,id:data[0].id};
-            saveLocal(db2);
-          }else if(error)console.warn(error);
-        }
-      }catch(e){console.warn('memo cloud save',e)}
-    }
-
-    MEMO_EDIT_ID=null;
-    if(ta)ta.value='';
-    if(btn)btn.textContent='메모 추가';
-    memoStatus('✓ 메모 저장 완료','ok');
-    await loadMemos();
-    return false;
-  }catch(e){
-    console.error('memo save',e);
-    memoStatus('메모 저장 오류: '+(e?.message||String(e)),'bad');
-    return false;
-  }finally{
-    if(btn){btn.disabled=false;if(!MEMO_EDIT_ID)btn.textContent='메모 추가'}
-  }
+ if(ev&&ev.preventDefault)ev.preventDefault();
+ const author=(document.getElementById('memoAuthor')?.value||'').trim(),password=(document.getElementById('memoPassword')?.value||''),title=(document.getElementById('memoTitle')?.value||'').trim(),body=(document.getElementById('memoText')?.value||'').trim();
+ const imageFile=document.getElementById('boardImageFile')?.files?.[0],videoFile=document.getElementById('boardVideoFile')?.files?.[0],btn=document.getElementById('memoSaveBtn');
+ if(!author){memoStatus('작성자를 입력해줘.','bad');return false}if(!password){memoStatus('비밀번호를 입력해줘.','bad');return false}if(password.length<4){memoStatus('비밀번호는 4자 이상으로 입력해줘.','bad');return false}if(!title){memoStatus('제목을 입력해줘.','bad');return false}if(!body){memoStatus('내용을 입력해줘.','bad');return false}
+ try{
+  if(!remote||!sb)throw new Error('게시판 글 작성은 공용 DB 연결이 필요해요.');if(btn){btn.disabled=true;btn.textContent='저장 중…'}
+  let old=BOARD_EDIT_ROW||{},image_url=BOARD_REMOVE_IMAGE?'':(old.image_url||''),image_path=BOARD_REMOVE_IMAGE?'':(old.image_path||''),video_url=BOARD_REMOVE_VIDEO?'':(old.video_url||''),video_path=BOARD_REMOVE_VIDEO?'':(old.video_path||'');
+  if(imageFile){const up=await uploadBoardFile(imageFile,'image');image_url=up.url;image_path=up.path}if(videoFile){const up=await uploadBoardFile(videoFile,'video');video_url=up.url;video_path=up.path}
+  let result;
+  if(MEMO_EDIT_ID){result=await sb.rpc('board_update_post',{p_id:MEMO_EDIT_ID,p_password:password,p_author:author,p_title:title,p_body:body,p_image_url:image_url||null,p_image_path:image_path||null,p_video_url:video_url||null,p_video_path:video_path||null})}
+  else{result=await sb.rpc('board_create_post',{p_author:author,p_password:password,p_title:title,p_body:body,p_image_url:image_url||null,p_image_path:image_path||null,p_video_url:video_url||null,p_video_path:video_path||null})}
+  if(result.error)throw result.error;
+  resetBoardForm();document.getElementById('boardComposer').style.display='none';await loadMemos();return false;
+ }catch(e){console.error(e);memoStatus('저장 오류: '+(e?.message||String(e)),'bad');return false}finally{if(btn){btn.disabled=false;btn.textContent=MEMO_EDIT_ID?'수정 저장':'등록'}}
 }
-async function loadMemos(){
-  let localRows=memoRowsLocal();
-  let rows=[...localRows];
-
-  if(remote&&sb){
-    try{
-      const {data,error}=await sb.from('memos').select('*').order('updated_at',{ascending:false});
-      if(!error&&Array.isArray(data)){
-        const cloudIds=new Set(data.map(x=>String(x.id)));
-        rows=[...data,...localRows.filter(x=>!cloudIds.has(String(x.id)))];
-      }
-    }catch(e){console.warn('memo load cloud',e)}
-  }
-
-  rows.sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')));
-  const count=document.getElementById('memoSavedCount');
-  if(count)count.textContent=`${rows.length}개`;
-  const el=document.getElementById('memoList');
-  if(!el)return rows;
-
-  if(!rows.length){
-    el.innerHTML='<div class="memoEmpty">아직 저장된 메모가 없습니다.<small>위 입력칸에서 메모를 추가하면 여기에 바로 표시됩니다.</small></div>';
-    return rows;
-  }
-
-  el.innerHTML=rows.map((m,i)=>`<article class="memoCard" data-i="${i}">
-    <div class="memoCardTop"><span>MEMO</span><time>${fmt(m.updated_at)}</time></div>
-    <div class="memoBody">${esc(m.body||'').replace(/\n/g,'<br>')}</div>
-    <div class="memoActions">
-      <button class="secondary" type="button" data-edit>수정</button>
-      <button class="danger" type="button" data-del>삭제</button>
-    </div>
-  </article>`).join('');
-
-  [...el.querySelectorAll('.memoCard')].forEach(card=>{
-    const row=rows[Number(card.dataset.i)];
-    card.querySelector('[data-edit]').onclick=()=>editMemo(row);
-    card.querySelector('[data-del]').onclick=()=>delMemo(row.id);
-  });
-  return rows;
-}
-function editMemo(row){
-  MEMO_EDIT_ID=row.id;
-  const ta=document.getElementById('memoText');
-  if(ta){ta.value=row.body||'';ta.focus()}
-  const btn=document.getElementById('memoSaveBtn');
-  if(btn)btn.textContent='메모 수정 저장';
-  memoStatus('메모 수정 중','');
-  window.scrollTo(0,0);
-}
-async function delMemo(id){
-  if(!confirm('이 메모를 삭제할까?'))return;
-  let db=localDB();
-  db.memos=(db.memos||[]).filter(x=>String(x.id)!==String(id));
-  saveLocal(db);
-  if(remote&&sb&&!String(id).startsWith('memo_')){
-    try{await sb.from('memos').delete().eq('id',id)}catch(e){console.warn(e)}
-  }
-  if(String(MEMO_EDIT_ID)===String(id)){
-    MEMO_EDIT_ID=null;
-    const ta=document.getElementById('memoText');if(ta)ta.value='';
-  }
-  await loadMemos();
-}
+async function loadMemos(){let localRows=memoRowsLocal(),rows=[];if(remote&&sb){try{const {data,error}=await sb.from('memos').select('*').order('updated_at',{ascending:false});if(error)throw error;rows=Array.isArray(data)?data:[]}catch(e){console.warn(e);rows=localRows}}else rows=localRows;rows.sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')));window.BOARD_ROWS=rows;const count=document.getElementById('memoSavedCount');if(count)count.textContent=`총 ${rows.length}개 글`;const el=document.getElementById('memoList');if(!el)return rows;if(!rows.length){el.innerHTML='<div class="memoEmpty">아직 게시글이 없습니다.<small>글쓰기 버튼으로 첫 글을 작성해보세요.</small></div>';return rows}el.innerHTML=rows.map((m,i)=>{const title=(m.title||'기존 메모').trim(),media=`${m.image_url?'📷':''}${m.video_url?' 🎬':''}`;return `<div class="boardRow"><span class="boardKind"><em>${m.title?'자유':'메모'}</em></span><span class="boardTitle" data-open="${i}">${esc(title)}<i class="boardMediaMark">${media}</i></span><span class="boardAuthor">${esc(m.author||'익명')}</span><span class="boardDate">${boardDate(m.updated_at)}</span><span class="boardViews">${Number(m.views||0).toLocaleString()}</span></div>`}).join('');el.querySelectorAll('[data-open]').forEach(x=>x.onclick=()=>openBoardPost(rows[Number(x.dataset.open)]));return rows}
+function boardDate(v){try{const d=new Date(v),now=new Date();if(d.toDateString()===now.toDateString())return d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});return `${String(d.getFullYear()).slice(2)}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`}catch(e){return ''}}
+async function openBoardPost(row){if(!row)return;BOARD_ACTIVE_POST=row;let views=Number(row.views||0);if(remote&&sb&&!String(row.id).startsWith('memo_')){try{const r=await sb.rpc('board_increment_views',{p_id:row.id});if(!r.error)views=Number(r.data??views+1)}catch(e){console.warn(e)}}const detail=document.getElementById('boardDetail'),list=document.getElementById('boardListWrap');if(!detail||!list)return;const media=`<div class="boardDetailMedia">${row.image_url?`<img src="${esc(row.image_url)}" alt="첨부 사진">`:''}${row.video_url?`<video controls playsinline preload="metadata" src="${esc(row.video_url)}"></video>`:''}</div>`;detail.innerHTML=`<div class="boardDetailTop"><button class="secondary boardBackList" type="button" onclick="closeBoardPost()">← 목록</button><span></span></div><div class="boardDetailTitle">${esc(row.title||'기존 메모')}</div><div class="boardDetailMeta">${esc(row.author||'익명')} · ${fmt(row.updated_at)} · 조회 ${views.toLocaleString()}</div><div class="boardDetailBody">${esc(row.body||'').replace(/\n/g,'<br>')}${media}</div>${row.title?`<div class="boardDetailActions"><button class="secondary" type="button" onclick='requestEditPost(${JSON.stringify(String(row.id))})'>수정</button><button class="danger" type="button" onclick='delMemo(${JSON.stringify(String(row.id))})'>삭제</button></div>`:''}<div class="commentBox"><div class="commentTitle">댓글 <span id="commentCount"></span></div><div class="commentComposer"><input id="commentAuthor" class="input" maxlength="30" placeholder="작성자"><input id="commentPassword" class="input" type="password" maxlength="50" placeholder="비밀번호"><textarea id="commentBody" class="input" rows="2" placeholder="댓글 내용"></textarea><button class="primary" type="button" onclick="addBoardComment()">댓글 등록</button></div><div id="commentStatus" class="memoSaveStatus"></div><div id="commentList" class="commentList"></div></div>`;list.style.display='none';detail.style.display='block';window.scrollTo(0,0);await loadBoardComments(row.id)}
+function closeBoardPost(){BOARD_ACTIVE_POST=null;document.getElementById('boardDetail').style.display='none';document.getElementById('boardListWrap').style.display='block';loadMemos()}
+async function requestEditPost(id){const row=(window.BOARD_ROWS||[]).find(x=>String(x.id)===String(id));if(!row)return;const pw=await boardPasswordPrompt('글 비밀번호 확인');if(pw===null)return;try{const {data,error}=await sb.rpc('board_verify_post_password',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');editMemo(row,pw)}catch(e){alert(e.message||String(e))}}
+function editMemo(row,password=''){MEMO_EDIT_ID=row.id;BOARD_EDIT_ROW=row;BOARD_REMOVE_IMAGE=false;BOARD_REMOVE_VIDEO=false;document.getElementById('memoAuthor').value=row.author||'';document.getElementById('memoPassword').value=password;document.getElementById('memoTitle').value=row.title||'';document.getElementById('memoText').value=row.body||'';const h=document.getElementById('boardComposerTitle');if(h)h.textContent='글 수정';const btn=document.getElementById('memoSaveBtn');if(btn)btn.textContent='수정 저장';const ex=document.getElementById('boardExistingMedia');if(ex)ex.innerHTML=`${row.image_url?'<button class="secondary" type="button" onclick="BOARD_REMOVE_IMAGE=true;this.textContent=\'사진 삭제 예정\';this.disabled=true">📷 기존 사진 제거</button>':''}${row.video_url?'<button class="secondary" type="button" onclick="BOARD_REMOVE_VIDEO=true;this.textContent=\'동영상 삭제 예정\';this.disabled=true">🎬 기존 동영상 제거</button>':''}`;document.getElementById('boardDetail').style.display='none';document.getElementById('boardListWrap').style.display='block';document.getElementById('boardComposer').style.display='block';window.scrollTo(0,0)}
+async function delMemo(id){const pw=await boardPasswordPrompt('삭제하려면 글 비밀번호를 입력하세요');if(pw===null)return;if(!confirm('이 게시글을 삭제할까?'))return;try{const {data,error}=await sb.rpc('board_delete_post',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');resetBoardForm();closeBoardPost()}catch(e){alert(e.message||String(e))}}
+function commentStatus(msg,type=''){const e=document.getElementById('commentStatus');if(!e)return;e.className='memoSaveStatus '+type;e.textContent=msg||'';e.style.display=msg?'block':'none'}
+async function loadBoardComments(postId){const el=document.getElementById('commentList');if(!el)return;try{const {data,error}=await sb.from('board_comments').select('*').eq('post_id',postId).order('created_at',{ascending:true});if(error)throw error;const rows=data||[];const c=document.getElementById('commentCount');if(c)c.textContent=`${rows.length}개`;el.innerHTML=rows.length?rows.map(r=>`<div class="commentItem"><div class="commentMeta"><b>${esc(r.author||'익명')}</b><span>${fmt(r.updated_at||r.created_at)}</span><span class="commentActions"><button class="secondary" onclick='editBoardComment(${JSON.stringify(String(r.id))})'>수정</button><button class="danger" onclick='deleteBoardComment(${JSON.stringify(String(r.id))})'>삭제</button></span></div><div class="commentBody">${esc(r.body||'')}</div></div>`).join(''):'<div class="commentEmpty">아직 댓글이 없습니다.</div>';window.BOARD_COMMENTS=rows}catch(e){el.innerHTML=`<div class="commentEmpty">댓글 불러오기 오류: ${esc(e.message||String(e))}</div>`}}
+async function addBoardComment(){if(!BOARD_ACTIVE_POST)return;const author=(document.getElementById('commentAuthor')?.value||'').trim(),password=document.getElementById('commentPassword')?.value||'',body=(document.getElementById('commentBody')?.value||'').trim();if(!author)return commentStatus('작성자를 입력해줘.','bad');if(password.length<4)return commentStatus('비밀번호는 4자 이상으로 입력해줘.','bad');if(!body)return commentStatus('댓글 내용을 입력해줘.','bad');try{const {error}=await sb.rpc('board_create_comment',{p_post_id:BOARD_ACTIVE_POST.id,p_author:author,p_password:password,p_body:body});if(error)throw error;document.getElementById('commentBody').value='';document.getElementById('commentPassword').value='';commentStatus('');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){commentStatus('등록 오류: '+(e.message||String(e)),'bad')}}
+async function editBoardComment(id){const row=(window.BOARD_COMMENTS||[]).find(x=>String(x.id)===String(id));if(!row)return;const pw=await boardPasswordPrompt('댓글 비밀번호를 입력하세요');if(pw===null)return;const body=prompt('댓글 내용을 수정하세요.',row.body||'');if(body===null||!body.trim())return;try{const {data,error}=await sb.rpc('board_update_comment',{p_id:id,p_password:pw,p_body:body.trim()});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){alert(e.message||String(e))}}
+async function deleteBoardComment(id){const pw=await boardPasswordPrompt('댓글 삭제 비밀번호를 입력하세요');if(pw===null)return;if(!confirm('이 댓글을 삭제할까?'))return;try{const {data,error}=await sb.rpc('board_delete_comment',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){alert(e.message||String(e))}}
 
 </script>
 <script>
