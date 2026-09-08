@@ -1457,4 +1457,21 @@ try {
 window.addEventListener('DOMContentLoaded',()=>{
   console.log('STAGE_POWER',Object.keys(window.STAGE_POWER||{}).length,'AF',Object.keys(window.STAGE_ACCURACY_FOCUS||{}).length);
 });
-</script>\n<audio id="siteBgm" preload="auto"></audio>\n<script>\n(()=>{\n  const audio=document.getElementById('siteBgm');\n  const btn=document.getElementById('bgmToggle');\n  if(!audio||!btn)return;\n  const playlist=[\n    ['Floral Life','https://hiy9.net/ms-ost/music/FloralLife.mp3'],\n    ['When The Morning Comes','https://hiy9.net/ms-ost/music/WhenTheMorningComes.mp3'],\n    ['Bad Guys','https://hiy9.net/ms-ost/music/BadGuys.mp3'],\n    ["Shinin' Harbor","https://hiy9.net/ms-ost/music/Shinin'Harbor.mp3"],\n    ['Fantastic Thinking','https://hiy9.net/ms-ost/music/FantasticThinking.mp3'],\n    ['Aquarium','https://hiy9.net/ms-ost/music/Aquarium.mp3'],\n    ['Mureung Hill','https://hiy9.net/ms-ost/music/MureungHill.mp3'],\n    ['Leafre','https://hiy9.net/ms-ost/music/Leafre.mp3']\n  ];\n  let track=0,userMuted=false;\n  audio.volume=0.35;\n  const loadTrack=()=>{audio.src=playlist[track][1];audio.load();btn.title='현재 곡: '+playlist[track][0];};\n  const sync=()=>{\n    const playing=!audio.paused && !audio.muted;\n    btn.textContent=playing?'🔊 BGM':'🔇 BGM';\n    btn.setAttribute('aria-pressed',playing?'true':'false');\n    btn.title='현재 곡: '+playlist[track][0];\n  };\n  const tryPlay=async()=>{if(userMuted)return false;try{await audio.play();sync();return true}catch(e){sync();return false}};\n  btn.addEventListener('click',async()=>{\n    if(!audio.paused&&!audio.muted){userMuted=true;audio.pause();sync();}\n    else{userMuted=false;audio.muted=false;try{await audio.play()}catch(e){}sync();}\n  });\n  audio.addEventListener('ended',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  audio.addEventListener('play',sync);\n  audio.addEventListener('pause',sync);\n  audio.addEventListener('error',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  loadTrack();\n  tryPlay();\n  const unlock=()=>{tryPlay();};\n  ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,unlock,{once:true,capture:true}));\n  sync();\n})();\n</script>\n</body></html>
+</script>
+<audio id="siteBgm" preload="auto"></audio>
+<script>
+(()=>{\n  const audio=document.getElementById('siteBgm');\n  const btn=document.getElementById('bgmToggle');\n  if(!audio||!btn)return;\n  const BGM_PLAYLIST = [
+  { title: "Floral Life", src: "music/FloralLife.mp3" },
+  { title: "When The Morning Comes", src: "music/WhenTheMorningComes.mp3" },
+  { title: "Bad Guys", src: "music/BadGuys.mp3" },
+  { title: "Shinin' Harbor", src: "music/ShininHarbor.mp3" },
+  { title: "Fantastic Thinking", src: "music/FantasticThinking.mp3" },
+  { title: "Aquarium", src: "music/Aquarium.mp3" },
+  { title: "Mureung Hill", src: "music/MureungHill.mp3" },
+  { title: "Let's March", src: "music/LetsMarch.mp3" },
+  { title: "Snowy Village", src: "music/SnowyVillage.mp3" },
+  { title: "Go Picnic", src: "music/GoPicnic.mp3" },
+  { title: "Above The Treetops", src: "music/AboveTheTreetops.mp3" }
+];\n  let track=0,userMuted=false;\n  audio.volume=0.35;\n  const loadTrack=()=>{audio.src=playlist[track][1];audio.load();btn.title='현재 곡: '+playlist[track][0];};\n  const sync=()=>{\n    const playing=!audio.paused && !audio.muted;\n    btn.textContent=playing?'🔊 BGM':'🔇 BGM';\n    btn.setAttribute('aria-pressed',playing?'true':'false');\n    btn.title='현재 곡: '+playlist[track][0];\n  };\n  const tryPlay=async()=>{if(userMuted)return false;try{await audio.play();sync();return true}catch(e){sync();return false}};\n  btn.addEventListener('click',async()=>{\n    if(!audio.paused&&!audio.muted){userMuted=true;audio.pause();sync();}\n    else{userMuted=false;audio.muted=false;try{await audio.play()}catch(e){}sync();}\n  });\n  audio.addEventListener('ended',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  audio.addEventListener('play',sync);\n  audio.addEventListener('pause',sync);\n  audio.addEventListener('error',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  loadTrack();\n  tryPlay();\n  const unlock=()=>{tryPlay();};\n  ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,unlock,{once:true,capture:true}));\n  sync();\n})();
+</script>
+</body></html>
