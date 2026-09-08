@@ -621,38 +621,28 @@ body{
 .bgmToggle{border:1px solid #e5e5ea;background:#fff;color:#222;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap}
 .bgmToggle:active{transform:scale(.97)}
 @media(max-width:640px){.bgmToggle{padding:6px 8px;font-size:11px}.topin{gap:8px}}
+
+.guildGuide{background:#fff8ec;border:1px solid #f0dcc0;border-radius:16px;padding:14px 15px;margin-bottom:13px;font-size:12px;line-height:1.7;color:#765d4d}
+.guildSteps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0 15px}.guildStep{background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px;text-align:center;font-size:11px;font-weight:900}.guildStep b{display:block;font-size:18px;color:#b06c4e;margin-bottom:3px}
+.guildPickerHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}.guildCookiePicker{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;max-height:390px;overflow:auto;padding:2px}.guildCookiePick{position:relative;border:1px solid #e7dfd5;background:#fff;border-radius:13px;padding:8px 5px;text-align:center;cursor:pointer;min-width:0}.guildCookiePick img{width:48px;height:48px;object-fit:contain;display:block;margin:0 auto 5px}.guildCookiePick span{display:block;font-size:9px;line-height:1.25;word-break:keep-all}.guildCookiePick.on{border-color:#b87a5a;background:#fff7ef;box-shadow:0 0 0 2px #f1d8c7 inset}.guildCookiePick.on:after{content:'✓';position:absolute;right:5px;top:4px;width:18px;height:18px;border-radius:50%;background:#a86548;color:#fff;font-size:11px;display:grid;place-items:center;font-weight:900}.guildSelectedCount{font-size:11px;font-weight:900;color:#a86548}
+.guildSetupRows{display:grid;gap:8px}.guildSetupRow{display:grid;grid-template-columns:48px minmax(120px,1fr) minmax(105px,.65fr) minmax(105px,.65fr) minmax(90px,.5fr);gap:8px;align-items:center;border:1px solid #e9e1d8;background:#fff;border-radius:14px;padding:8px}.guildSetupRow img{width:44px;height:44px;object-fit:contain}.guildCookieName{font-size:12px;font-weight:900}.guildFieldLabel{display:block;font-size:9px;color:#9a8b80;font-weight:800;margin-bottom:3px}.guildSetupRow .input{padding:8px 9px}.guildCalcBtn{width:100%;margin-top:12px;padding:13px}.guildResult{margin-top:13px}.guildResultHead{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:9px}.guildResultRow{display:grid;grid-template-columns:48px 44px minmax(120px,1fr) 90px 120px;gap:8px;align-items:center;border-bottom:1px solid #eee5dc;padding:9px 4px}.guildResultRow:last-child{border-bottom:0}.guildResultRow img{width:40px;height:40px;object-fit:contain}.guildRank{font-size:18px;font-weight:1000;color:#9a5a40;text-align:center}.guildLevel{font-size:18px;font-weight:1000;color:#276a62}.guildAtk{font-size:11px;color:#7d7169;text-align:right}.guildImpossible{background:#fff0f0;color:#b43c3c;border:1px solid #f0c7c7;border-radius:10px;padding:7px 9px;font-size:10px;font-weight:900}.guildTargetHint{font-size:10px;color:#8e8178;margin-top:2px}
+@media(max-width:700px){.guildSteps{grid-template-columns:repeat(2,1fr)}.guildCookiePicker{grid-template-columns:repeat(4,1fr)}.guildSetupRow{grid-template-columns:38px minmax(72px,.8fr) minmax(80px,.85fr) minmax(80px,.85fr) 65px;gap:5px;padding:7px 5px}.guildSetupRow img{width:38px;height:38px}.guildCookieName{font-size:10px}.guildSetupRow .input{font-size:12px;padding:8px 6px}.guildResultRow{grid-template-columns:35px 38px minmax(85px,1fr) 64px 82px;gap:4px}.guildResultRow img{width:34px;height:34px}.guildRank,.guildLevel{font-size:15px}.guildAtk{font-size:9px}}
+
 </style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
-<div id="bgmPickerWrap" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-  <button type="button" id="bgmToggle" class="bgm-toggle" aria-pressed="false">🔇 BGM</button>
-  <select id="bgmPicker" aria-label="배경음악 선택" style="max-width:190px;padding:8px 10px;border-radius:10px;border:1px solid #d8d8d8;background:#fff;font:inherit">
-    <option value="0">Floral Life</option>
-    <option value="1">When The Morning Comes</option>
-    <option value="2">Bad Guys</option>
-    <option value="3">Shinin' Harbor</option>
-    <option value="4">Fantastic Thinking</option>
-    <option value="5">Aquarium</option>
-    <option value="6">Mureung Hill</option>
-    <option value="7">Let's March</option>
-    <option value="8">Snowy Village</option>
-    <option value="9">Go Picnic</option>
-    <option value="10">Above The Treetops</option>
-  </select>
-  <button type="button" id="bgmPrev" class="bgm-toggle" aria-label="이전 곡">⏮</button>
-  <button type="button" id="bgmNext" class="bgm-toggle" aria-label="다음 곡">⏭</button>
-</div>
+
 <div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
 <section id="home" class="screen active">
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
       <h1>쿠키런: 크럼블 공용 도구</h1>
-      <p>덱 구성, 쿠키별 슈가룬, 스테이지 정보, 자유게시판을 한곳에서</p>
+      <p>덱 구성, 슈가룬, 스테이지 정보, 길드토벌전 세팅, 자유게시판을 한곳에서</p>
       <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div>
     </div>
 <div class="menu">
 <button onclick="go('decks')"><div class="ico">⚔️</div><strong>덱 구성하기</strong><span>쿠키 12 · 펫 3 · 단장 · 카드 2</span></button>
 <button onclick="go('runes')"><div class="ico">✦</div><strong>쿠키별 슈가룬</strong><span>쿠키 하나당 설정 1개 · 복수 룬 선택</span></button>
-<button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button>
+<button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button><button onclick="go('guildsetting')"><div class="ico">🎯</div><strong>길드토벌전 세팅</strong><span>11쿠키 공격력 순위 · 권장 레벨 자동 계산</span></button>
 <button onclick="go('memo')"><div class="ico">📝</div><strong>자유게시판</strong><span>제목 · 내용 · 사진 · 동영상 공유</span></button>
 </div>
 <div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
@@ -687,7 +677,7 @@ body{
   <div class="deckVideoBox">
     <div class="label">플레이 동영상</div>
     <div class="deckVideoPick"><input id="deckVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><button id="deckVideoRemoveBtn" class="secondary deckVideoRemove" type="button" onclick="removeDeckVideoSelection()" style="display:none">동영상 제거</button></div>
-    <div id="deckVideoState" class="deckVideoState">동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 50MB)</div>
+    <div id="deckVideoState" class="deckVideoState">동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 100MB)</div>
   </div>
 </div><div class="stickySel"><div class="summaryrow"><b>선택 현황</b><span id="counts">쿠키 0/12 · 펫 0/3 · 카드 0/2</span></div><div id="cookieSlots" class="slotgrid"></div><div id="petSlots" class="petrow"></div><div id="cardSlots" class="cardrow"></div><div class="note" style="margin-top:7px">첫 번째로 고른 쿠키가 자동으로 단장이 됩니다. 다른 쿠키 슬롯을 누르면 단장을 바꿀 수 있어요.</div></div><div class="tabs"><button id="tabC" class="secondary" onclick="setTab('cookie')">쿠키</button><button id="tabP" class="secondary" onclick="setTab('pet')">펫</button><button id="tabK" class="secondary" onclick="setTab('card')">카드</button></div><input id="search" class="input" placeholder="이름 검색" oninput="renderPicker()" style="margin-bottom:10px"><div id="picker" class="grid"></div><div class="deckSaveHint">쿠키 12 · 펫 3 · 단장 1명이 채워지면 저장할 수 있어요. 카드는 0~2장 선택 가능.</div>
 <div id="deckSaveStatus" class="deckSaveStatus"></div>
@@ -737,6 +727,16 @@ body{
       </form>
       <div id="powerResult" class="card stageResult"><div class="lookupReady">데이터 준비 완료 · 7,440 스테이지</div><div class="note">스테이지를 입력하고 조회하세요.</div></div>
     </section>
+
+<section id="guildsetting" class="screen">
+<div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">길드토벌전 세팅</div></div>
+<div class="guildGuide"><b>석류 버프 공격력 순위 맞추기</b><br>석류는 필수 편성이라 계산 대상에서 제외합니다. 실제로 사용할 나머지 <b>11마리</b>를 고르고, 각 쿠키의 <b>Lv.1 / Lv.100 공격력</b>을 입력한 뒤 원하는 1~11위 순서를 정하면 권장 레벨을 계산합니다. 장비·슈가룬·연구소 등의 차이는 Lv.100 실측 공격력에 반영해서 입력하세요.</div>
+<div class="guildSteps"><div class="guildStep"><b>1</b>쿠키 11마리 선택</div><div class="guildStep"><b>2</b>Lv.1 · Lv.100 공격력 입력</div><div class="guildStep"><b>3</b>원하는 순위 지정</div><div class="guildStep"><b>4</b>권장 레벨 확인</div></div>
+<div class="card"><div class="guildPickerHead"><div><b>① 내 덱 쿠키 선택</b><div class="note">석류맛 쿠키는 목록에서 제외됩니다.</div></div><span id="guildSelectedCount" class="guildSelectedCount">0 / 11</span></div><input id="guildCookieSearch" class="input" type="search" placeholder="쿠키 이름 검색" oninput="renderGuildCookiePicker()" style="margin-bottom:9px"><div id="guildCookiePicker" class="guildCookiePicker"></div></div>
+<div class="card"><b>② 공격력 입력 · ③ 원하는 순위 지정</b><div class="note" style="margin:4px 0 10px">각 쿠키의 Lv.1 / Lv.100 공격력을 게임에서 보이는 그대로 입력하세요. 예: 244.85K / 354.92K. 순위는 1~11위를 중복 없이 지정하세요.</div><div id="guildSetupRows" class="guildSetupRows"><div class="note">위에서 쿠키 11마리를 선택하세요.</div></div><button class="primary guildCalcBtn" type="button" onclick="calculateGuildLevels()">권장 레벨 계산하기</button></div>
+<div id="guildResult" class="card guildResult" style="display:none"></div>
+</section>
+
 <section id="memo" class="screen">
   <div class="bar"><button class="back" type="button" onclick="go('home')">←</button><div class="title">자유게시판</div></div>
   <div class="boardTop"><b>자유게시판</b><button class="primary boardWriteOpen" type="button" onclick="toggleBoardWrite(true)">✎ 글쓰기</button></div>
@@ -753,7 +753,7 @@ body{
     <textarea id="memoText" class="input memoTextInput" rows="8" placeholder="내용을 입력하세요."></textarea>
     <div class="boardAttachGrid">
       <label class="boardAttach"><b>📷 사진 첨부</b><input id="boardImageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><span id="boardImageState">선택 안 함 · 최대 10MB</span></label>
-      <label class="boardAttach"><b>🎬 동영상 첨부</b><input id="boardVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><span id="boardVideoState">선택 안 함 · 최대 50MB</span></label>
+      <label class="boardAttach"><b>🎬 동영상 첨부</b><input id="boardVideoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><span id="boardVideoState">선택 안 함 · 최대 100MB</span></label>
     </div>
     <div id="boardExistingMedia" class="boardExistingMedia"></div>
     <div id="memoSaveStatus" class="memoSaveStatus"></div>
@@ -828,7 +828,7 @@ function saveLocal(x){
     return false;
   }
 }
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0);if(id==='decks')loadDecks();if(id==='runes')initRunes();if(id==='memo')loadMemos()}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0);if(id==='decks')loadDecks();if(id==='runes')initRunes();if(id==='memo')loadMemos();if(id==='guildsetting')initGuildSetting()}
 function fmt(t){if(!t)return'';return new Date(t).toLocaleString('ko-KR',{hour12:false})}
 function esc(v){
   return String(v??'')
@@ -911,7 +911,7 @@ function renderDeckVideoState(){
   const f=document.getElementById('deckVideoFile')?.files?.[0];
   if(f){st.textContent=`새 동영상: ${f.name} · ${(f.size/1024/1024).toFixed(1)}MB`;rm.style.display='inline-flex';return;}
   if(edit?.video_url&&!edit?.remove_video){st.textContent='현재 이 덱에 동영상이 첨부되어 있습니다. 새 파일을 선택하면 교체됩니다.';rm.style.display='inline-flex';return;}
-  st.textContent='동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 50MB)';rm.style.display='none';
+  st.textContent='동영상은 선택사항입니다. 덱 저장 시 함께 업로드됩니다. (최대 100MB)';rm.style.display='none';
 }
 function removeDeckVideoSelection(){
   const vf=document.getElementById('deckVideoFile'); if(vf)vf.value='';
@@ -921,7 +921,7 @@ function removeDeckVideoSelection(){
 document.addEventListener('change',e=>{if(e.target?.id==='deckVideoFile'){if(edit)edit.remove_video=false;renderDeckVideoState();}});
 async function uploadDeckVideo(file){
   if(!file)return null;
-  if(file.size>50*1024*1024)throw new Error('동영상은 50MB 이하만 업로드할 수 있어.');
+  if(file.size>100 * 1024 * 1024)throw new Error('동영상은 100MB 이하만 업로드할 수 있어.');
   if(!String(file.type||'').startsWith('video/'))throw new Error('동영상 파일을 선택해줘.');
   if(!remote||!sb)throw new Error('공용 DB 연결 후 동영상을 업로드할 수 있어.');
   const ext=(file.name.split('.').pop()||'mp4').replace(/[^a-zA-Z0-9]/g,'').toLowerCase()||'mp4';
@@ -1431,10 +1431,10 @@ function memoRowsLocal(){try{const db=localDB();return Array.isArray(db?.memos)?
 function memoStatus(msg,type=''){const el=document.getElementById('memoSaveStatus');if(!el)return;el.className='memoSaveStatus '+type;el.textContent=msg||'';el.style.display=msg?'block':'none'}
 function toggleBoardWrite(show){const box=document.getElementById('boardComposer');if(!box)return;box.style.display=show?'block':'none';if(show&&!MEMO_EDIT_ID){resetBoardForm();setTimeout(()=>document.getElementById('memoAuthor')?.focus(),50)}if(show)window.scrollTo({top:0,behavior:'smooth'})}
 function resetBoardForm(){MEMO_EDIT_ID=null;BOARD_EDIT_ROW=null;BOARD_REMOVE_IMAGE=false;BOARD_REMOVE_VIDEO=false;['memoAuthor','memoPassword','memoTitle','memoText'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});['boardImageFile','boardVideoFile'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const h=document.getElementById('boardComposerTitle');if(h)h.textContent='새 글 작성';const btn=document.getElementById('memoSaveBtn');if(btn)btn.textContent='등록';const ex=document.getElementById('boardExistingMedia');if(ex)ex.innerHTML='';memoStatus('');updateBoardFileStates()}
-function updateBoardFileStates(){const im=document.getElementById('boardImageFile'),vi=document.getElementById('boardVideoFile'),is=document.getElementById('boardImageState'),vs=document.getElementById('boardVideoState');if(is)is.textContent=im?.files?.[0]?.name||'선택 안 함 · 최대 10MB';if(vs)vs.textContent=vi?.files?.[0]?.name||'선택 안 함 · 최대 50MB'}
+function updateBoardFileStates(){const im=document.getElementById('boardImageFile'),vi=document.getElementById('boardVideoFile'),is=document.getElementById('boardImageState'),vs=document.getElementById('boardVideoState');if(is)is.textContent=im?.files?.[0]?.name||'선택 안 함 · 최대 10MB';if(vs)vs.textContent=vi?.files?.[0]?.name||'선택 안 함 · 최대 100MB'}
 setTimeout(()=>{document.getElementById('boardImageFile')?.addEventListener('change',updateBoardFileStates);document.getElementById('boardVideoFile')?.addEventListener('change',updateBoardFileStates)},0);
 function safeFileName(name){return String(name||'file').replace(/[^a-zA-Z0-9._-]/g,'_').slice(-90)}
-async function uploadBoardFile(file,kind){if(!remote||!sb)throw new Error('공용 DB 연결 후 첨부파일을 업로드할 수 있어요.');const max=kind==='image'?10*1024*1024:50*1024*1024;if(file.size>max)throw new Error(kind==='image'?'사진은 최대 10MB까지 가능해요.':'동영상은 최대 50MB까지 가능해요.');const path=`${kind}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeFileName(file.name)}`;const {error}=await sb.storage.from('board-media').upload(path,file,{upsert:false,contentType:file.type||undefined});if(error)throw error;const {data}=sb.storage.from('board-media').getPublicUrl(path);return {path,url:data.publicUrl}}
+async function uploadBoardFile(file,kind){if(!remote||!sb)throw new Error('공용 DB 연결 후 첨부파일을 업로드할 수 있어요.');const max=kind==='image'?10*1024*1024:100 * 1024 * 1024;if(file.size>max)throw new Error(kind==='image'?'사진은 최대 10MB까지 가능해요.':'동영상은 최대 100MB까지 가능해요.');const path=`${kind}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeFileName(file.name)}`;const {error}=await sb.storage.from('board-media').upload(path,file,{upsert:false,contentType:file.type||undefined});if(error)throw error;const {data}=sb.storage.from('board-media').getPublicUrl(path);return {path,url:data.publicUrl}}
 function boardPasswordPrompt(label='비밀번호를 입력하세요'){return new Promise(resolve=>{const wrap=document.createElement('div');wrap.className='passwordModal';wrap.innerHTML=`<div class="passwordCard"><b>${esc(label)}</b><input class="input" type="password" maxlength="50" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="secondary" type="button" data-cancel>취소</button><button class="primary" type="button" data-ok>확인</button></div></div>`;document.body.appendChild(wrap);const input=wrap.querySelector('input');input.focus();const done=v=>{wrap.remove();resolve(v)};wrap.querySelector('[data-cancel]').onclick=()=>done(null);wrap.querySelector('[data-ok]').onclick=()=>done(input.value);input.onkeydown=e=>{if(e.key==='Enter')done(input.value);if(e.key==='Escape')done(null)};wrap.onclick=e=>{if(e.target===wrap)done(null)}})}
 async function addMemo(ev){
  if(ev&&ev.preventDefault)ev.preventDefault();
@@ -1477,101 +1477,58 @@ window.addEventListener('DOMContentLoaded',()=>{
   console.log('STAGE_POWER',Object.keys(window.STAGE_POWER||{}).length,'AF',Object.keys(window.STAGE_ACCURACY_FOCUS||{}).length);
 });
 </script>
-<audio id="siteBgm" preload="auto"></audio>
+
+
 <script>
-(() => {
-  const audio = document.getElementById('siteBgm');
-  const btn = document.getElementById('bgmToggle');
-  const picker = document.getElementById('bgmPicker');
-  const prevBtn = document.getElementById('bgmPrev');
-  const nextBtn = document.getElementById('bgmNext');
-  if (!audio || !btn || !picker) return;
+const GUILD_LEVEL_RAW=[100,691,1398,2122,2863,3622,4398,5193,6007,6839,7692,8564,9457,10371,11307,12265,13245,14248,15275,16327,17403,18504,19632,20786,21967,23177,24414,25681,26978,28305,29664,31055,32479,33936,35427,36954,38517,40116,41754,43430,45145,46901,48698,50538,52421,54349,56322,58342,60409,62525,64691,66908,69177,71500,73878,76312,78803,81353,83963,86634,89369,92168,95033,97966,100968,104041,107186,110406,113701,117075,120527,124061,127679,131382,135172,139052,143023,147088,151249,155508,159867,164329,168897,173572,178357,183256,188270,193402,198655,204032,209537,215170,220937,226840,232882,239067,245397,251877,258510,265299];
+const GUILD_LEVEL_MULT=GUILD_LEVEL_RAW.map(v=>1+v/10000);
+const GUILD_LV100_MULT=GUILD_LEVEL_MULT[99];
+let GUILD_SELECTED=[],GUILD_INPUTS={};
+function isPomegranateCookie(c){return c&&(c.name==='석류맛 쿠키'||c.name==='석류')}
+function initGuildSetting(){renderGuildCookiePicker();renderGuildSetupRows()}
+function renderGuildCookiePicker(){const box=document.getElementById('guildCookiePicker');if(!box||!window.APP_DATA)return;const q=(document.getElementById('guildCookieSearch')?.value||'').trim().toLowerCase();const list=D.cookies.filter(c=>!isPomegranateCookie(c)&&(!q||c.name.toLowerCase().includes(q)));box.innerHTML=list.map(c=>`<button type="button" class="guildCookiePick ${GUILD_SELECTED.includes(c.id)?'on':''}" onclick="toggleGuildCookie('${c.id}')"><img src="${c.image}" alt=""><span>${esc(c.name)}</span></button>`).join('');document.getElementById('guildSelectedCount').textContent=`${GUILD_SELECTED.length} / 11`}
+function saveGuildInputs(){document.querySelectorAll('.guildSetupRow[data-id]').forEach(row=>{const id=row.dataset.id;GUILD_INPUTS[id]={atk1:row.querySelector('.guildAtk1Input')?.value||'',atk:row.querySelector('.guildAtkInput')?.value||'',rank:row.querySelector('.guildRankSelect')?.value||''}})}
+function toggleGuildCookie(id){saveGuildInputs();const i=GUILD_SELECTED.indexOf(id);if(i>=0)GUILD_SELECTED.splice(i,1);else{if(GUILD_SELECTED.length>=11){alert('쿠키는 11마리까지 선택할 수 있어요.');return}GUILD_SELECTED.push(id)}renderGuildCookiePicker();renderGuildSetupRows();document.getElementById('guildResult').style.display='none'}
+function renderGuildSetupRows(){const box=document.getElementById('guildSetupRows');if(!box)return;if(!GUILD_SELECTED.length){box.innerHTML='<div class="note">위에서 쿠키 11마리를 선택하세요.</div>';return}box.innerHTML=GUILD_SELECTED.map((id,idx)=>{const c=D.cookies.find(x=>x.id===id);if(!c)return'';const saved=GUILD_INPUTS[id]||{};const defaultRank=saved.rank||String(idx+1);return `<div class="guildSetupRow" data-id="${id}"><img src="${c.image}" alt=""><div><div class="guildCookieName">${esc(c.name)}</div><div class="guildTargetHint">Lv.100 기준</div></div><div><span class="guildFieldLabel">Lv.1 공격력</span><input class="input guildAtk1Input" type="text" autocomplete="off" autocapitalize="characters" value="${saved.atk1||''}" placeholder="예: 244.85K" oninput="this.nextElementSibling.textContent=this.value?formatGameAtk(parseGameAtk(this.value)):''"><div class="guildTargetHint">${saved.atk1?formatGameAtk(parseGameAtk(saved.atk1)):''}</div></div><div><span class="guildFieldLabel">Lv.100 공격력</span><input class="input guildAtkInput" type="text" autocomplete="off" autocapitalize="characters" value="${saved.atk||''}" placeholder="예: 354.92K" oninput="this.nextElementSibling.textContent=this.value?formatGameAtk(parseGameAtk(this.value)):''"><div class="guildTargetHint">${saved.atk?formatGameAtk(parseGameAtk(saved.atk)):''}</div></div><div><span class="guildFieldLabel">원하는 순위</span><select class="input guildRankSelect">${Array.from({length:11},(_,r)=>`<option value="${r+1}" ${String(r+1)===defaultRank?'selected':''}>${r+1}위</option>`).join('')}</select></div></div>`}).join('')}
 
-  const playlist = [
-    ["Floral Life", "music/FloralLife.mp3"],
-    ["When The Morning Comes", "music/WhenTheMorningComes.mp3"],
-    ["Bad Guys", "music/BadGuys.mp3"],
-    ["Shinin' Harbor", "music/ShininHarbor.mp3"],
-    ["Fantastic Thinking", "music/FantasticThinking.mp3"],
-    ["Aquarium", "music/Aquarium.mp3"],
-    ["Mureung Hill", "music/MureungHill.mp3"],
-    ["Let's March", "music/LetsMarch.mp3"],
-    ["Snowy Village", "music/SnowyVillage.mp3"],
-    ["Go Picnic", "music/GoPicnic.mp3"],
-    ["Above The Treetops", "music/AboveTheTreetops.mp3"]
+function parseGameAtk(value){
+  if(typeof value==='number')return value;
+  let s=String(value||'').trim().replace(/,/g,'').replace(/\s+/g,'').toUpperCase();
+  if(!s)return NaN;
+  const m=s.match(/^(\d+(?:\.\d+)?)([KMG])?$/);
+  if(!m)return NaN;
+  const unit=m[2]||'';
+  const mult=unit==='G'?1000000000:unit==='M'?1000000:unit==='K'?1000:1;
+  return Number(m[1])*mult;
+}
+function formatGameAtk(value){
+  const n=Math.max(0,Math.floor(Number(value)||0));
+  if(n<1000)return n.toLocaleString();
+  const parts=[];
+  let rest=n;
+  const units=[
+    [1000000000,'G'],
+    [1000000,'M'],
+    [1000,'K']
   ];
-
-  let track = 0;
-  let userMuted = false;
-  audio.volume = 0.35;
-
-  function loadTrack(index, autoplay = true) {
-    track = (index + playlist.length) % playlist.length;
-    picker.value = String(track);
-    audio.src = playlist[track][1];
-    audio.load();
-    btn.title = "현재 곡: " + playlist[track][0];
-    if (autoplay && !userMuted) playBgm();
-  }
-
-  function syncButton() {
-    const playing = !audio.paused && !audio.muted;
-    btn.textContent = playing ? "🔊 BGM" : "🔇 BGM";
-    btn.setAttribute("aria-pressed", playing ? "true" : "false");
-    btn.title = "현재 곡: " + playlist[track][0];
-  }
-
-  async function playBgm() {
-    if (userMuted) return;
-    try { await audio.play(); } catch (e) {}
-    syncButton();
-  }
-
-  btn.addEventListener("click", async () => {
-    if (!audio.paused) {
-      userMuted = true;
-      audio.pause();
-    } else {
-      userMuted = false;
-      audio.muted = false;
-      await playBgm();
+  for(const [size,label] of units){
+    if(rest>=size){
+      const q=Math.floor(rest/size);
+      parts.push(q.toLocaleString()+label);
+      rest%=size;
     }
-    syncButton();
-  });
+  }
+  if(rest>0)parts.push(rest.toLocaleString());
+  return parts.join(' ');
+}
 
-  picker.addEventListener("change", () => {
-    userMuted = false;
-    loadTrack(Number(picker.value), true);
-  });
-
-  if (prevBtn) prevBtn.addEventListener("click", () => {
-    userMuted = false;
-    loadTrack(track - 1, true);
-  });
-
-  if (nextBtn) nextBtn.addEventListener("click", () => {
-    userMuted = false;
-    loadTrack(track + 1, true);
-  });
-
-  audio.addEventListener("ended", () => {
-    loadTrack(track + 1, true);
-  });
-
-  audio.addEventListener("play", syncButton);
-  audio.addEventListener("pause", syncButton);
-
-  loadTrack(0, false);
-  playBgm();
-
-  const unlock = async () => {
-    if (audio.paused && !userMuted) await playBgm();
-  };
-  window.addEventListener("pointerdown", unlock, { once: true, capture: true });
-  window.addEventListener("touchstart", unlock, { once: true, capture: true });
-  window.addEventListener("keydown", unlock, { once: true, capture: true });
-
-  syncButton();
-})();
+function predictedGuildAtk(atk1,atk100,level){
+  if(level<=1)return Math.floor(atk1);
+  if(level>=100)return Math.floor(atk100);
+  const progress=(GUILD_LEVEL_RAW[level-1]-GUILD_LEVEL_RAW[0])/(GUILD_LEVEL_RAW[99]-GUILD_LEVEL_RAW[0]);
+  return Math.floor(atk1+(atk100-atk1)*progress);
+}
+function calculateGuildLevels(){saveGuildInputs();if(GUILD_SELECTED.length!==11){alert('먼저 쿠키를 정확히 11마리 선택해주세요.');return}const rows=GUILD_SELECTED.map(id=>{const c=D.cookies.find(x=>x.id===id),v=GUILD_INPUTS[id]||{};return{id,c,atk1:parseGameAtk(v.atk1),atk100:parseGameAtk(v.atk),rank:Number(v.rank)}});if(rows.some(x=>!Number.isFinite(x.atk1)||x.atk1<=0||!Number.isFinite(x.atk100)||x.atk100<=0)){alert('11마리의 Lv.1 / Lv.100 공격력을 모두 입력해주세요.');return}const ranks=rows.map(x=>x.rank);if(new Set(ranks).size!==11||ranks.some(r=>r<1||r>11)){alert('원하는 순위는 1위부터 11위까지 각각 한 번씩 지정해주세요.');return}rows.sort((a,b)=>a.rank-b.rank);let previous=Infinity,impossible=false;rows.forEach((x,idx)=>{let chosen=100,atk=predictedGuildAtk(x.atk1,x.atk100,100);if(idx>0){chosen=0;for(let lv=100;lv>=1;lv--){const candidate=predictedGuildAtk(x.atk1,x.atk100,lv);if(candidate<previous){chosen=lv;atk=candidate;break}}}if(chosen===0){impossible=true;x.level=null;x.adjusted=predictedGuildAtk(x.atk1,x.atk100,1)}else{x.level=chosen;x.adjusted=atk;previous=atk}});const result=document.getElementById('guildResult');result.style.display='block';result.innerHTML=`<div class="guildResultHead"><div><b>④ 권장 레벨 결과</b><div class="note">원하는 공격력 순서를 만족하면서 가능한 한 높은 레벨을 유지한 결과입니다.</div></div></div>${impossible?'<div class="guildImpossible" style="margin-bottom:9px">⚠ 일부 순위는 Lv.1까지 낮춰도 원하는 순서를 만들 수 없습니다. 목표 순서를 다시 확인하세요.</div>':''}<div>${rows.map(x=>`<div class="guildResultRow"><div class="guildRank">${x.rank}위</div><img src="${x.c.image}" alt=""><div><b style="font-size:11px">${esc(x.c.name)}</b><div class="guildTargetHint">Lv.1 ${formatGameAtk(x.atk1)} · Lv.100 ${formatGameAtk(x.atk100)}</div></div><div class="guildLevel">${x.level?`Lv.${x.level}`:'불가'}</div><div class="guildAtk">${x.level?`예상 ${formatGameAtk(x.adjusted)}`:`Lv.1도 ${formatGameAtk(x.adjusted)}`}</div></div>`).join('')}</div><div class="note" style="margin-top:11px">※ 입력한 Lv.1 / Lv.100 실측 공격력과 업로드한 Lv.1~100 성장표를 이용해 중간 레벨 공격력을 계산합니다. 검증한 쿠키에서 인게임과 약 0.01~0.03K 수준의 차이가 확인됐습니다.</div>`;result.scrollIntoView({behavior:'smooth',block:'start'})}
 </script>
+
 </body></html>
