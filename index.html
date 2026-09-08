@@ -1460,18 +1460,80 @@ window.addEventListener('DOMContentLoaded',()=>{
 </script>
 <audio id="siteBgm" preload="auto"></audio>
 <script>
-(()=>{\n  const audio=document.getElementById('siteBgm');\n  const btn=document.getElementById('bgmToggle');\n  if(!audio||!btn)return;\n  const BGM_PLAYLIST = [
-  { title: "Floral Life", src: "music/FloralLife.mp3" },
-  { title: "When The Morning Comes", src: "music/WhenTheMorningComes.mp3" },
-  { title: "Bad Guys", src: "music/BadGuys.mp3" },
-  { title: "Shinin' Harbor", src: "music/ShininHarbor.mp3" },
-  { title: "Fantastic Thinking", src: "music/FantasticThinking.mp3" },
-  { title: "Aquarium", src: "music/Aquarium.mp3" },
-  { title: "Mureung Hill", src: "music/MureungHill.mp3" },
-  { title: "Let's March", src: "music/LetsMarch.mp3" },
-  { title: "Snowy Village", src: "music/SnowyVillage.mp3" },
-  { title: "Go Picnic", src: "music/GoPicnic.mp3" },
-  { title: "Above The Treetops", src: "music/AboveTheTreetops.mp3" }
-];\n  let track=0,userMuted=false;\n  audio.volume=0.35;\n  const loadTrack=()=>{audio.src=playlist[track][1];audio.load();btn.title='현재 곡: '+playlist[track][0];};\n  const sync=()=>{\n    const playing=!audio.paused && !audio.muted;\n    btn.textContent=playing?'🔊 BGM':'🔇 BGM';\n    btn.setAttribute('aria-pressed',playing?'true':'false');\n    btn.title='현재 곡: '+playlist[track][0];\n  };\n  const tryPlay=async()=>{if(userMuted)return false;try{await audio.play();sync();return true}catch(e){sync();return false}};\n  btn.addEventListener('click',async()=>{\n    if(!audio.paused&&!audio.muted){userMuted=true;audio.pause();sync();}\n    else{userMuted=false;audio.muted=false;try{await audio.play()}catch(e){}sync();}\n  });\n  audio.addEventListener('ended',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  audio.addEventListener('play',sync);\n  audio.addEventListener('pause',sync);\n  audio.addEventListener('error',async()=>{track=(track+1)%playlist.length;loadTrack();await tryPlay();});\n  loadTrack();\n  tryPlay();\n  const unlock=()=>{tryPlay();};\n  ['pointerdown','touchstart','keydown'].forEach(ev=>window.addEventListener(ev,unlock,{once:true,capture:true}));\n  sync();\n})();
+(() => {
+  const audio = document.getElementById('siteBgm');
+  const btn = document.getElementById('bgmToggle');
+  if (!audio || !btn) return;
+
+  const playlist = [
+    ["Floral Life", "music/FloralLife.mp3"],
+    ["When The Morning Comes", "music/WhenTheMorningComes.mp3"],
+    ["Bad Guys", "music/BadGuys.mp3"],
+    ["Shinin' Harbor", "music/ShininHarbor.mp3"],
+    ["Fantastic Thinking", "music/FantasticThinking.mp3"],
+    ["Aquarium", "music/Aquarium.mp3"],
+    ["Mureung Hill", "music/MureungHill.mp3"],
+    ["Let's March", "music/LetsMarch.mp3"],
+    ["Snowy Village", "music/SnowyVillage.mp3"],
+    ["Go Picnic", "music/GoPicnic.mp3"],
+    ["Above The Treetops", "music/AboveTheTreetops.mp3"]
+  ];
+
+  let track = 0;
+  let userMuted = false;
+  audio.volume = 0.35;
+
+  function loadTrack() {
+    audio.src = playlist[track][1];
+    audio.load();
+    btn.title = "현재 곡: " + playlist[track][0];
+  }
+
+  function syncButton() {
+    const playing = !audio.paused && !audio.muted;
+    btn.textContent = playing ? "🔊 BGM" : "🔇 BGM";
+    btn.setAttribute("aria-pressed", playing ? "true" : "false");
+    btn.title = "현재 곡: " + playlist[track][0];
+  }
+
+  async function playBgm() {
+    if (userMuted) return;
+    try { await audio.play(); } catch (e) {}
+    syncButton();
+  }
+
+  btn.addEventListener("click", async () => {
+    if (!audio.paused) {
+      userMuted = true;
+      audio.pause();
+    } else {
+      userMuted = false;
+      audio.muted = false;
+      await playBgm();
+    }
+    syncButton();
+  });
+
+  audio.addEventListener("ended", async () => {
+    track = (track + 1) % playlist.length;
+    loadTrack();
+    await playBgm();
+  });
+
+  audio.addEventListener("play", syncButton);
+  audio.addEventListener("pause", syncButton);
+
+  loadTrack();
+  playBgm();
+
+  const unlock = async () => {
+    if (audio.paused && !userMuted) await playBgm();
+  };
+  window.addEventListener("pointerdown", unlock, { once: true, capture: true });
+  window.addEventListener("touchstart", unlock, { once: true, capture: true });
+  window.addEventListener("keydown", unlock, { once: true, capture: true });
+
+  syncButton();
+})();
 </script>
 </body></html>
