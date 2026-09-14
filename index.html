@@ -680,6 +680,75 @@ body{
 }
 </style>
 
+
+<style>
+@media(max-width:700px){
+  .guildSetupRow{
+    display:grid !important;
+    width:100% !important;
+    max-width:100% !important;
+    box-sizing:border-box !important;
+    overflow:visible !important;
+    grid-template-columns:
+      30px
+      minmax(42px,.65fr)
+      minmax(54px,.85fr)
+      minmax(54px,.85fr)
+      36px
+      42px
+      48px !important;
+    gap:3px !important;
+    padding:7px 4px !important;
+    align-items:center !important;
+  }
+
+  .guildSetupRow > *{min-width:0 !important}
+  .guildSetupRow img{
+    width:30px !important;
+    height:30px !important;
+  }
+  .guildCookieName{
+    font-size:8px !important;
+    line-height:1.15 !important;
+    word-break:keep-all !important;
+  }
+  .guildSetupRow .guildTargetHint{
+    font-size:7px !important;
+    line-height:1.15 !important;
+  }
+  .guildSetupRow .guildFieldLabel{
+    font-size:7px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+    text-align:center !important;
+    margin-bottom:2px !important;
+  }
+  .guildSetupRow .input,
+  .guildSetupRow select{
+    width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    font-size:9px !important;
+    padding:6px 3px !important;
+  }
+  .guildSetupRow label{
+    min-height:30px !important;
+    gap:1px !important;
+    padding:0 !important;
+    font-size:8px !important;
+    white-space:nowrap !important;
+    justify-content:center !important;
+  }
+  .guildSetupRow input[type="radio"],
+  .guildSetupRow input[type="checkbox"]{
+    width:12px !important;
+    height:12px !important;
+    margin:0 !important;
+    flex:0 0 12px !important;
+  }
+}
+</style>
+
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
 
 <div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
