@@ -629,6 +629,23 @@ body{
 @media(max-width:700px){.guildSteps{grid-template-columns:repeat(2,1fr)}.guildCookiePicker{grid-template-columns:repeat(4,1fr)}.guildSetupRow{grid-template-columns:38px minmax(72px,.8fr) minmax(80px,.85fr) minmax(80px,.85fr) 54px 65px;gap:5px;padding:7px 5px}.guildSetupRow img{width:38px;height:38px}.guildCookieName{font-size:10px}.guildSetupRow .input{font-size:12px;padding:8px 6px}.guildResultRow{grid-template-columns:35px 38px minmax(85px,1fr) 64px 82px;gap:4px}.guildResultRow img{width:34px;height:34px}.guildRank,.guildLevel{font-size:15px}.guildAtk{font-size:9px}}
 
 </style>
+
+<style>
+.deckShotImport{margin-bottom:12px;border:1px solid rgba(72,188,217,.34);background:linear-gradient(180deg,#0e2c3b,#0a2331)}
+.deckShotEyebrow{font-size:9px;font-weight:1000;letter-spacing:.16em;color:#77d9e9;margin-bottom:5px}
+.deckShotTitle{font-size:17px;font-weight:1000;color:#fff;margin-bottom:5px}
+.deckShotDesc{font-size:11px;line-height:1.6;color:#b9cbd2;margin-bottom:10px}
+.deckShotBtn{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border-radius:12px;background:linear-gradient(135deg,#35c9d0,#28a9d3);color:#041c27;font-size:13px;font-weight:1000;cursor:pointer}
+.deckShotStatus{margin-top:9px;font-size:10px;line-height:1.55;color:#91a9b2}
+.deckShotStatus.working{color:#ffe08a}.deckShotStatus.ok{color:#76efc0}.deckShotStatus.bad{color:#ff9c9c}
+.deckShotPreview{display:none;margin-top:9px;padding:8px;border-radius:10px;background:rgba(0,0,0,.18)}
+.deckShotPreview.show{display:block}
+.deckShotPreview b{display:block;font-size:10px;margin-bottom:6px}
+.deckShotNames{display:flex;flex-wrap:wrap;gap:4px}
+.deckShotNames span{font-size:9px;padding:4px 6px;border-radius:999px;background:#163f50;color:#d9f7ff}
+</style>
+
+<script async src="https://docs.opencv.org/4.x/opencv.js"></script>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
 
 <div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
@@ -664,7 +681,17 @@ body{
       </div>
       <div id="deckList" style="margin-top:8px"></div>
     </div></section>
+
 <section id="deckedit" class="screen"><div class="bar"><button class="back" onclick="go('decks')">←</button><div class="title">덱 편집</div></div>
+<div class="card deckShotImport">
+  <div class="deckShotEyebrow">SCREENSHOT IMPORT</div>
+  <div class="deckShotTitle">덱 이미지 자동 인식</div>
+  <div class="deckShotDesc">게임의 <b>덱 편성 화면</b> 스크린샷을 올리면 편성 중인 쿠키 12명과 펫 3종을 찾아 아래 슬롯에 자동 선택합니다.</div>
+  <label class="deckShotBtn" for="deckScreenshotFile">덱 스크린샷 선택</label>
+  <input id="deckScreenshotFile" type="file" accept="image/*" style="display:none">
+  <div id="deckShotStatus" class="deckShotStatus">이미지는 서버에 저장하지 않고 이 브라우저에서만 분석합니다.</div>
+  <div id="deckShotPreview" class="deckShotPreview"></div>
+</div>
 <div class="savedDecksEditor card">
   <div class="savedDecksEditorHead"><b>저장된 덱</b><span>눌러서 불러오기</span></div>
   <div id="savedDecksEditorList" class="savedDecksEditorList"></div>
@@ -876,6 +903,220 @@ function renderSavedDecksInEditor(rows=null){
   });
 }
 
+
+/* ===== 덱 편성 스크린샷 자동 인식 =====
+   기준 화면: 세로형 게임 덱 편성 화면.
+   쿠키 목록에서 편성중 쿠키가 상단 12칸에 모이는 게임 UI를 이용합니다.
+   분석은 브라우저 로컬에서만 수행합니다.
+*/
+let deckShotBusy=false;
+let deckShotCookieDescCache=null;
+let deckShotPetDescCache=null;
+
+function deckShotStatus(msg,cls=''){
+  const el=document.getElementById('deckShotStatus');
+  if(!el)return;
+  el.className='deckShotStatus '+cls;
+  el.textContent=msg;
+}
+function deckShotWaitForCV(timeout=12000){
+  return new Promise((resolve,reject)=>{
+    const started=Date.now();
+    const tick=()=>{
+      if(window.cv && cv.Mat && cv.ORB)return resolve();
+      if(Date.now()-started>timeout)return reject(new Error('이미지 인식 모듈을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'));
+      setTimeout(tick,180);
+    };
+    tick();
+  });
+}
+function deckShotLoadImage(src){
+  return new Promise((resolve,reject)=>{
+    const im=new Image();
+    im.onload=()=>resolve(im);
+    im.onerror=()=>reject(new Error('이미지를 읽지 못했습니다.'));
+    im.src=src;
+  });
+}
+function deckShotCanvasFromImage(img,w=116,h=140){
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  c.getContext('2d',{willReadFrequently:true}).drawImage(img,0,0,w,h);
+  return c;
+}
+function deckShotCropCanvas(img,x,y,w,h,outW,outH){
+  const c=document.createElement('canvas');c.width=outW;c.height=outH;
+  c.getContext('2d',{willReadFrequently:true}).drawImage(img,x,y,w,h,0,0,outW,outH);
+  return c;
+}
+function deckShotDescriptor(canvas){
+  let src=null,gray=null,mask=null,kp=null,desc=null,orb=null;
+  try{
+    src=cv.imread(canvas);
+    gray=new cv.Mat();
+    cv.cvtColor(src,gray,cv.COLOR_RGBA2GRAY);
+    mask=new cv.Mat();
+    kp=new cv.KeyPointVector();
+    desc=new cv.Mat();
+    orb=new cv.ORB();
+    orb.detectAndCompute(gray,mask,kp,desc);
+    return desc.clone();
+  }finally{
+    try{src&&src.delete()}catch(e){}
+    try{gray&&gray.delete()}catch(e){}
+    try{mask&&mask.delete()}catch(e){}
+    try{kp&&kp.delete()}catch(e){}
+    try{desc&&desc.delete()}catch(e){}
+    try{orb&&orb.delete()}catch(e){}
+  }
+}
+function deckShotOrbScore(a,b){
+  if(!a||!b||!a.rows||!b.rows)return 0;
+  let bf=null,matches=null,score=0;
+  try{
+    bf=new cv.BFMatcher(cv.NORM_HAMMING,false);
+    matches=new cv.DMatchVectorVector();
+    bf.knnMatch(a,b,matches,2);
+    for(let i=0;i<matches.size();i++){
+      const pair=matches.get(i);
+      if(pair.size()>=2){
+        const m=pair.get(0),n=pair.get(1);
+        if(m.distance < 0.75*n.distance)score++;
+      }
+      pair.delete();
+    }
+  }catch(e){score=0}
+  finally{
+    try{matches&&matches.delete()}catch(e){}
+    try{bf&&bf.delete()}catch(e){}
+  }
+  return score;
+}
+async function deckShotBuildCache(arr,type){
+  const cache=[];
+  for(let i=0;i<arr.length;i++){
+    deckShotStatus(`이미지 인식 준비 중… ${i+1}/${arr.length}`,'working');
+    try{
+      const im=await deckShotLoadImage(arr[i].image);
+      const c=deckShotCanvasFromImage(im,type==='pet'?112:116,type==='pet'?116:140);
+      cache.push(deckShotDescriptor(c));
+    }catch(e){cache.push(null)}
+    if(i%8===0)await new Promise(r=>setTimeout(r,0));
+  }
+  return cache;
+}
+function deckShotBest(desc,cache,used){
+  let best=-1,bestScore=-1,second=-1;
+  for(let i=0;i<cache.length;i++){
+    if(used&&used.has(i))continue;
+    const sc=deckShotOrbScore(desc,cache[i]);
+    if(sc>bestScore){second=bestScore;bestScore=sc;best=i}
+    else if(sc>second)second=sc;
+  }
+  return {index:best,score:bestScore,second};
+}
+function deckShotLeaderCandidate(img,scale){
+  /* 단장 깃발은 카드 상단 중앙에 붙는 보라/금색 배지.
+     속성 아이콘과 겹치지 않도록 카드 중앙부만 비교한다. */
+  let best=-1,bestVal=0;
+  for(let k=0;k<12;k++){
+    const r=Math.floor(k/5),c=k%5;
+    const x=(40+c*129)*scale,y=(478+r*155)*scale;
+    const cn=deckShotCropCanvas(img,x+30*scale,y,50*scale,40*scale,50,40);
+    const d=cn.getContext('2d').getImageData(0,0,50,40).data;
+    let purple=0,gold=0;
+    for(let i=0;i<d.length;i+=4){
+      const R=d[i],G=d[i+1],B=d[i+2],mx=Math.max(R,G,B),mn=Math.min(R,G,B);
+      if(B>70 && R>55 && B>G*1.12 && R>G*.9 && mx-mn>28)purple++;
+      if(R>145 && G>90 && B<95 && R>G*1.12)gold++;
+    }
+    const v=purple+gold*.25;
+    if(v>bestVal){bestVal=v;best=k}
+  }
+  return bestVal>110?best:-1;
+}
+async function analyzeDeckScreenshot(file){
+  if(deckShotBusy)return;
+  deckShotBusy=true;
+  try{
+    if(!edit){deckShotStatus('먼저 새 덱 만들기를 눌러 주세요.','bad');return}
+    deckShotStatus('이미지 인식 모듈 준비 중…','working');
+    await deckShotWaitForCV();
+    const url=URL.createObjectURL(file);
+    const img=await deckShotLoadImage(url);
+    URL.revokeObjectURL(url);
+
+    if(img.width<500 || img.height<img.width*1.55){
+      throw new Error('세로형 덱 편성 전체 화면 스크린샷을 선택해 주세요.');
+    }
+    const scale=img.width/709;
+
+    if(!deckShotCookieDescCache)deckShotCookieDescCache=await deckShotBuildCache(D.cookies,'cookie');
+    if(!deckShotPetDescCache)deckShotPetDescCache=await deckShotBuildCache(D.pets,'pet');
+
+    deckShotStatus('쿠키 12명 인식 중…','working');
+    const recognized=[],usedCookies=new Set(),cookieScores=[];
+    for(let k=0;k<12;k++){
+      const r=Math.floor(k/5),c=k%5;
+      const x=(40+c*129)*scale,y=(478+r*155)*scale;
+      const crop=deckShotCropCanvas(img,x,y,116*scale,140*scale,116,140);
+      const desc=deckShotDescriptor(crop);
+      const best=deckShotBest(desc,deckShotCookieDescCache,usedCookies);
+      desc.delete();
+      if(best.index<0 || best.score<4)throw new Error(`쿠키 ${k+1}번째 칸을 확실하게 인식하지 못했습니다.`);
+      usedCookies.add(best.index);
+      recognized.push(D.cookies[best.index].id);
+      cookieScores.push(best.score);
+      await new Promise(r=>setTimeout(r,0));
+    }
+
+    deckShotStatus('펫 3종 인식 중…','working');
+    const petXY=[[460,72],[547,72],[632,72]];
+    const pets=[],usedPets=new Set();
+    for(let k=0;k<3;k++){
+      const [px,py]=petXY[k];
+      const crop=deckShotCropCanvas(img,px*scale,py*scale,77*scale,85*scale,112,116);
+      const desc=deckShotDescriptor(crop);
+      const best=deckShotBest(desc,deckShotPetDescCache,usedPets);
+      desc.delete();
+      if(best.index>=0 && best.score>=3){
+        usedPets.add(best.index);
+        pets.push(D.pets[best.index].id);
+      }
+    }
+
+    edit.cookies=recognized;
+    if(pets.length===3)edit.pets=pets;
+
+    const leaderPos=deckShotLeaderCandidate(img,scale);
+    edit.leader=(leaderPos>=0?recognized[leaderPos]:recognized[0])||null;
+    edit.tab='cookie';
+    renderSelected();
+
+    const names=recognized.map(id=>D.cookies.find(x=>x.id===id)?.name||id);
+    const petNames=pets.map(id=>D.pets.find(x=>x.id===id)?.name||id);
+    const pv=document.getElementById('deckShotPreview');
+    if(pv){
+      pv.className='deckShotPreview show';
+      pv.innerHTML=`<b>자동 선택 결과 · 쿠키 ${recognized.length}/12${pets.length===3?' · 펫 3/3':' · 펫은 직접 확인'}</b><div class="deckShotNames">${names.map(n=>`<span>${esc(n)}</span>`).join('')}</div>${pets.length?`<div class="deckShotNames" style="margin-top:5px">${petNames.map(n=>`<span>🐾 ${esc(n)}</span>`).join('')}</div>`:''}`;
+    }
+    const leader=D.cookies.find(x=>x.id===edit.leader);
+    deckShotStatus(`인식 완료. 아래 선택 슬롯을 확인해 주세요.${leader?' 단장 후보: '+leader.name:''}`,'ok');
+  }catch(err){
+    console.error(err);
+    deckShotStatus(err?.message||'이미지 인식에 실패했습니다. 편성 화면 전체 스크린샷인지 확인해 주세요.','bad');
+  }finally{
+    deckShotBusy=false;
+    const inp=document.getElementById('deckScreenshotFile');
+    if(inp)inp.value='';
+  }
+}
+document.addEventListener('change',e=>{
+  if(e.target?.id==='deckScreenshotFile' && e.target.files?.[0]){
+    analyzeDeckScreenshot(e.target.files[0]);
+  }
+});
+/* ===== 자동 인식 끝 ===== */
+
 function editDeck(d=null){
   edit=d?{id:d.id,cookies:[...d.cookies],pets:[...d.pets],cards:[...(d.cards||[])],leader:d.leader,memo:d.memo||'',category:d.category||'',video_url:d.video_url||'',video_path:d.video_path||'',remove_video:false,tab:'cookie'}:{id:null,cookies:[],pets:[],cards:[],leader:null,memo:'',category:'',video_url:'',video_path:'',remove_video:false,tab:'cookie'};
   go('deckedit');
@@ -998,537 +1239,3 @@ async function saveDeck(ev){
     if(!verified) throw new Error('브라우저 저장 확인에 실패했습니다.');
 
     // 3. Update the visible cache immediately.
-    DECK_CACHE=[row,...(DECK_CACHE||[]).filter(x=>String(x.id)!==String(row.id))];
-
-    // 4. Mirror to the shared DB when connected. Keep the memo locally even if the old DB schema has no memo column.
-    if(remote&&sb){
-      try{
-        const isLocalId=String(row.id).startsWith('deck_');
-        let cloudRow={
-          name:row.name,cookies:row.cookies,pets:row.pets,leader:row.leader,
-          cards:row.cards,memo:row.memo,category:row.category||null,video_url:row.video_url||null,video_path:row.video_path||null,updated_at:row.updated_at
-        };
-        let result=(edit.id&&!isLocalId)
-          ? await sb.from('decks').update(cloudRow).eq('id',edit.id).select()
-          : await sb.from('decks').insert(cloudRow).select();
-
-        let memoColumnMissing=false;
-        if(result?.error && String(result.error.message||'').toLowerCase().includes('memo')){
-          memoColumnMissing=true;
-          delete cloudRow.memo;
-          result=(edit.id&&!isLocalId)
-            ? await sb.from('decks').update(cloudRow).eq('id',edit.id).select()
-            : await sb.from('decks').insert(cloudRow).select();
-        }
-        if(result?.error && /video_url|video_path/i.test(String(result.error.message||''))){
-          throw new Error('동영상용 DB 컬럼이 아직 없어. 제공한 Supabase SQL을 먼저 실행해줘.');
-        }
-
-        if(result?.error){
-          console.warn('공용 DB 저장 실패',result.error);
-        }else if(Array.isArray(result?.data)&&result.data[0]){
-          const cloudSaved=result.data[0];
-          if(isLocalId && cloudSaved.id!==undefined){
-            const db2=localDB();
-            const i2=(db2.decks||[]).findIndex(x=>String(x.id)===String(row.id));
-            const synced={...row,id:cloudSaved.id};
-            if(i2>=0)db2.decks[i2]=synced; else db2.decks.unshift(synced);
-            saveLocal(db2);
-            DECK_CACHE=[synced,...(DECK_CACHE||[]).filter(x=>String(x.id)!==String(row.id)&&String(x.id)!==String(synced.id))];
-            row.id=cloudSaved.id;
-          }
-          if(oldVideoPath && oldVideoPath!==row.video_path){
-            try{await sb.storage.from('deck-videos').remove([oldVideoPath]);}catch(e){console.warn('old video remove',e)}
-          }
-          if(memoColumnMissing){
-            show('✓ 덱 저장 완료 · 메모는 이 브라우저에 저장됨','warn');
-          }
-        }
-      }catch(cloudErr){
-        console.warn('공용 DB 저장 예외',cloudErr);
-      }
-    }
-
-    // 5. Render the list first, then switch screens.
-    await loadDecks();
-    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
-    const deckScreen=document.getElementById('decks');
-    if(deckScreen)deckScreen.classList.add('active');
-    window.scrollTo(0,0);
-    return false;
-  }catch(err){
-    console.error('SAVE_DECK_ERROR',err);
-    show('저장 오류: '+(err?.message||String(err)),'bad');
-    return false;
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent='덱 저장'}
-  }
-}
-
-
-function mergeDeckRows(cloudRows, localRows){
-  const locals=new Map((localRows||[]).map(x=>[String(x.id),x]));
-  const merged=(cloudRows||[]).map(c=>{
-    const l=locals.get(String(c.id));
-    if(!l)return c;
-    locals.delete(String(c.id));
-    return {...c, memo:(l.memo!==undefined?l.memo:c.memo), category:(l.category!==undefined?l.category:c.category), video_url:(l.video_url!==undefined?l.video_url:c.video_url), video_path:(l.video_path!==undefined?l.video_path:c.video_path), updated_at:(l.updated_at||c.updated_at)};
-  });
-  return [...merged,...locals.values()];
-}
-
-
-function renderDeckCategoryPick(){
- const box=document.getElementById('deckCategoryPick'); if(!box)return;
- box.innerHTML=DECK_CATEGORIES.map(c=>`<label><input type="radio" name="deckCategory" value="${c}" ${edit.category===c?'checked':''} onchange="edit.category=this.value"> ${c}</label>`).join('');
-}
-function renderDeckTagFilters(){
- const box=document.getElementById('deckTagFilters');if(!box)return;
- box.innerHTML=DECK_CATEGORIES.map(c=>`<label><input type="checkbox" ${ACTIVE_DECK_TAGS.includes(c)?'checked':''} onchange="toggleDeckTagFilter('${c}',this.checked)"> ${c}</label>`).join('');
-}
-function toggleDeckTagFilter(c,on){if(on&&!ACTIVE_DECK_TAGS.includes(c))ACTIVE_DECK_TAGS.push(c);if(!on)ACTIVE_DECK_TAGS=ACTIVE_DECK_TAGS.filter(x=>x!==c);loadDecks()}
-async function showCookieRanking(){
- // 메인 화면에서 바로 눌러도 Supabase의 최신 저장 덱을 먼저 불러온다.
- try{ await loadDecks(); }catch(e){ console.warn('ranking deck load',e); }
- const source=(Array.isArray(DECK_CACHE)&&DECK_CACHE.length)?DECK_CACHE:getLocalDeckRows();
- const counts={};
- (source||[]).forEach(d=>{
-   const cookieIds=Array.isArray(d?.cookies)?d.cookies:[];
-   cookieIds.forEach(v=>{
-     const id=typeof v==='string'?v:(v?.id||'');
-     if(id)counts[id]=(counts[id]||0)+1;
-   });
- });
- const rows=Object.entries(counts).sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0])));
- const html=rows.length?rows.map(([id,n],i)=>{const c=D.cookies.find(x=>x.id===id);return c?`<div class="rankRow"><span class="rankNo">${i+1}</span><img src="${c.image}" alt=""><b>${esc(c.name)}</b><span class="rankCount">${n}회</span></div>`:''}).join(''):'저장된 덱이 없습니다.';
- document.getElementById('rankingTemp')?.remove();
- const w=document.createElement('div');w.className='card';w.innerHTML=`<div class="bar"><button class="back" type="button">←</button><div class="title">쿠키 사용 랭킹</div></div><div class="note" style="margin:0 0 10px">현재 저장된 덱 ${source.length}개 기준</div><div class="rankingList">${html}</div>`;
- const sec=document.createElement('section');sec.id='rankingTemp';sec.className='screen active';sec.appendChild(w);document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.querySelector('main.wrap').appendChild(sec);w.querySelector('.back').onclick=()=>{sec.remove();go('home')};scrollTo(0,0);
-}
-function filterDeckTitles(){
-  loadDecks();
-}
-
-async function loadDecks(){
-  let localRows=getLocalDeckRows();
-  let rows=[...localRows];
-
-  if(remote&&sb){
-    try{
-      const {data,error}=await sb.from('decks').select('*').order('updated_at',{ascending:false});
-      if(!error&&Array.isArray(data)){
-        rows=mergeDeckRows(data,localRows);
-      }
-    }catch(e){
-      console.warn('loadDecks cloud',e);
-    }
-  }
-
-  rows=rows.filter(Boolean);
-  rows.sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')));
-  DECK_CACHE=rows;
-
-  const count=document.getElementById('deckSavedCount');
-  if(count)count.textContent=`${rows.length}개`;
-
-  const el=document.getElementById('deckList');
-  if(!el)return rows;
-
-  const q=String(document.getElementById('deckTitleSearch')?.value||'').trim().toLocaleLowerCase();
-  renderDeckTagFilters();
-  const displayRows=rows.filter(d=>(!q||String(d?.name||'').toLocaleLowerCase().includes(q))&&(!ACTIVE_DECK_TAGS.length||ACTIVE_DECK_TAGS.includes(String(d?.category||''))));
-  const searchResult=document.getElementById('deckSearchResult');
-  if(searchResult)searchResult.textContent=(q||ACTIVE_DECK_TAGS.length)?`검색 결과 ${displayRows.length}개 / 전체 ${rows.length}개`:'';
-
-  if(!displayRows.length){
-    el.innerHTML=q
-      ? '<div class="emptySavedDeck"><b>검색 결과가 없습니다.</b><span>다른 덱 제목으로 검색해보세요.</span></div>'
-      : '<div class="emptySavedDeck"><b>아직 저장된 덱이 없습니다.</b><span>새 덱 만들기에서 덱을 저장하면 여기에 표시됩니다.</span></div>';
-    renderSavedDecksInEditor(rows);
-    return rows;
-  }
-
-  el.innerHTML='';
-  displayRows.forEach((d,i)=>{
-    try{
-      const cookies=Array.isArray(d.cookies)?d.cookies:[];
-      const ims=cookies.slice(0,12)
-        .map(id=>D.cookies.find(x=>x.id===id))
-        .filter(Boolean)
-        .map(x=>`<img src="${x.image}" alt="">`).join('');
-      const memo=String(d.memo||'').trim();
-      const card=document.createElement('div');
-      card.className='listitem deckListCard';
-      card.innerHTML=`<div class="listtop">
-        <div class="deckListName"><b>${esc(d.name||'이름 없는 덱')}</b>${d.category?`<div class="tagPill">${esc(d.category)}</div>`:''}${d.video_url?'<div class="deckVideoBadge">▶ 동영상</div>':''}<div class="stamp">최종 저장 ${fmt(d.updated_at)}</div></div>
-        <div class="deckActions">
-          <button class="deckViewBtn" data-v type="button">보기</button>
-          <button class="secondary" data-e type="button">수정</button>
-          <button class="danger" data-d type="button">삭제</button>
-        </div>
-      </div>
-      ${memo?`<div class="deckMemoPreview">💡 ${esc(memo.length>90?memo.slice(0,90)+'…':memo)}</div>`:''}
-      <div class="miniimgs">${ims}</div>`;
-      card.querySelector('[data-v]').onclick=()=>viewDeck(d);
-      card.querySelector('[data-e]').onclick=()=>editDeck(d);
-      card.querySelector('[data-d]').onclick=()=>deleteDeck(d.id);
-      el.appendChild(card);
-    }catch(rowErr){
-      console.error('덱 목록 한 건 렌더 오류',rowErr,d);
-    }
-  });
-
-  if(!el.children.length){
-    el.innerHTML='<div class="emptySavedDeck"><b>저장 데이터는 있지만 표시 중 오류가 발생했습니다.</b><span>페이지를 다시 열어주세요.</span></div>';
-  }
-
-  renderSavedDecksInEditor(rows);
-  return rows;
-}
-
-function viewDeck(d){
-  const body=document.getElementById('deckViewBody');
-  const cookies=(d.cookies||[]).map(id=>D.cookies.find(x=>x.id===id)).filter(Boolean);
-  const pets=(d.pets||[]).map(id=>D.pets.find(x=>x.id===id)).filter(Boolean);
-  const cards=(d.cards||[]).map(id=>D.cards.find(x=>x.id===id)).filter(Boolean);
-  const leader=D.cookies.find(x=>x.id===d.leader);
-  const cookieHtml=cookies.map(c=>`<div class="viewUnit ${c.id===d.leader?'captain':''}"><div class="viewImg"><img src="${c.image}" alt="">${c.id===d.leader?'<span class="crown">👑</span>':''}</div><b>${esc(c.name)}</b>${c.id===d.leader?'<small>단장</small>':''}</div>`).join('');
-  const petHtml=pets.map(c=>`<div class="viewUnit compact"><div class="viewImg"><img src="${c.image}" alt=""></div><b>${esc(c.name)}</b></div>`).join('');
-  const cardHtml=cards.length?cards.map(c=>`<div class="viewUnit cardUnit"><div class="viewImg"><img src="${c.image}" alt=""></div><b>${esc(c.name)}</b></div>`).join(''):'<div class="emptyDeckInfo">선택한 용병단 카드 없음</div>';
-  body.innerHTML=`<div class="deckHeroCard">
-      <div><span class="deckTag">MY DECK</span><h2>${esc(d.name)}</h2><p>최종 저장 ${fmt(d.updated_at)}</p></div>
-      ${leader?`<div class="leaderBadge">👑 단장 · ${esc(leader.name)}</div>`:''}
-    </div>
-    <div class="deckViewSection"><div class="sectionHead"><b>쿠키</b><span>12</span></div><div class="viewCookieGrid">${cookieHtml}</div></div>
-    <div class="deckViewSplit">
-      <div class="deckViewSection"><div class="sectionHead"><b>펫</b><span>3</span></div><div class="viewPetGrid">${petHtml}</div></div>
-      <div class="deckViewSection"><div class="sectionHead"><b>용병단 카드</b><span>${cards.length}/2</span></div><div class="viewCardGrid">${cardHtml}</div></div>
-    </div>
-    ${d.video_url?`<div class="deckVideoView"><div class="deckVideoTitle"><b>▶ 플레이 동영상</b><span>덱 첨부 영상</span></div><video controls playsinline preload="metadata" src="${esc(d.video_url)}"></video><a class="deckVideoPlayLink" href="${esc(d.video_url)}" target="_blank" rel="noopener">▶ 재생하기</a></div>`:''}
-    <div class="strategyBox">
-      <div class="strategyTitle">📜 파훼법 · 덱 메모</div>
-      <div class="strategyText">${d.memo?esc(d.memo).replace(/\n/g,'<br>'):'등록된 메모가 없습니다.'}</div>
-    </div>
-    <div class="deckViewBottom"><button class="secondary" type="button" onclick='editDeck(window._viewDeckCurrent)'>이 덱 수정</button></div>`;
-  window._viewDeckCurrent=d;
-  go('deckview');
-}
-async function deleteDeck(id){
-  if(!confirm('이 덱을 삭제할까?'))return;
-  const target=(DECK_CACHE||[]).find(x=>String(x.id)===String(id));
-  if(remote&&sb&&target?.video_path){try{await sb.storage.from('deck-videos').remove([target.video_path]);}catch(e){console.warn('video delete',e)}}
-  let db=localDB();db.decks=(db.decks||[]).filter(x=>String(x.id)!==String(id));saveLocal(db);
-  if(remote&&sb&&!String(id).startsWith('deck_')){
-    try{await sb.from('decks').delete().eq('id',id)}catch(e){console.warn(e)}
-  }
-  loadDecks();
-}
-const RUNES=["공격력 증폭","방어력 증폭","체력 증폭","치명확률 증가","치명저항 증가","치명피해 증가","명중률 증가","회피율 증가","집중확률 증가","저항확률 증가","스킬증폭 증가","피해 감소","이동속도 증가","스킬가속 증가"];
-let runeSel=[];
-let activeRuneCookie=null;
-let selectedRuneCookies=[];
-
-function initRunes(){
-  renderRuneChooser();
-  renderRuneEditSearch();
-  if(activeRuneCookie) loadRune(); else {runeSel=[];renderRuneButtons();updateRuneCount();renderRuneSummary();}
-}
-function toggleRuneChooser(){const b=document.getElementById('runeChooserGroups');if(b)b.classList.toggle('open')}
-function renderRuneChooser(){
- const box=document.getElementById('runeChooserGroups');if(!box)return;
- const order=['TSSR','SSR','SR','R','U','C'];
- box.innerHTML=order.map(r=>{const cs=D.cookies.filter(c=>c.rarity===r);if(!cs.length)return '';return `<div class="runeRarity">${r}</div><div class="runeCookieCheckList">${cs.map(c=>`<label class="runeCookieCheck ${selectedRuneCookies.includes(c.id)?'active':''}"><img src="${c.image}" alt=""><b>${esc(c.name)}</b><input type="checkbox" ${selectedRuneCookies.includes(c.id)?'checked':''} onchange="setRuneCookieChecked('${c.id}',this.checked)"></label>`).join('')}</div>`}).join('');
-}
-function savedRunesForCookie(cookieId){
-  try{
-    const row=localDB()?.runes?.[cookieId];
-    return Array.isArray(row?.runes)?row.runes:[];
-  }catch(e){return []}
-}
-async function setRuneCookieChecked(id,checked){
-  id=String(id);
-  if(checked){
-    if(!selectedRuneCookies.includes(id)) selectedRuneCookies.push(id);
-  }else{
-    selectedRuneCookies=selectedRuneCookies.filter(x=>String(x)!==id);
-  }
-  renderRuneChooser();
-  renderRuneSummary();
-  await refreshSelectedRuneCache([id]);
-  renderRuneSummary();
-}
-async function chooseRuneCookie(id){
-  const sid=String(id);
-  return setRuneCookieChecked(sid,!selectedRuneCookies.includes(sid));
-}
-async function refreshSelectedRuneCache(ids=selectedRuneCookies){
-  const targets=(ids||[]).map(String).filter(Boolean);
-  if(!remote||!sb||!targets.length)return;
-  try{
-    const {data,error}=await sb.from('sugar_runes').select('*').in('cookie_id',targets);
-    if(error){console.warn('sugar rune lookup failed',error);return;}
-    let db=localDB(); if(!db.runes||typeof db.runes!=='object')db.runes={};
-    (data||[]).forEach(row=>{db.runes[String(row.cookie_id)]=row;});
-    saveLocal(db);
-  }catch(e){console.warn('sugar rune lookup failed',e)}
-}
-function renderRuneEditSearch(){
-  const box=document.getElementById('runeEditResults');if(!box)return;
-  const q=String(document.getElementById('runeEditSearch')?.value||'').trim().toLocaleLowerCase();
-  const list=D.cookies.filter(c=>!q||c.name.toLocaleLowerCase().includes(q)).slice(0,q?30:12);
-  box.innerHTML=list.map(c=>`<button type="button" class="runeEditResult" onclick="selectRuneForEdit('${c.id}')"><img src="${c.image}" alt=""><b>${esc(c.name)}</b><span class="stamp">${c.rarity}</span></button>`).join('');
-}
-async function selectRuneForEdit(id){
-  activeRuneCookie=id;
-  document.getElementById('runeCookie').value=id;
-  const c=D.cookies.find(x=>x.id===id);
-  const cur=document.getElementById('runeEditCurrent');if(cur)cur.textContent=c?`설정 중 · ${c.name}`:'설정 중';
-  const search=document.getElementById('runeEditSearch');if(search)search.value=c?.name||'';
-  const results=document.getElementById('runeEditResults');if(results)results.innerHTML='';
-  await loadRune();
-}
-function renderRuneButtons(){
-  const e=document.getElementById('runeGrid'); if(!e) return;
-  e.innerHTML=RUNES.map(r=>`<button type="button" class="rune ${runeSel.includes(r)?'on':''}" onclick="toggleRune('${r}')">
-    <span class="runeCheck">${runeSel.includes(r)?'✓':''}</span><span>${r}</span>
-  </button>`).join('');
-}
-function toggleRune(r){
-  const i=runeSel.indexOf(r);
-  if(i>=0) runeSel.splice(i,1); else runeSel.push(r);
-  renderRuneButtons(); updateRuneCount();
-}
-function clearRunes(){runeSel=[];renderRuneButtons();updateRuneCount();}
-function updateRuneCount(){const e=document.getElementById('runeCount');if(e)e.textContent=`${runeSel.length}개 선택`;}
-function renderRuneSummary(){
-  const box=document.getElementById('runeSavedSummary'); if(!box) return;
-  if(!selectedRuneCookies.length){box.innerHTML='<div class="emptyRune">위의 쿠키 선택하기에서 확인할 쿠키를 체크하세요.</div>';return}
-  const db=localDB();
-  box.innerHTML=`<div class="savedRuneTitle">선택한 쿠키 현재 설정 · ${selectedRuneCookies.length}명</div>`+selectedRuneCookies.map(id=>{
-    const c=D.cookies.find(x=>x.id===id); if(!c)return '';
-    const localRow=db?.runes?.[id]||null;
-    const rs=Array.isArray(localRow?.runes)?localRow.runes:[];
-    const chips=rs.length?rs.map(r=>`<span>${r}</span>`).join(''):'<em>설정된 슈가룬 없음</em>';
-    const stamp=localRow?.updated_at?`최종 저장 ${fmt(localRow.updated_at)}`:'저장된 설정 없음';
-    return `<div class="runeViewRow"><img src="${c.image}" alt=""><div class="runeViewName"><b>${esc(c.name)}</b><small>${stamp}</small></div><div class="savedRuneChips">${chips}</div></div>`;
-  }).join('');
-}
-async function loadRune(){
-  if(!activeRuneCookie){renderRuneSummary();return}
-  let row=null;
-  if(remote){
-    let {data}=await sb.from('sugar_runes').select('*').eq('cookie_id',activeRuneCookie).maybeSingle();
-    row=data;
-    if(row){
-      let db=localDB();if(!db.runes)db.runes={};db.runes[activeRuneCookie]=row;saveLocal(db);
-    }
-  } else row=localDB().runes[activeRuneCookie];
-  runeSel=row?.runes?[...row.runes]:[];
-  renderRuneButtons();updateRuneCount();
-}
-async function saveRunes(){
-  if(!activeRuneCookie)return alert('쿠키를 먼저 선택해줘.');
-  const row={cookie_id:activeRuneCookie,runes:[...runeSel],updated_at:new Date().toISOString()};
-
-  let db=localDB();
-  if(!db.runes||typeof db.runes!=='object')db.runes={};
-  db.runes[activeRuneCookie]=row;
-  saveLocal(db);
-
-  renderRuneChooser();
-
-  if(remote&&sb){
-    const {error}=await sb.from('sugar_runes').upsert(row);
-    if(error)console.warn('슈가룬 공용 DB 저장 실패',error);
-  }
-
-  await loadRune();
-  renderRuneChooser();
-  alert('슈가룬 설정을 저장했어.');
-}
-
-function normStage(v){
-  v=String(v||'').trim().replace(/\s+/g,'');
-  if(!v) return '';
-  if(v.includes('-')){
-    const parts=v.split('-');
-    if(parts.length!==2) return v;
-    const a=parseInt(parts[0],10), b=parseInt(parts[1],10);
-    return Number.isFinite(a)&&Number.isFinite(b)?`${a}-${b}`:v;
-  }
-  if(/^\d+$/.test(v)){
-    const p=window.STAGE_POWER||{};
-    const a=window.STAGE_ACCURACY_FOCUS||{};
-    for(let cut=1;cut<=3;cut++){
-      if(v.length<=cut) continue;
-      const ch=parseInt(v.slice(0,-cut),10), st=parseInt(v.slice(-cut),10);
-      const key=`${ch}-${st}`;
-      if(p[key]||a[key]) return key;
-    }
-  }
-  return v;
-}
-function setPowerStage(v){document.getElementById('stagePowerInput').value=v;doPowerLookup();}
-function setAccStage(v){document.getElementById('accStage').value=v;doAccuracyLookup();}
-function doPowerLookup(ev){
-  if(ev&&ev.preventDefault) ev.preventDefault();
-  const input=document.getElementById('stagePowerInput');
-  const out=document.getElementById('powerResult');
-  const key=normStage(input?input.value:'');
-  const all=window.STAGE_POWER||{};
-  const d=all[key];
-  if(!d){
-    out.innerHTML=`<div class="lookupError">"${key||'입력 없음'}" 스테이지를 찾지 못했습니다.</div><div class="note">예: 34-30 또는 3430</div>`;
-    return false;
-  }
-  const monsterName=(window.STAGE_MONSTER_NAMES||{})[key]||'';
-  out.innerHTML=`<div class="stageResultTop"><span>STAGE ${key}</span><b>적정투력</b></div>
-    ${monsterName?`<div class="stageEnemyBox"><div class="stageEnemyLabel">등장 몬스터 / 보스</div><div class="stageEnemyName">${esc(monsterName)}</div></div>`:''}
-    <div class="powerHighlights">
-      <div class="powerHighlight power35"><small>35% 적정투력</small><strong>${d["35"]}</strong></div>
-      <div class="powerHighlight power55"><small>55% 적정투력</small><strong>${d["55"]}</strong></div>
-    </div>
-    <div class="powerMini powerMiniTwo">
-      <div><span>75%</span><b>${d["75"]}</b></div>
-      <div><span>100%</span><b>${d["100"]}</b></div>
-    </div>
-    <div class="stageCombinedTitle">명중 / 집중 요구치</div>
-    <div class="requireCards stageCombined">
-      <div><span>명중</span><strong>${(window.STAGE_ACCURACY_FOCUS||{})[key]?.accuracy ?? '-'}</strong></div>
-      <div><span>집중</span><strong>${(window.STAGE_ACCURACY_FOCUS||{})[key]?.focus ?? '-'}</strong></div>
-    </div>`;
-  return false;
-}
-function doAccuracyLookup(ev){
-  if(ev&&ev.preventDefault) ev.preventDefault();
-  const input=document.getElementById('accStage');
-  const out=document.getElementById('accResult');
-  const key=normStage(input?input.value:'');
-  const all=window.STAGE_ACCURACY_FOCUS||{};
-  const d=all[key];
-  if(!d){
-    out.innerHTML=`<div class="lookupError">"${key||'입력 없음'}" 스테이지를 찾지 못했습니다.</div><div class="note">예: 34-30 또는 3430</div>`;
-    return false;
-  }
-  out.innerHTML=`<div class="stageResultTop"><span>STAGE ${key}</span><b>요구치</b></div>
-    <div class="requireCards">
-      <div><span>명중</span><strong>${d.accuracy}</strong></div>
-      <div><span>집중</span><strong>${d.focus}</strong></div>
-    </div>`;
-  return false;
-}
-// old names kept for compatibility
-function lookupPower(){return doPowerLookup();}
-function lookupAcc(){return doAccuracyLookup();}
-
-
-let MEMO_EDIT_ID=null;
-let BOARD_EDIT_ROW=null;
-let BOARD_REMOVE_IMAGE=false, BOARD_REMOVE_VIDEO=false;
-let BOARD_ACTIVE_POST=null;
-
-function memoRowsLocal(){try{const db=localDB();return Array.isArray(db?.memos)?db.memos:[]}catch(e){return []}}
-function memoStatus(msg,type=''){const el=document.getElementById('memoSaveStatus');if(!el)return;el.className='memoSaveStatus '+type;el.textContent=msg||'';el.style.display=msg?'block':'none'}
-function toggleBoardWrite(show){const box=document.getElementById('boardComposer');if(!box)return;box.style.display=show?'block':'none';if(show&&!MEMO_EDIT_ID){resetBoardForm();setTimeout(()=>document.getElementById('memoAuthor')?.focus(),50)}if(show)window.scrollTo({top:0,behavior:'smooth'})}
-function resetBoardForm(){MEMO_EDIT_ID=null;BOARD_EDIT_ROW=null;BOARD_REMOVE_IMAGE=false;BOARD_REMOVE_VIDEO=false;['memoAuthor','memoPassword','memoTitle','memoText'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});['boardImageFile','boardVideoFile'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const h=document.getElementById('boardComposerTitle');if(h)h.textContent='새 글 작성';const btn=document.getElementById('memoSaveBtn');if(btn)btn.textContent='등록';const ex=document.getElementById('boardExistingMedia');if(ex)ex.innerHTML='';memoStatus('');updateBoardFileStates()}
-function updateBoardFileStates(){const im=document.getElementById('boardImageFile'),vi=document.getElementById('boardVideoFile'),is=document.getElementById('boardImageState'),vs=document.getElementById('boardVideoState');if(is)is.textContent=im?.files?.[0]?.name||'선택 안 함 · 최대 10MB';if(vs)vs.textContent=vi?.files?.[0]?.name||'선택 안 함 · 최대 100MB'}
-setTimeout(()=>{document.getElementById('boardImageFile')?.addEventListener('change',updateBoardFileStates);document.getElementById('boardVideoFile')?.addEventListener('change',updateBoardFileStates)},0);
-function safeFileName(name){return String(name||'file').replace(/[^a-zA-Z0-9._-]/g,'_').slice(-90)}
-async function uploadBoardFile(file,kind){if(!remote||!sb)throw new Error('공용 DB 연결 후 첨부파일을 업로드할 수 있어요.');const max=kind==='image'?10*1024*1024:100 * 1024 * 1024;if(file.size>max)throw new Error(kind==='image'?'사진은 최대 10MB까지 가능해요.':'동영상은 최대 100MB까지 가능해요.');const path=`${kind}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeFileName(file.name)}`;const {error}=await sb.storage.from('board-media').upload(path,file,{upsert:false,contentType:file.type||undefined});if(error)throw error;const {data}=sb.storage.from('board-media').getPublicUrl(path);return {path,url:data.publicUrl}}
-function boardPasswordPrompt(label='비밀번호를 입력하세요'){return new Promise(resolve=>{const wrap=document.createElement('div');wrap.className='passwordModal';wrap.innerHTML=`<div class="passwordCard"><b>${esc(label)}</b><input class="input" type="password" maxlength="50" autocomplete="current-password" placeholder="비밀번호"><div class="actions"><button class="secondary" type="button" data-cancel>취소</button><button class="primary" type="button" data-ok>확인</button></div></div>`;document.body.appendChild(wrap);const input=wrap.querySelector('input');input.focus();const done=v=>{wrap.remove();resolve(v)};wrap.querySelector('[data-cancel]').onclick=()=>done(null);wrap.querySelector('[data-ok]').onclick=()=>done(input.value);input.onkeydown=e=>{if(e.key==='Enter')done(input.value);if(e.key==='Escape')done(null)};wrap.onclick=e=>{if(e.target===wrap)done(null)}})}
-async function addMemo(ev){
- if(ev&&ev.preventDefault)ev.preventDefault();
- const author=(document.getElementById('memoAuthor')?.value||'').trim(),password=(document.getElementById('memoPassword')?.value||''),title=(document.getElementById('memoTitle')?.value||'').trim(),body=(document.getElementById('memoText')?.value||'').trim();
- const imageFile=document.getElementById('boardImageFile')?.files?.[0],videoFile=document.getElementById('boardVideoFile')?.files?.[0],btn=document.getElementById('memoSaveBtn');
- if(!author){memoStatus('작성자를 입력해줘.','bad');return false}if(!password){memoStatus('비밀번호를 입력해줘.','bad');return false}if(password.length<4){memoStatus('비밀번호는 4자 이상으로 입력해줘.','bad');return false}if(!title){memoStatus('제목을 입력해줘.','bad');return false}if(!body){memoStatus('내용을 입력해줘.','bad');return false}
- try{
-  if(!remote||!sb)throw new Error('게시판 글 작성은 공용 DB 연결이 필요해요.');if(btn){btn.disabled=true;btn.textContent='저장 중…'}
-  let old=BOARD_EDIT_ROW||{},image_url=BOARD_REMOVE_IMAGE?'':(old.image_url||''),image_path=BOARD_REMOVE_IMAGE?'':(old.image_path||''),video_url=BOARD_REMOVE_VIDEO?'':(old.video_url||''),video_path=BOARD_REMOVE_VIDEO?'':(old.video_path||'');
-  if(imageFile){const up=await uploadBoardFile(imageFile,'image');image_url=up.url;image_path=up.path}if(videoFile){const up=await uploadBoardFile(videoFile,'video');video_url=up.url;video_path=up.path}
-  let result;
-  if(MEMO_EDIT_ID){result=await sb.rpc('board_update_post',{p_id:MEMO_EDIT_ID,p_password:password,p_author:author,p_title:title,p_body:body,p_image_url:image_url||null,p_image_path:image_path||null,p_video_url:video_url||null,p_video_path:video_path||null})}
-  else{result=await sb.rpc('board_create_post',{p_author:author,p_password:password,p_title:title,p_body:body,p_image_url:image_url||null,p_image_path:image_path||null,p_video_url:video_url||null,p_video_path:video_path||null})}
-  if(result.error)throw result.error;
-  resetBoardForm();document.getElementById('boardComposer').style.display='none';await loadMemos();return false;
- }catch(e){console.error(e);memoStatus('저장 오류: '+(e?.message||String(e)),'bad');return false}finally{if(btn){btn.disabled=false;btn.textContent=MEMO_EDIT_ID?'수정 저장':'등록'}}
-}
-async function loadMemos(){let localRows=memoRowsLocal(),rows=[],commentCounts={};if(remote&&sb){try{const {data,error}=await sb.from('memos').select('*').order('updated_at',{ascending:false});if(error)throw error;rows=Array.isArray(data)?data:[];try{const cr=await sb.from('board_comments').select('post_id');if(!cr.error)(cr.data||[]).forEach(c=>{commentCounts[String(c.post_id)]=(commentCounts[String(c.post_id)]||0)+1})}catch(e){console.warn(e)}}catch(e){console.warn(e);rows=localRows}}else rows=localRows;rows.sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')));window.BOARD_ROWS=rows;const count=document.getElementById('memoSavedCount');if(count)count.textContent=`총 ${rows.length}개 글`;const el=document.getElementById('memoList');if(!el)return rows;if(!rows.length){el.innerHTML='<div class="memoEmpty">아직 게시글이 없습니다.<small>글쓰기 버튼으로 첫 글을 작성해보세요.</small></div>';return rows}el.innerHTML=rows.map((m,i)=>{const title=(m.title||'기존 메모').trim(),media=`${m.image_url?'📷':''}${m.video_url?' 🎬':''}`,cc=commentCounts[String(m.id)]||0,commentMark=cc?`<b class="boardCommentCount">[${cc}]</b>`:'';return `<div class="boardRow"><span class="boardKind"><em>${m.title?'자유':'메모'}</em></span><span class="boardTitle" data-open="${i}">${esc(title)} ${commentMark}<i class="boardMediaMark">${media}</i></span><span class="boardAuthor boardAuthorStrong">${esc(m.author||'익명')}</span><span class="boardDate">${boardDate(m.updated_at)}</span><span class="boardViews">${Number(m.views||0).toLocaleString()}</span></div>`}).join('');el.querySelectorAll('[data-open]').forEach(x=>x.onclick=()=>openBoardPost(rows[Number(x.dataset.open)]));return rows}
-function boardDate(v){try{const d=new Date(v),now=new Date();if(d.toDateString()===now.toDateString())return d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});return `${String(d.getFullYear()).slice(2)}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`}catch(e){return ''}}
-async function openBoardPost(row){if(!row)return;BOARD_ACTIVE_POST=row;let views=Number(row.views||0);if(remote&&sb&&!String(row.id).startsWith('memo_')){try{const r=await sb.rpc('board_increment_views',{p_id:row.id});if(!r.error)views=Number(r.data??views+1)}catch(e){console.warn(e)}}const detail=document.getElementById('boardDetail'),list=document.getElementById('boardListWrap');if(!detail||!list)return;const media=`<div class="boardDetailMedia">${row.image_url?`<img src="${esc(row.image_url)}" alt="첨부 사진">`:''}${row.video_url?`<video controls playsinline preload="metadata" src="${esc(row.video_url)}"></video>`:''}</div>`;detail.innerHTML=`<div class="boardDetailTop"><button class="secondary boardBackList" type="button" onclick="closeBoardPost()">← 목록</button><span></span></div><div class="boardDetailTitle">${esc(row.title||'기존 메모')}</div><div class="boardDetailMeta">${esc(row.author||'익명')} · ${fmt(row.updated_at)} · 조회 ${views.toLocaleString()}</div><div class="boardDetailBody">${esc(row.body||'').replace(/\n/g,'<br>')}${media}</div>${row.title?`<div class="boardDetailActions"><button class="secondary" type="button" onclick='requestEditPost(${JSON.stringify(String(row.id))})'>수정</button><button class="danger" type="button" onclick='delMemo(${JSON.stringify(String(row.id))})'>삭제</button></div>`:''}<div class="commentBox"><div class="commentTitle">댓글 <span id="commentCount"></span></div><div class="commentComposer"><input id="commentAuthor" class="input" maxlength="30" placeholder="작성자"><input id="commentPassword" class="input" type="password" maxlength="50" placeholder="비밀번호"><textarea id="commentBody" class="input" rows="2" placeholder="댓글 내용"></textarea><button class="primary" type="button" onclick="addBoardComment()">댓글 등록</button></div><div id="commentStatus" class="memoSaveStatus"></div><div id="commentList" class="commentList"></div></div>`;list.style.display='none';detail.style.display='block';window.scrollTo(0,0);await loadBoardComments(row.id)}
-function closeBoardPost(){BOARD_ACTIVE_POST=null;document.getElementById('boardDetail').style.display='none';document.getElementById('boardListWrap').style.display='block';loadMemos()}
-async function requestEditPost(id){const row=(window.BOARD_ROWS||[]).find(x=>String(x.id)===String(id));if(!row)return;const pw=await boardPasswordPrompt('글 비밀번호 확인');if(pw===null)return;try{const {data,error}=await sb.rpc('board_verify_post_password',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');editMemo(row,pw)}catch(e){alert(e.message||String(e))}}
-function editMemo(row,password=''){MEMO_EDIT_ID=row.id;BOARD_EDIT_ROW=row;BOARD_REMOVE_IMAGE=false;BOARD_REMOVE_VIDEO=false;document.getElementById('memoAuthor').value=row.author||'';document.getElementById('memoPassword').value=password;document.getElementById('memoTitle').value=row.title||'';document.getElementById('memoText').value=row.body||'';const h=document.getElementById('boardComposerTitle');if(h)h.textContent='글 수정';const btn=document.getElementById('memoSaveBtn');if(btn)btn.textContent='수정 저장';const ex=document.getElementById('boardExistingMedia');if(ex)ex.innerHTML=`${row.image_url?'<button class="secondary" type="button" onclick="BOARD_REMOVE_IMAGE=true;this.textContent=\'사진 삭제 예정\';this.disabled=true">📷 기존 사진 제거</button>':''}${row.video_url?'<button class="secondary" type="button" onclick="BOARD_REMOVE_VIDEO=true;this.textContent=\'동영상 삭제 예정\';this.disabled=true">🎬 기존 동영상 제거</button>':''}`;document.getElementById('boardDetail').style.display='none';document.getElementById('boardListWrap').style.display='block';document.getElementById('boardComposer').style.display='block';window.scrollTo(0,0)}
-async function delMemo(id){const pw=await boardPasswordPrompt('삭제하려면 글 비밀번호를 입력하세요');if(pw===null)return;if(!confirm('이 게시글을 삭제할까?'))return;try{const {data,error}=await sb.rpc('board_delete_post',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');resetBoardForm();closeBoardPost()}catch(e){alert(e.message||String(e))}}
-function commentStatus(msg,type=''){const e=document.getElementById('commentStatus');if(!e)return;e.className='memoSaveStatus '+type;e.textContent=msg||'';e.style.display=msg?'block':'none'}
-async function loadBoardComments(postId){const el=document.getElementById('commentList');if(!el)return;try{const {data,error}=await sb.from('board_comments').select('*').eq('post_id',postId).order('created_at',{ascending:true});if(error)throw error;const rows=data||[];const c=document.getElementById('commentCount');if(c)c.textContent=`${rows.length}개`;el.innerHTML=rows.length?rows.map(r=>`<div class="commentItem"><div class="commentMeta"><b>${esc(r.author||'익명')}</b><span>${fmt(r.updated_at||r.created_at)}</span><span class="commentActions"><button class="secondary" onclick='editBoardComment(${JSON.stringify(String(r.id))})'>수정</button><button class="danger" onclick='deleteBoardComment(${JSON.stringify(String(r.id))})'>삭제</button></span></div><div class="commentBody">${esc(r.body||'')}</div></div>`).join(''):'<div class="commentEmpty">아직 댓글이 없습니다.</div>';window.BOARD_COMMENTS=rows}catch(e){el.innerHTML=`<div class="commentEmpty">댓글 불러오기 오류: ${esc(e.message||String(e))}</div>`}}
-async function addBoardComment(){if(!BOARD_ACTIVE_POST)return;const author=(document.getElementById('commentAuthor')?.value||'').trim(),password=document.getElementById('commentPassword')?.value||'',body=(document.getElementById('commentBody')?.value||'').trim();if(!author)return commentStatus('작성자를 입력해줘.','bad');if(password.length<4)return commentStatus('비밀번호는 4자 이상으로 입력해줘.','bad');if(!body)return commentStatus('댓글 내용을 입력해줘.','bad');try{const {error}=await sb.rpc('board_create_comment',{p_post_id:BOARD_ACTIVE_POST.id,p_author:author,p_password:password,p_body:body});if(error)throw error;document.getElementById('commentBody').value='';document.getElementById('commentPassword').value='';commentStatus('');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){commentStatus('등록 오류: '+(e.message||String(e)),'bad')}}
-async function editBoardComment(id){const row=(window.BOARD_COMMENTS||[]).find(x=>String(x.id)===String(id));if(!row)return;const pw=await boardPasswordPrompt('댓글 비밀번호를 입력하세요');if(pw===null)return;const body=prompt('댓글 내용을 수정하세요.',row.body||'');if(body===null||!body.trim())return;try{const {data,error}=await sb.rpc('board_update_comment',{p_id:id,p_password:pw,p_body:body.trim()});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){alert(e.message||String(e))}}
-async function deleteBoardComment(id){const pw=await boardPasswordPrompt('댓글 삭제 비밀번호를 입력하세요');if(pw===null)return;if(!confirm('이 댓글을 삭제할까?'))return;try{const {data,error}=await sb.rpc('board_delete_comment',{p_id:id,p_password:pw});if(error)throw error;if(!data)throw new Error('비밀번호가 맞지 않아요.');await loadBoardComments(BOARD_ACTIVE_POST.id)}catch(e){alert(e.message||String(e))}}
-
-</script>
-<script>
-try {
- const el=document.getElementById('homeUpdated');
- if(el) el.textContent=new Date().toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
-} catch(e){}
-</script>
-<script>
-window.addEventListener('DOMContentLoaded',()=>{
-  console.log('STAGE_POWER',Object.keys(window.STAGE_POWER||{}).length,'AF',Object.keys(window.STAGE_ACCURACY_FOCUS||{}).length);
-});
-</script>
-
-
-<script>
-const GUILD_LEVEL_RAW=[100,691,1398,2122,2863,3622,4398,5193,6007,6839,7692,8564,9457,10371,11307,12265,13245,14248,15275,16327,17403,18504,19632,20786,21967,23177,24414,25681,26978,28305,29664,31055,32479,33936,35427,36954,38517,40116,41754,43430,45145,46901,48698,50538,52421,54349,56322,58342,60409,62525,64691,66908,69177,71500,73878,76312,78803,81353,83963,86634,89369,92168,95033,97966,100968,104041,107186,110406,113701,117075,120527,124061,127679,131382,135172,139052,143023,147088,151249,155508,159867,164329,168897,173572,178357,183256,188270,193402,198655,204032,209537,215170,220937,226840,232882,239067,245397,251877,258510,265299];
-const GUILD_LEVEL_MULT=GUILD_LEVEL_RAW.map(v=>1+v/10000);
-const GUILD_LV100_MULT=GUILD_LEVEL_MULT[99];
-let GUILD_SELECTED=[],GUILD_INPUTS={},GUILD_LEADER_ID='';
-function isPomegranateCookie(c){return c&&(c.name==='석류맛 쿠키'||c.name==='석류')}
-function initGuildSetting(){renderGuildCookiePicker();renderGuildSetupRows()}
-function renderGuildCookiePicker(){const box=document.getElementById('guildCookiePicker');if(!box||!window.APP_DATA)return;const q=(document.getElementById('guildCookieSearch')?.value||'').trim().toLowerCase();const list=D.cookies.filter(c=>!isPomegranateCookie(c)&&(!q||c.name.toLowerCase().includes(q)));box.innerHTML=list.map(c=>`<button type="button" class="guildCookiePick ${GUILD_SELECTED.includes(c.id)?'on':''}" onclick="toggleGuildCookie('${c.id}')"><img src="${c.image}" alt=""><span>${esc(c.name)}</span></button>`).join('');document.getElementById('guildSelectedCount').textContent=`${GUILD_SELECTED.length} / 11`}
-function saveGuildInputs(){document.querySelectorAll('.guildSetupRow[data-id]').forEach(row=>{const id=row.dataset.id;GUILD_INPUTS[id]={atk1:row.querySelector('.guildAtk1Input')?.value||'',atk:row.querySelector('.guildAtkInput')?.value||'',rank:row.querySelector('.guildRankSelect')?.value||''}})}
-function toggleGuildCookie(id){saveGuildInputs();const i=GUILD_SELECTED.indexOf(id);if(i>=0){GUILD_SELECTED.splice(i,1);if(GUILD_LEADER_ID===id)GUILD_LEADER_ID=''}else{if(GUILD_SELECTED.length>=11){alert('쿠키는 11마리까지 선택할 수 있어요.');return}GUILD_SELECTED.push(id)}renderGuildCookiePicker();renderGuildSetupRows();document.getElementById('guildResult').style.display='none'}
-function renderGuildSetupRows(){const box=document.getElementById('guildSetupRows');if(!box)return;if(!GUILD_SELECTED.length){box.innerHTML='<div class="note">위에서 쿠키 11마리를 선택하세요.</div>';return}box.innerHTML=GUILD_SELECTED.map((id,idx)=>{const c=D.cookies.find(x=>x.id===id);if(!c)return'';const saved=GUILD_INPUTS[id]||{};const defaultRank=saved.rank||(idx<7?String(idx+1):'auto');return `<div class="guildSetupRow" data-id="${id}"><img src="${c.image}" alt=""><div><div class="guildCookieName">${esc(c.name)}</div><div class="guildTargetHint">Lv.100 기준</div></div><div><span class="guildFieldLabel">Lv.1 공격력</span><input class="input guildAtk1Input" type="text" autocomplete="off" autocapitalize="characters" value="${saved.atk1||''}" placeholder="예: 244.85K" oninput="this.nextElementSibling.textContent=this.value?formatGameAtk(parseGameAtk(this.value)):''"><div class="guildTargetHint">${saved.atk1?formatGameAtk(parseGameAtk(saved.atk1)):''}</div></div><div><span class="guildFieldLabel">Lv.100 공격력</span><input class="input guildAtkInput" type="text" autocomplete="off" autocapitalize="characters" value="${saved.atk||''}" placeholder="예: 354.92K" oninput="this.nextElementSibling.textContent=this.value?formatGameAtk(parseGameAtk(this.value)):''"><div class="guildTargetHint">${saved.atk?formatGameAtk(parseGameAtk(saved.atk)):''}</div></div><div><span class="guildFieldLabel">단장</span><label style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:900;min-height:36px"><input type="radio" name="guildLeader" class="guildLeaderRadio" value="${id}" ${GUILD_LEADER_ID===id?'checked':''} onchange="GUILD_LEADER_ID=this.value"> +10%</label></div><div><span class="guildFieldLabel">원하는 순위</span><select class="input guildRankSelect">${Array.from({length:7},(_,r)=>`<option value="${r+1}" ${String(r+1)===defaultRank?'selected':''}>${r+1}위</option>`).join('')}<option value="auto" ${defaultRank==='auto'?'selected':''}>7위 아래 자동</option></select></div></div>`}).join('')}
-
-function parseGameAtk(value){
-  if(typeof value==='number')return value;
-  let s=String(value||'').trim().replace(/,/g,'').replace(/\s+/g,'').toUpperCase();
-  if(!s)return NaN;
-  const m=s.match(/^(\d+(?:\.\d+)?)([KMG])?$/);
-  if(!m)return NaN;
-  const unit=m[2]||'';
-  const mult=unit==='G'?1000000000:unit==='M'?1000000:unit==='K'?1000:1;
-  return Number(m[1])*mult;
-}
-function formatGameAtk(value){
-  const n=Math.max(0,Math.floor(Number(value)||0));
-  if(n<1000)return n.toLocaleString();
-  const parts=[];
-  let rest=n;
-  const units=[
-    [1000000000,'G'],
-    [1000000,'M'],
-    [1000,'K']
-  ];
-  for(const [size,label] of units){
-    if(rest>=size){
-      const q=Math.floor(rest/size);
-      parts.push(q.toLocaleString()+label);
-      rest%=size;
-    }
-  }
-  if(rest>0)parts.push(rest.toLocaleString());
-  return parts.join(' ');
-}
-
-function predictedGuildAtk(atk1,atk100,level){
-  if(level<=1)return Math.floor(atk1);
-  if(level>=100)return Math.floor(atk100);
-  const progress=(GUILD_LEVEL_RAW[level-1]-GUILD_LEVEL_RAW[0])/(GUILD_LEVEL_RAW[99]-GUILD_LEVEL_RAW[0]);
-  return Math.floor(atk1+(atk100-atk1)*progress);
-}
-function calculateGuildLevels(){saveGuildInputs();if(GUILD_SELECTED.length!==11){alert('먼저 쿠키를 정확히 11마리 선택해주세요.');return}const checkedLeader=document.querySelector('.guildLeaderRadio:checked');GUILD_LEADER_ID=checkedLeader?.value||GUILD_LEADER_ID;if(!GUILD_LEADER_ID||!GUILD_SELECTED.includes(GUILD_LEADER_ID)){alert('단장 쿠키 1마리를 선택해주세요.');return}const rows=GUILD_SELECTED.map(id=>{const c=D.cookies.find(x=>x.id===id),v=GUILD_INPUTS[id]||{};return{id,c,atk1:parseGameAtk(v.atk1),atk100:parseGameAtk(v.atk),rank:v.rank||'',leader:id===GUILD_LEADER_ID}});if(rows.some(x=>!Number.isFinite(x.atk1)||x.atk1<=0||!Number.isFinite(x.atk100)||x.atk100<=0)){alert('11마리의 Lv.1 / Lv.100 공격력을 모두 입력해주세요.');return}const fixed=rows.filter(x=>x.rank!=='auto'&&x.rank!=='').map(x=>({...x,rank:Number(x.rank)}));const autos=rows.filter(x=>x.rank==='auto'||x.rank==='');const ranks=fixed.map(x=>x.rank);if(fixed.length!==7||autos.length!==4||new Set(ranks).size!==7||ranks.some(r=>r<1||r>7)||![1,2,3,4,5,6,7].every(r=>ranks.includes(r))){alert('1~7위는 각각 한 마리씩 지정하고, 나머지 4마리는 「7위 아래 자동」으로 선택해주세요.');return}const calcAtk=(x,lv)=>Math.floor(predictedGuildAtk(x.atk1,x.atk100,lv)*(x.leader?1.10:1));fixed.sort((a,b)=>a.rank-b.rank);let previous=Infinity,impossible=false;fixed.forEach((x,idx)=>{let chosen=100,atk=calcAtk(x,100);if(idx>0){chosen=0;for(let lv=100;lv>=1;lv--){const candidate=calcAtk(x,lv);if(candidate<previous){chosen=lv;atk=candidate;break}}}if(chosen===0){impossible=true;x.level=null;x.adjusted=calcAtk(x,1)}else{x.level=chosen;x.adjusted=atk;previous=atk}});const seventh=fixed.find(x=>x.rank===7);const limit=seventh&&seventh.level?seventh.adjusted:null;autos.forEach(x=>{let chosen=0,atk=calcAtk(x,1);if(limit!==null){for(let lv=100;lv>=1;lv--){const candidate=calcAtk(x,lv);if(candidate<limit){chosen=lv;atk=candidate;break}}}if(chosen===0){impossible=true;x.level=null;x.adjusted=atk}else{x.level=chosen;x.adjusted=atk}});autos.sort((a,b)=>(b.adjusted||0)-(a.adjusted||0));autos.forEach((x,i)=>x.rank=8+i);const all=[...fixed,...autos];const result=document.getElementById('guildResult');result.style.display='block';result.innerHTML=`<div class="guildResultHead"><div><b>④ 권장 레벨 결과</b><div class="note">1~7위는 지정한 순서대로 계산하고, 나머지 4마리는 7위보다 낮은 범위에서 각각 가능한 최고 레벨로 맞춥니다. 단장은 공격력 +10% 적용입니다.</div></div></div>${impossible?'<div class="guildImpossible" style="margin-bottom:9px">⚠ 일부 쿠키는 Lv.1까지 낮춰도 조건을 만족할 수 없습니다.</div>':''}<div>${all.map(x=>`<div class="guildResultRow"><div class="guildRank">${x.rank}위</div><img src="${x.c.image}" alt=""><div><b style="font-size:11px">${esc(x.c.name)}${x.leader?' 👑 단장':''}</b><div class="guildTargetHint">Lv.1 ${formatGameAtk(x.atk1)} · Lv.100 ${formatGameAtk(x.atk100)}${x.leader?' · 공격력 +10% 적용':''}</div></div><div class="guildLevel">${x.level?`Lv.${x.level}`:'불가'}</div><div class="guildAtk">${x.level?`예상 ${formatGameAtk(x.adjusted)}`:`Lv.1도 ${formatGameAtk(x.adjusted)}`}</div></div>`).join('')}</div><div class="note" style="margin-top:11px">※ 자동 4마리는 서로 순위를 맞추려고 추가로 레벨을 낮추지 않습니다. 각자 7위보다 낮게 유지되는 최고 레벨을 사용하고, 결과 표시는 계산 공격력 순으로 8~11위를 붙입니다.</div>`;result.scrollIntoView({behavior:'smooth',block:'start'})}
-</script>
-
-</body></html>
