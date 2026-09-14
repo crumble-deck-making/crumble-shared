@@ -680,35 +680,6 @@ body{
 }
 </style>
 
-
-<style>
-/* 길드토벌전: 기존 한 줄 디자인 유지 + 와사비 문어 칸 추가 */
-.guildSetupRow{
-  grid-template-columns:48px minmax(120px,1fr) minmax(105px,.65fr) minmax(105px,.65fr) minmax(78px,.45fr) minmax(88px,.48fr) minmax(90px,.5fr) !important;
-}
-@media(max-width:700px){
-  .guildSetupRow{
-    grid-template-columns:38px minmax(72px,.8fr) minmax(80px,.85fr) minmax(80px,.85fr) 54px 68px 65px !important;
-    gap:5px !important;
-    padding:7px 5px !important;
-  }
-  .guildSetupRow>*{min-width:0 !important}
-  .guildSetupRow .input,.guildSetupRow select{
-    min-width:0 !important;
-    width:100% !important;
-    box-sizing:border-box !important;
-  }
-  .guildSetupRow .guildFieldLabel{
-    white-space:normal !important;
-    text-align:center;
-    line-height:1.05;
-  }
-  .guildSetupRow label{
-    white-space:nowrap !important;
-  }
-}
-</style>
-
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
 
 <div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
@@ -837,7 +808,7 @@ body{
 </div>
 
 <div class="card"><div class="guildPickerHead"><div><b>① 내 덱 쿠키 선택</b><div class="note">석류맛 쿠키는 목록에서 제외됩니다.</div></div><span id="guildSelectedCount" class="guildSelectedCount">0 / 11</span></div><input id="guildCookieSearch" class="input" type="search" placeholder="쿠키 이름 검색" oninput="renderGuildCookiePicker()" style="margin-bottom:9px"><div id="guildCookiePicker" class="guildCookiePicker"></div></div>
-<div class="card"><b>② 공격력 입력 · ③ 원하는 순위 지정</b><div class="note" style="margin:4px 0 10px">각 쿠키의 Lv.1 / Lv.100 공격력을 게임에서 보이는 그대로 입력하세요. 예: 244.85K / 354.92K. 단장 1마리는 공격력 +10%, 「와사비 문어 펫」 적용 쿠키는 각각 공격력 +10%로 계산합니다. 와사비 문어 펫은 여러 쿠키에 체크할 수 있고, 단장과 겹치면 총 +20%로 계산합니다. 1~7위는 중복 없이 지정하고, 나머지 4마리는 ‘7위 아래 자동’으로 두세요.</div><div id="guildSetupRows" class="guildSetupRows"><div class="note">위에서 쿠키 11마리를 선택하세요.</div></div><button class="primary guildCalcBtn" type="button" onclick="calculateGuildLevels()">권장 레벨 계산하기</button></div>
+<div class="card"><div style="font-size:10px;font-weight:900;color:#b06c4e;margin:0 0 8px">TEST: 공격력 저장 기능 제거본 · 와사비 문어 포함</div><b>② 공격력 입력 · ③ 원하는 순위 지정</b><div class="note" style="margin:4px 0 10px">각 쿠키의 Lv.1 / Lv.100 공격력을 게임에서 보이는 그대로 입력하세요. 예: 244.85K / 354.92K. 단장 1마리는 공격력 +10%, 「와사비 문어 펫」 적용 쿠키는 각각 공격력 +10%로 계산합니다. 와사비 문어 펫은 여러 쿠키에 체크할 수 있고, 단장과 겹치면 총 +20%로 계산합니다. 1~7위는 중복 없이 지정하고, 나머지 4마리는 ‘7위 아래 자동’으로 두세요.</div><div id="guildSetupRows" class="guildSetupRows"><div class="note">위에서 쿠키 11마리를 선택하세요.</div></div><button class="primary guildCalcBtn" type="button" onclick="calculateGuildLevels()">권장 레벨 계산하기</button></div>
 <div id="guildResult" class="card guildResult" style="display:none"></div>
 </section>
 
@@ -1814,7 +1785,7 @@ const GUILD_LEVEL_MULT=GUILD_LEVEL_RAW.map(v=>1+v/10000);
 const GUILD_LV100_MULT=GUILD_LEVEL_MULT[99];
 let GUILD_SELECTED=[],GUILD_INPUTS={},GUILD_LEADER_ID='';
 function isPomegranateCookie(c){return c&&(c.name==='석류맛 쿠키'||c.name==='석류')}
-function initGuildSetting(){renderGuildCookiePicker();renderGuildSetupRows();renderGuildAttackProfiles()}
+function initGuildSetting(){renderGuildCookiePicker();renderGuildSetupRows()}
 function renderGuildCookiePicker(){const box=document.getElementById('guildCookiePicker');if(!box||!window.APP_DATA)return;const q=(document.getElementById('guildCookieSearch')?.value||'').trim().toLowerCase();const list=D.cookies.filter(c=>!isPomegranateCookie(c)&&(!q||c.name.toLowerCase().includes(q)));box.innerHTML=list.map(c=>`<button type="button" class="guildCookiePick ${GUILD_SELECTED.includes(c.id)?'on':''}" onclick="toggleGuildCookie('${c.id}')"><img src="${c.image}" alt=""><span>${esc(c.name)}</span></button>`).join('');document.getElementById('guildSelectedCount').textContent=`${GUILD_SELECTED.length} / 11`}
 function saveGuildInputs(){document.querySelectorAll('.guildSetupRow[data-id]').forEach(row=>{const id=row.dataset.id;GUILD_INPUTS[id]={atk1:row.querySelector('.guildAtk1Input')?.value||'',atk:row.querySelector('.guildAtkInput')?.value||'',rank:row.querySelector('.guildRankSelect')?.value||'',wasabi:!!row.querySelector('.guildWasabiCheck')?.checked}})}
 function toggleGuildCookie(id){saveGuildInputs();const i=GUILD_SELECTED.indexOf(id);if(i>=0){GUILD_SELECTED.splice(i,1);if(GUILD_LEADER_ID===id)GUILD_LEADER_ID=''}else{if(GUILD_SELECTED.length>=11){alert('쿠키는 11마리까지 선택할 수 있어요.');return}GUILD_SELECTED.push(id)}renderGuildCookiePicker();renderGuildSetupRows();document.getElementById('guildResult').style.display='none'}
