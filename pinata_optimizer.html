@@ -1915,10 +1915,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   }
 
   function boot() {
-    fetch("../data/optimizer_13002.json", { cache: "no-store" }).then(function (response) {
-      if (!response.ok) throw new Error("APK 최적화 데이터 파일을 읽지 못했습니다.");
-      return response.json();
-    }).then(function (payload) {
+    Promise.resolve(window.__OPTIMIZER_DATA__).then(function (payload) {
+      if (!payload) throw new Error("내장 APK 최적화 데이터를 읽지 못했습니다.");
       data = payload;
       state = applyUrlInputs(loadState());
       renderDeck();
