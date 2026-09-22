@@ -283,7 +283,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     <section class="hero">
       <div>
         <p class="eyebrow">APK 1.3.002 · ACCOUNT OPTIMIZER</p>
-        <h1>내 계정 기준 피냐타 최고점 찾기</h1><p style="margin:6px 0 0;color:#5d6df7;font-weight:800;font-size:12px">현재 레벨 고정 · 옵션 수치 추천 v2</p>
+        <h1>내 계정 기준 피냐타 최고점 찾기</h1><p style="margin:6px 0 0;color:#5d6df7;font-weight:800;font-size:12px">현재 레벨 고정 · 옵션 수치 추천 v3</p>
         <p class="lead">현재 브라이트시커 성급·능력치·해금된 슈가룬(최대 8칸)·공용 장비 12부위를 입력하면, 각 장비의 현재 레벨은 그대로 고정하고 보조옵션을 어떻게 올릴지와 쿠키별 룬 배분을 함께 탐색합니다.</p>
       </div>
       <div class="hero-actions">
@@ -1642,10 +1642,6 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     });
     $("#cheese-seeker").checked = !!state.supports.cheeseAlsoHitsSeeker;
     $("#cheese-seeker").addEventListener("change", function () { state.supports.cheeseAlsoHitsSeeker = $("#cheese-seeker").checked; updateQuick(); });
-    var rarity = $("#rarity-cap");
-    var rarityLabels = ["", "일반", "고급", "희귀", "마법", "에픽", "스페셜", "슈퍼에픽", "유니크", "레전더리", "영원"];
-    for (var i = 1; i <= 10; i += 1) rarity.appendChild(option(i, i + " · " + rarityLabels[i], i === state.optimizer.rarityCap));
-    rarity.addEventListener("change", function () { state.optimizer.rarityCap = num(rarity.value, 10); saveStateSoon(); });
   }
 
   function currentEvaluation() {
