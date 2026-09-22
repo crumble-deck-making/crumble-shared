@@ -169,7 +169,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
 .gear-type { display: block; color: var(--faint); font: 740 9px/1 ui-monospace, monospace; }
 .gear-type-name { display: block; margin-top: 5px; font-size: 12px; }
 .gear-main { align-self: center; min-width: 0; }
-.gear-main strong { display: block; overflow: hidden; color: var(--accent); font: 750 11px/1.3 ui-monospace, monospace; text-overflow: ellipsis; white-space: nowrap; }
+.gear-main strong { display: block; overflow: hidden; color: var(--accent); font: 750 10px/1.3 ui-monospace, monospace; text-overflow: ellipsis; white-space: nowrap; }.gear-main input { margin-top: 5px; padding: 8px; }
 .gear-sub-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .gear-sub { display: grid; grid-template-columns: minmax(0, 1fr) 72px; gap: 5px; }
 .gear-sub select, .gear-sub input { padding: 8px; }
@@ -370,7 +370,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
         <section class="panel">
           <div class="panel-head">
             <div><span class="step">4</span><h2>공용 장비 12부위</h2></div>
-            <p>장비는 모든 쿠키에게 동일하게 적용합니다. 현재 보조옵션은 표시된 실제 값을 입력하세요.</p>
+            <p>장비는 모든 쿠키에게 동일하게 적용합니다. 주옵션·보조옵션은 게임에 표시된 실제 값을 입력하세요. 레벨 선택 시 APK 예상값을 자동으로 채우며 직접 수정할 수 있습니다.</p>
           </div>
           <div class="gear-toolbar">
             <label><span>추천 목표 레벨</span><input id="target-level" type="number" min="1" max="150" step="1"></label>
@@ -450,7 +450,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       <div class="gear-slot"><span class="gear-type"></span><strong class="gear-type-name"></strong></div>
       <label class="gear-item-field"><span>현재 장비</span><select class="gear-item"></select></label>
       <label><span>레벨</span><input class="gear-level" type="number" min="1" max="150" step="1"></label>
-      <div class="gear-main"><span>주옵션</span><strong></strong></div>
+      <div class="gear-main"><span>주옵션 실제값</span><strong></strong><input class="gear-main-value" type="number" step="0.01" inputmode="decimal" placeholder="게임 표시값"></div>
       <div class="gear-sub-fields"></div>
     </article>
   </template>
@@ -558,12 +558,21 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     return value;
   }
 
+  function gearMainValue(piece, item, data) {
+    if (!piece || !item) return 0;
+    var manual = Number(piece.mainValue);
+    if (piece.mainValue !== null && piece.mainValue !== undefined && piece.mainValue !== "" && Number.isFinite(manual)) {
+      return manual;
+    }
+    return mainOptionValue(item, piece.level, data);
+  }
+
   function gearPieceStats(piece, data) {
     var stats = emptyStats();
     if (!piece || !piece.equipmentId) return stats;
     var item = data.equipment.find(function (row) { return String(row.id) === String(piece.equipmentId); });
     if (!item) return stats;
-    stats[item.mainKey] = n(stats[item.mainKey], 0) + mainOptionValue(item, piece.level, data);
+    stats[item.mainKey] = n(stats[item.mainKey], 0) + gearMainValue(piece, item, data);
     (piece.subs || []).forEach(function (sub) {
       if (!sub || !sub.key) return;
       stats[sub.key] = n(stats[sub.key], 0) + n(sub.value, 0);
@@ -943,7 +952,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
         level: current.level,
         mainKey: item.mainKey,
         mainLabel: item.mainLabel,
-        mainValue: mainOptionValue(item, current.level, data),
+        mainValue: gearMainValue(current, item, data),
         subs: current.subs || [],
         stats: gearPieceStats(current, data),
         current: true
@@ -1079,6 +1088,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     normalizeSubValue: normalizeSubValue,
     normalizeRuneValue: normalizeRuneValue,
     mainOptionValue: mainOptionValue,
+    gearMainValue: gearMainValue,
     gearPieceStats: gearPieceStats,
     gearSetStats: gearSetStats,
     runeSlotStats: runeSlotStats,
@@ -1173,7 +1183,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
 
   function defaultGear() {
     return Array.from({ length: 12 }, function (_, index) {
-      return { type: index + 1, equipmentId: null, level: index === 0 ? 147 : 150, subs: [] };
+      return { type: index + 1, equipmentId: null, level: index === 0 ? 147 : 150, mainValue: null, subs: [] };
     });
   }
 
@@ -1506,12 +1516,21 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   function refreshGearMain(row, piece) {
     var item = itemForPiece(piece);
     var strong = $(".gear-main strong", row);
+    var input = $(".gear-main-value", row);
     if (!item) {
-      strong.textContent = "미입력";
+      strong.textContent = "장비를 선택하세요";
+      input.value = "";
+      input.disabled = true;
       renderGearSubFields($(".gear-sub-fields", row), piece, null);
       return;
     }
-    strong.textContent = item.mainLabel + " +" + format(Engine.mainOptionValue(item, piece.level, data), 2);
+    var predicted = Engine.mainOptionValue(item, piece.level, data);
+    if (piece.mainValue === null || piece.mainValue === undefined || piece.mainValue === "" || !Number.isFinite(Number(piece.mainValue))) {
+      piece.mainValue = predicted;
+    }
+    input.disabled = false;
+    input.value = piece.mainValue;
+    strong.textContent = item.mainLabel + " · APK예상 " + format(predicted, 2);
     renderGearSubFields($(".gear-sub-fields", row), piece, item);
   }
 
@@ -1535,15 +1554,29 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       });
       let levelInput = $(".gear-level", row);
       levelInput.value = piece.level;
+      let mainValueInput = $(".gear-main-value", row);
       itemSelect.addEventListener("change", function () {
         piece.equipmentId = itemSelect.value || null;
         piece.subs = [];
+        var selectedItem = itemForPiece(piece);
+        piece.mainValue = selectedItem ? Engine.mainOptionValue(selectedItem, piece.level, data) : null;
         refreshGearMain(row, piece);
         updateQuick();
       });
       levelInput.addEventListener("input", function () {
         piece.level = clamp(Math.round(num(levelInput.value, 150)), 1, 150);
+        var selectedItem = itemForPiece(piece);
+        piece.mainValue = selectedItem ? Engine.mainOptionValue(selectedItem, piece.level, data) : null;
         refreshGearMain(row, piece);
+        updateQuick();
+      });
+      mainValueInput.addEventListener("input", function () {
+        if (mainValueInput.value === "") {
+          var selectedItem = itemForPiece(piece);
+          piece.mainValue = selectedItem ? Engine.mainOptionValue(selectedItem, piece.level, data) : null;
+        } else {
+          piece.mainValue = num(mainValueInput.value, 0);
+        }
         updateQuick();
       });
       refreshGearMain(row, piece);
@@ -1655,6 +1688,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       if (!chosen) return;
       piece.equipmentId = chosen.id;
       piece.level = piece.type === 1 ? 147 : state.optimizer.targetLevel;
+      piece.mainValue = Engine.mainOptionValue(chosen, piece.level, data);
       piece.subs = bestSubChoices(chosen);
     });
     renderGear();
