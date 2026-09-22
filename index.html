@@ -680,6 +680,11 @@ body{
 }
 </style>
 
+
+<style id="optimizer-menu-patch">
+@media(min-width:901px){.menu{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.menu .optimizerMenuBtn .ico{background:#eef8ff;color:#3678d4}
+</style>
 </head><body><header class="top"><div class="topin"><div class="brand"><div><b>크럼블 공용 도구</b><small>CRUMBLE HUB STYLE</small></div></div><div style="display:flex;align-items:center;gap:7px">
 
 <div id="dbBadge" class="dbbadge">로컬 데모</div></div></div></header><main class="wrap">
@@ -687,7 +692,7 @@ body{
 <div class="hubIntro">
       <div class="release">2026. 07. 30 정식 출시</div>
       <h1>쿠키런: 크럼블 공용 도구</h1>
-      <p>덱 구성, 슈가룬, 스테이지 정보, 길드토벌전 세팅, 자유게시판을 한곳에서</p>
+      <p>덱 구성, 슈가룬, 스테이지 정보, 길드토벌전 세팅, 피냐타 최적화, 자유게시판을 한곳에서</p>
       <div class="lastUpdate">마지막 업데이트 · <span id="homeUpdated">확인 중</span></div>
     </div>
 <div class="menu">
@@ -695,6 +700,7 @@ body{
 <button onclick="go('runes')"><div class="ico">✦</div><strong>쿠키별 슈가룬</strong><span>쿠키 하나당 설정 1개 · 복수 룬 선택</span></button>
 <button onclick="go('power')"><div class="ico">📈</div><strong>스테이지 정보</strong><span>적정투력 · 명중 · 집중 한 번에</span></button><button onclick="go('guildsetting')"><div class="ico">🎯</div><strong>길드토벌전 세팅</strong><span>11쿠키 공격력 순위 · 권장 레벨 자동 계산</span></button>
 <button onclick="go('memo')"><div class="ico">📝</div><strong>자유게시판</strong><span>제목 · 내용 · 사진 · 동영상 공유</span></button>
+<button class="optimizerMenuBtn" type="button" onclick="location.href='pinata_optimizer.html'"><div class="ico">🧪</div><strong>피냐타 최적화 시뮬레이터</strong><span>내 덱 입력 · 장비/슈가룬 최적화 · 예상 점수 비교</span></button>
 </div>
 <div class="homeQuickLinks"><a class="naverCafe" href="https://cafe.naver.com/ccrumble" target="_blank" rel="noopener">N 쿠키런: 크럼블 공식카페</a><button class="homeRankBtn" type="button" onclick="showCookieRanking()">🍪 쿠키 사용 랭킹</button></div>
 <div class="hero"><div class="ey">QUICK START</div><h1>오늘은 무엇을 준비할까요?</h1><p>필요한 기능을 골라 바로 시작하세요.</p></div>
