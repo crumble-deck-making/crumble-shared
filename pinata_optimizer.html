@@ -382,16 +382,14 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
 
         <section class="panel calibration-panel">
           <div class="panel-head">
-            <div><span class="step">5</span><h2>실측 점수 보정</h2></div>
-            <p>둘 중 하나만 입력해도 변경 후 점수를 같은 기준으로 환산합니다.</p>
+            <div><span class="step">5</span><h2>현재 피냐타 점수</h2></div>
+            <p>전투 종료 화면에 표시되는 최종 점수만 입력하세요.</p>
           </div>
           <div class="stat-grid calibration-grid">
-            <label><span>현재 피냐타 점수</span><input id="current-score" type="number" min="0" max="100" step="0.01" placeholder="예: 91.25"></label>
-            <label><span>현재 총 피해량</span><input id="current-damage" type="number" min="0" step="1000000" placeholder="있으면 더 정확"></label>
-            <label><span>100점 기준 피해량</span><input id="score-reference" type="number" min="1" step="1000000"></label>
+            <label><span>현재 최종 점수</span><input id="current-score" type="text" inputmode="decimal" placeholder="예: 293797499229 또는 293.797G"></label>
             <label><span>시커 기본 스킬 주기(초)</span><input id="skill-cycle" type="number" min="0.1" step="0.05"></label>
           </div>
-          <p class="note">정확한 원본 점수식은 crumb 서버에만 있었으므로, 피해량 약 20% 감소 = 약 5점 감소 조건의 복원식을 사용합니다. 장비·룬 순위는 피해 효율로 비교합니다.</p>
+          <p class="note">추천 점수는 입력한 현재 점수에 계산된 장비·룬 효율비를 곱해 환산합니다. 예: 현재 293.797G, 추천 효율 +10%라면 예상 점수 약 323.177G.</p>
         </section>
 
         <div class="run-dock">
@@ -842,32 +840,27 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     return { stats: stats, peak: peak, average: average, casts: casts, objective: objective };
   }
 
-  function scoreFromDamage(damage, reference) {
-    if (!(damage > 0)) return null;
-    return clamp(100 + 5 * Math.log(damage / Math.max(1, reference)) / Math.log(1.25), 0, 100);
-  }
-
-  function damageFromScore(score, reference) {
-    if (!(score > 0)) return null;
-    return Math.max(1, reference) * Math.pow(1.25, (score - 100) / 5);
+  function parseScoreValue(value) {
+    if (value === null || value === undefined) return 0;
+    var raw = String(value).trim().replace(/,/g, "").toUpperCase();
+    if (!raw) return 0;
+    var mult = 1;
+    if (raw.endsWith("T")) { mult = 1e12; raw = raw.slice(0, -1); }
+    else if (raw.endsWith("G")) { mult = 1e9; raw = raw.slice(0, -1); }
+    else if (raw.endsWith("M")) { mult = 1e6; raw = raw.slice(0, -1); }
+    else if (raw.endsWith("K")) { mult = 1e3; raw = raw.slice(0, -1); }
+    var parsed = Number(raw);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed * mult : 0;
   }
 
   function projection(currentEval, nextEval, state, data) {
     var ratio = nextEval.objective / Math.max(1, currentEval.objective);
-    var reference = n(state.calibration.scoreReferenceDamage, data.defaults.scoreReferenceDamage);
-    var currentDamage = n(state.calibration.currentDamage, 0);
-    if (!(currentDamage > 0)) currentDamage = damageFromScore(n(state.calibration.currentScore, 0), reference);
-    if (!(currentDamage > 0)) {
-      return { ratio: ratio, gainPercent: (ratio - 1) * 100, currentDamage: null, nextDamage: null, currentScore: null, nextScore: null };
-    }
-    var nextDamage = currentDamage * ratio;
+    var currentScore = parseScoreValue(state.calibration.currentScore);
     return {
       ratio: ratio,
       gainPercent: (ratio - 1) * 100,
-      currentDamage: currentDamage,
-      nextDamage: nextDamage,
-      currentScore: scoreFromDamage(currentDamage, reference),
-      nextScore: scoreFromDamage(nextDamage, reference)
+      currentScore: currentScore > 0 ? currentScore : null,
+      nextScore: currentScore > 0 ? currentScore * ratio : null
     };
   }
 
@@ -1104,8 +1097,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     buffChain: buffChain,
     estimatedCasts: estimatedCasts,
     evaluate: evaluate,
-    scoreFromDamage: scoreFromDamage,
-    damageFromScore: damageFromScore,
+    parseScoreValue: parseScoreValue,
     projection: projection,
     gearCandidates: gearCandidates,
     bestRuneBuild: bestRuneBuild,
@@ -1239,9 +1231,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       },
       gear: defaultGear(),
       calibration: {
-        currentScore: "",
-        currentDamage: "",
-        scoreReferenceDamage: data.defaults.scoreReferenceDamage
+        currentScore: ""
       },
       optimizer: {
         targetLevel: 150,
@@ -1302,8 +1292,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var map = {
       seekerAttack: ["seeker", "attack"], critRate: ["seeker", "critRate"],
       critDamage: ["seeker", "critDamage"], skillHaste: ["seeker", "skillHaste"],
-      skillAmp: ["seeker", "skillAmp"], seekerGrade: ["seeker", "grade"], score: ["calibration", "currentScore"],
-      damage: ["calibration", "currentDamage"]
+      skillAmp: ["seeker", "skillAmp"], seekerGrade: ["seeker", "grade"], score: ["calibration", "currentScore"]
     };
     Object.keys(map).forEach(function (key) {
       if (params.has(key)) target[map[key][0]][map[key][1]] = num(params.get(key), 0);
@@ -1596,7 +1585,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     ["#figure-rune-amp", "supports", "figureRuneAmp"], ["#ceylon-rune-amp", "supports", "ceylonRuneAmp"],
     ["#milk-uptime", "supports", "milkStackUptime"], ["#figure-uptime", "supports", "figureUptime"],
     ["#dark-uptime", "supports", "darkChocoUptime"], ["#boss-defense-weight", "supports", "bossDefenseWeight"],
-    ["#target-level", "optimizer", "targetLevel"], ["#score-reference", "calibration", "scoreReferenceDamage"],
+    ["#target-level", "optimizer", "targetLevel"],
     ["#skill-cycle", "seeker", "baseSkillCycle"]
   ];
 
@@ -1622,9 +1611,11 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       });
     });
     $("#current-score").value = state.calibration.currentScore;
-    $("#current-damage").value = state.calibration.currentDamage;
-    $("#current-score").addEventListener("input", function () { state.calibration.currentScore = $("#current-score").value; saveStateSoon(); });
-    $("#current-damage").addEventListener("input", function () { state.calibration.currentDamage = $("#current-damage").value; saveStateSoon(); });
+    $("#current-score").addEventListener("input", function () {
+      state.calibration.currentScore = $("#current-score").value;
+      updateQuick();
+      saveStateSoon();
+    });
     $("#cheese-seeker").checked = !!state.supports.cheeseAlsoHitsSeeker;
     $("#cheese-seeker").addEventListener("change", function () { state.supports.cheeseAlsoHitsSeeker = $("#cheese-seeker").checked; updateQuick(); });
     var rarity = $("#rarity-cap");
@@ -1655,7 +1646,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       $("#quick-effective").textContent = compact(evaluated.peak.effectiveSkillAttack);
       $("#quick-casts").textContent = evaluated.casts + "회";
       $("#quick-gain").textContent = "실행 전";
-      $("#quick-score").textContent = state.calibration.currentScore || state.calibration.currentDamage ? "실측 보정 준비됨" : "실측 점수 입력 시 환산";
+      var currentScore = Engine.parseScoreValue(state.calibration.currentScore);
+      $("#quick-score").textContent = currentScore > 0 ? compact(currentScore) + " 기준" : "현재 점수 입력 시 환산";
       saveStateSoon();
     } catch (error) {
       $("#quick-display").textContent = "입력 확인";
@@ -1714,7 +1706,6 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     bindings.forEach(function (binding) { $(binding[0]).value = state[binding[1]][binding[2]]; });
     $("#seeker-grade").value = seekerGrade();
     $("#current-score").value = state.calibration.currentScore;
-    $("#current-damage").value = state.calibration.currentDamage;
     $("#cheese-seeker").checked = !!state.supports.cheeseAlsoHitsSeeker;
     $("#rarity-cap").value = state.optimizer.rarityCap;
     renderGear();
@@ -1748,8 +1739,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var cards = [
       { label: "현재 효율", value: "100.0", sub: "입력 장비·룬" },
       { label: "추천 효율", value: (projection.ratio * 100).toFixed(1), sub: (projection.gainPercent >= 0 ? "+" : "") + projection.gainPercent.toFixed(2) + "%", best: true },
-      { label: "현재 점수", value: projection.currentScore == null ? "미보정" : projection.currentScore.toFixed(2), sub: projection.currentDamage == null ? "실측 입력 필요" : compact(projection.currentDamage) },
-      { label: "추천 점수", value: projection.nextScore == null ? "+" + projection.gainPercent.toFixed(1) + "%" : projection.nextScore.toFixed(2), sub: projection.nextDamage == null ? "상대 피해 효율" : compact(projection.nextDamage), best: true }
+      { label: "현재 점수", value: projection.currentScore == null ? "미입력" : compact(projection.currentScore), sub: projection.currentScore == null ? "전투 종료 점수를 입력" : Math.round(projection.currentScore).toLocaleString("ko-KR") },
+      { label: "예상 점수", value: projection.nextScore == null ? "+" + projection.gainPercent.toFixed(1) + "%" : compact(projection.nextScore), sub: projection.nextScore == null ? "현재 점수 입력 시 환산" : Math.round(projection.nextScore).toLocaleString("ko-KR"), best: true }
     ];
     cards.forEach(function (card) {
       var node = document.createElement("article");
