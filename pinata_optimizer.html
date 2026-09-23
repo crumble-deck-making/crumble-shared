@@ -210,16 +210,42 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
 .chain-row.key { border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line)); background: color-mix(in srgb, var(--accent) 7%, var(--surface-2)); }
 .chain-row.key strong { color: var(--accent); font-size: 13px; }
 .change-list, .cookie-rune-list { display: grid; gap: 7px; }
-.change-item { padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); }
+.change-item { padding: 11px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
 .change-item .change-top { display: flex; justify-content: space-between; gap: 8px; }
 .change-item strong { font-size: 10px; }
 .change-item em { color: var(--good); font: 750 9px/1 ui-monospace, monospace; font-style: normal; }
 .change-item p { margin: 5px 0 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
-.cookie-rune { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 8px; align-items: center; }
+.gear-action { margin-top: 9px; padding: 9px 10px; border-radius: 10px; color: var(--ink); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); font-size: 10px; font-weight: 790; line-height: 1.55; }
+.gear-swap { display: grid; grid-template-columns: 1fr auto 1fr; gap: 7px; align-items: stretch; margin-top: 8px; }
+.gear-swap > div { min-width: 0; padding: 8px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.gear-swap small { display: block; margin-bottom: 4px; color: var(--faint); font-size: 8px; font-weight: 800; letter-spacing: .06em; }
+.gear-swap span { color: var(--muted); font-size: 9px; line-height: 1.5; }
+.gear-swap .arrow { display: grid; place-items: center; padding: 0; border: 0; color: var(--accent); background: transparent; font-weight: 900; }
+.cookie-rune { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 9px; align-items: start; padding: 9px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); }
 .cookie-rune img { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 9px; object-fit: cover; background: var(--surface-2); }
 .cookie-rune strong, .cookie-rune span { display: block; }
-.cookie-rune strong { font-size: 9px; }
-.cookie-rune span { margin-top: 2px; color: var(--accent); font-size: 9px; font-weight: 760; }
+.cookie-rune strong { font-size: 10px; }
+.cookie-rune span { margin-top: 2px; color: var(--accent); font-size: 9px; font-weight: 780; }
+.cookie-rune small { display: block; margin-top: 4px; color: var(--muted); font-size: 8.5px; line-height: 1.5; }
+.cookie-rune.pinot { border-color: color-mix(in srgb, var(--warn) 35%, var(--line)); background: color-mix(in srgb, var(--warn) 6%, var(--surface-2)); }
+.cookie-rune.pinot span { color: var(--warn); }
+.audit-note { margin: 0 16px 14px; padding: 10px 11px; border: 1px solid color-mix(in srgb, var(--warn) 30%, var(--line)); border-radius: 11px; color: var(--muted); background: color-mix(in srgb, var(--warn) 6%, var(--surface-2)); font-size: 9px; line-height: 1.6; }
+.audit-note b { color: var(--ink); }
+.rune-summary { width: 100%; padding: 11px; border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line)); border-radius: 12px; background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--surface)), var(--surface-2)); }
+.rune-summary strong, .rune-summary small { display: block; }
+.rune-summary strong { color: var(--accent); font-size: 12px; }
+.rune-summary small { margin-top: 5px; color: var(--muted); font-size: 9px; line-height: 1.55; }
+.rune-ranking { width: 100%; margin-top: 2px; border-collapse: collapse; font-size: 9px; }
+.rune-ranking th, .rune-ranking td { padding: 6px 5px; border-bottom: 1px solid var(--line); text-align: left; }
+.rune-ranking th { color: var(--faint); font-size: 8px; }
+.rune-ranking td:last-child { text-align: right; font-family: ui-monospace, monospace; }
+.roadmap { display: grid; gap: 8px; }
+.roadmap-step { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 9px; align-items: start; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface-2); }
+.roadmap-step b { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 8px; color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); font: 800 10px/1 ui-monospace, monospace; }
+.roadmap-step strong, .roadmap-step small { display: block; }
+.roadmap-step strong { font-size: 10px; }
+.roadmap-step small { margin-top: 3px; color: var(--muted); font-size: 8.5px; line-height: 1.5; }
+.roadmap-step em { color: var(--good); font: 750 9px/1.2 ui-monospace, monospace; font-style: normal; white-space: nowrap; }
 .result-details { border-top: 1px solid var(--line); }
 .result-details summary { padding: 13px 16px; cursor: pointer; color: var(--muted); font-size: 10px; font-weight: 750; }
 .result-details ul { margin: 0; padding: 0 24px 15px 34px; color: var(--muted); font-size: 9px; line-height: 1.65; }
@@ -263,6 +289,10 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   .panel-head p { display: none; }
   .gear-row { padding-inline: 13px; }
   .gear-sub { grid-template-columns: minmax(0, 1fr) 68px; }
+  .gear-swap { grid-template-columns: 1fr; }
+  .gear-swap .arrow { min-height: 14px; transform: rotate(90deg); }
+  .roadmap-step { grid-template-columns: 27px minmax(0, 1fr); }
+  .roadmap-step em { grid-column: 2; }
 }
 
 </style>
@@ -283,7 +313,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     <section class="hero">
       <div>
         <p class="eyebrow">APK 1.3.002 · ACCOUNT OPTIMIZER</p>
-        <h1>내 계정 기준 피냐타 최고점 찾기</h1><p style="margin:6px 0 0;color:#5d6df7;font-weight:800;font-size:12px">현재 레벨 고정 · 옵션 수치 추천 v3 · 오류수정</p>
+        <h1>내 계정 기준 피냐타 최고점 찾기</h1><p style="margin:6px 0 0;color:#5d6df7;font-weight:800;font-size:12px">전체 장비 효율 비교 · 실전 보정 추천 v5</p>
         <p class="lead">현재 브라이트시커 성급·능력치·해금된 슈가룬(최대 8칸)·공용 장비 12부위를 입력하면, 각 장비의 현재 레벨은 그대로 고정하고 보조옵션을 어떻게 올릴지와 쿠키별 룬 배분을 함께 탐색합니다.</p>
       </div>
       <div class="hero-actions">
@@ -387,8 +417,9 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
           <div class="stat-grid calibration-grid">
             <label><span>현재 최종 점수</span><input id="current-score" type="text" inputmode="decimal" placeholder="예: 293797499229 또는 293.797G"></label>
             <label><span>시커 기본 스킬 주기(초)</span><input id="skill-cycle" type="number" min="0.1" step="0.05"></label>
+            <label><span>시커 실제 딜 지분 %</span><input id="seeker-share" type="number" min="0" max="100" step="0.1"></label>
           </div>
-          <p class="note">추천 점수는 입력한 현재 점수에 계산된 장비·룬 효율비를 곱해 환산합니다. 예: 현재 293.797G, 추천 효율 +10%라면 예상 점수 약 323.177G.</p>
+          <p class="note">추천 점수는 시커 모델의 효율 상승분에 실제 딜 지분을 적용해 보수적으로 환산합니다. 전투 종료 딜 통계에서 시커 지분을 입력하면 정확도가 좋아집니다. 기본 스킬 주기는 공개 스킬 데이터 기준 9초입니다.</p>
         </section>
 
         <div class="run-dock">
@@ -410,6 +441,11 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
           </div>
           <div id="result-content" hidden>
             <div class="score-compare" id="score-compare"></div>
+            <p class="audit-note" id="audit-note"><b>해석:</b> 추천 순위는 현재 입력끼리의 상대효율입니다. 절대 점수는 보스 이동·스킬 적중·마지막 타격 시점에 따라 달라질 수 있습니다.</p>
+            <div class="result-section">
+              <h3>앞으로 세팅 순서</h3>
+              <div class="roadmap" id="upgrade-roadmap"></div>
+            </div>
             <div class="result-section">
               <h3>브라이트시커 추천 슈가룬</h3>
               <div class="rune-recommend" id="seeker-rune-result"></div>
@@ -419,7 +455,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
               <div class="chain" id="buff-chain-result"></div>
             </div>
             <div class="result-section">
-              <h3>현재 장비 옵션 조정 우선순위</h3>
+              <h3>현재 장비 옵션 조정 우선순위</h3><p class="note">각 부위 추천은 현재 다른 11부위 장비와 현재 슈가룬을 그대로 둔 상태에서 실제 효율을 비교합니다. 옵션이 내려가더라도 다른 옵션 증가가 더 크면 교체 추천으로 표시됩니다.</p>
               <div class="change-list" id="gear-changes"></div>
             </div>
             <div class="result-section">
@@ -434,6 +470,9 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
                 <li><b>유효 공격력</b>: 표시 공격력에 시커가 받은 스킬증폭을 곱한 스킬 피해 기준값</li>
                 <li>마카롱 치명확률·피겨 치명피해·실론 보스피해·다크초코 방깎은 공격력 숫자가 아니라 피해 효율에 반영</li>
                 <li>치명확률 100% 초과는 2·3단 치명타 기대값으로 선형 반영</li>
+                <li><b>예상 점수</b>: 시커 딜 지분만큼만 효율 상승을 반영한 보수적 환산값. 지원 룬 추천은 예상 점수에 자동 합산하지 않음</li>
+                <li>지원 쿠키 스가는 각 버프의 실제 가동률 입력에 간접 반영하며, 자동으로 가동률을 부풀리지 않음</li>
+                <li><b>스킬 횟수</b>: 시전 시작 기준 단순 주기 계산이므로 마지막 스킬의 실제 적중 여부·경직·이동은 실전에서 확인 필요</li>
               </ul>
             </details>
           </div>
@@ -471,12 +510,17 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     skillHaste: "스킬가속"
   };
   var RUNE_SHORT = {
+    flatAtk: "공격",
     atkPercent: "공증",
     critRate: "치확",
     critDamage: "치피",
     skillAmp: "스증",
     skillHaste: "스가",
-    damageReduction: "피감"
+    damageReduction: "피감",
+    defPercent: "방증",
+    hpPercent: "체증",
+    focusRate: "집중",
+    resistRate: "저항"
   };
   var SUPPORT_KEYS = {
     macaron: "cookie0059",
@@ -821,7 +865,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   function estimatedCasts(haste, state) {
     var duration = n(state.encounterSeconds, 43);
     var first = n(state.seeker.firstCastSeconds, 2.5);
-    var baseCycle = Math.max(0.25, n(state.seeker.baseSkillCycle, 5.25));
+    var baseCycle = Math.max(0.25, n(state.seeker.baseSkillCycle, 9));
     var cycle = baseCycle / (1 + Math.max(0, haste) / 100);
     return Math.max(1, 1 + Math.floor(Math.max(0, duration - first) / cycle));
   }
@@ -834,7 +878,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       average.bossFactor * average.defenseFactor * casts;
     var basicWeight = clamp(n(state.seeker.basicDamageShare, 0.12), 0, 0.7);
     var basicIndex = average.displayAttack * average.critFactor * average.bossFactor * average.defenseFactor *
-      n(state.encounterSeconds, 43) / Math.max(1, n(state.seeker.baseSkillCycle, 5.25));
+      n(state.encounterSeconds, 43) / Math.max(1, n(state.seeker.baseSkillCycle, 9));
     var objective = skillIndex * (1 - basicWeight) + basicIndex * basicWeight;
     return { stats: stats, peak: peak, average: average, casts: casts, objective: objective };
   }
@@ -853,11 +897,16 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   }
 
   function projection(currentEval, nextEval, state, data) {
-    var ratio = nextEval.objective / Math.max(1, currentEval.objective);
+    var rawRatio = nextEval.objective / Math.max(1, currentEval.objective);
+    var seekerShare = clamp(n(state.calibration && state.calibration.seekerDamageShare, 83.2), 0, 100) / 100;
+    var ratio = 1 + (rawRatio - 1) * seekerShare;
     var currentScore = parseScoreValue(state.calibration.currentScore);
     return {
       ratio: ratio,
       gainPercent: (ratio - 1) * 100,
+      rawRatio: rawRatio,
+      rawGainPercent: (rawRatio - 1) * 100,
+      seekerShare: seekerShare,
       currentScore: currentScore > 0 ? currentScore : null,
       nextScore: currentScore > 0 ? currentScore * ratio : null
     };
@@ -954,7 +1003,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var slope = n(state.flatAttackToSeeker, 19.27);
     return n(stats.flatAtk, 0) * slope + n(stats.atkPercent, 0) * 5200 + n(stats.critRate, 0) * 2400 +
       n(stats.critDamage, 0) * 1500 + n(stats.skillAmp, 0) * 4200 + n(stats.skillHaste, 0) * 3000 +
-      n(stats.damageReduction, 0) * 120;
+      n(stats.bossDamage, 0) * 4200 + n(stats.damageReduction, 0) * 120;
   }
 
   function topGearCandidates(data, type, state) {
@@ -962,7 +1011,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     if (!current || !current.equipmentId) return [];
     var list = gearCandidates(data, type, current);
     list.sort(function (a, b) { return surrogate(b, state) - surrogate(a, state); });
-    var kept = list.slice(0, Math.max(8, n(state.optimizer.candidatesPerSlot, 28)));
+    var kept = list.slice(0, Math.max(8, n(state.optimizer.candidatesPerSlot, 64)));
     var currentCandidate = list.find(function (candidate) { return candidate.current; });
     if (currentCandidate && !kept.some(function (candidate) { return candidate.current; })) kept.push(currentCandidate);
     return kept;
@@ -978,14 +1027,25 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var rolls = bestRuneRolls(data, n(state.optimizer.runeRarity, 5));
     var slotCount = runeSlotsForCookie(state, data, "cookie4013");
     var pool = allocations || allocationsForSlots(slotCount);
-    var best = null;
+    var ranked = [];
     pool.forEach(function (allocation) {
       var runeStats = allocationStats(allocation, rolls);
       var stats = buildStats(baseInfo, gearStats, runeStats, state, data, supportRunes);
       var evaluated = evaluate(stats, state, supportRunes);
-      if (!best || evaluated.objective > best.evaluation.objective) {
-        best = { allocation: allocation, runeStats: runeStats, evaluation: evaluated, rolls: rolls, slotCount: slotCount, combinationCount: pool.length };
-      }
+      ranked.push({ allocation: allocation, runeStats: runeStats, evaluation: evaluated });
+    });
+    ranked.sort(function (a, b) { return b.evaluation.objective - a.evaluation.objective; });
+    var best = ranked[0];
+    best.rolls = rolls;
+    best.slotCount = slotCount;
+    best.combinationCount = pool.length;
+    best.alternatives = ranked.slice(0, 5).map(function (row) {
+      return {
+        allocation: row.allocation,
+        casts: row.evaluation.casts,
+        objective: row.evaluation.objective,
+        gapPercent: (row.evaluation.objective / Math.max(1, best.evaluation.objective) - 1) * 100
+      };
     });
     return best;
   }
@@ -993,9 +1053,11 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   function optimize(state, data, onProgress) {
     var baseInfo = currentBase(state, data);
     var currentSupportRunes = supportRuneDefaults(Object.assign({}, state, { useCurrentSupportRunes: true }), data);
-    var targetSupportRunes = supportRuneDefaults(Object.assign({}, state, { useCurrentSupportRunes: false }), data);
+    /* 지원 룬은 각 쿠키의 실제 주기·명중·생존 변수가 달라 점수에 몰래 가정하지 않는다. */
+    var targetSupportRunes = currentSupportRunes;
     var currentStats = buildStats(baseInfo, baseInfo.currentGear, baseInfo.currentRunes, state, data, currentSupportRunes);
     var currentEvaluation = evaluate(currentStats, state, currentSupportRunes);
+    var runeOnlyBuild = bestRuneBuild(baseInfo, baseInfo.currentGear, state, data, currentSupportRunes);
     var candidateByType = {};
     for (var type = 1; type <= 12; type += 1) candidateByType[type] = topGearCandidates(data, type, state);
 
@@ -1038,10 +1100,17 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     }
     var optimizedGearStats = gearSelectionsStats(selection);
     var optimizedRuneBuild = bestRuneBuild(baseInfo, optimizedGearStats, state, data, targetSupportRunes);
+    var gearOnlyStats = buildStats(baseInfo, optimizedGearStats, baseInfo.currentRunes, state, data, currentSupportRunes);
+    var gearOnlyEvaluation = evaluate(gearOnlyStats, state, currentSupportRunes);
     var projected = projection(currentEvaluation, optimizedRuneBuild.evaluation, state, data);
     return {
       current: { evaluation: currentEvaluation, gearStats: baseInfo.currentGear, runeStats: baseInfo.currentRunes, supportRunes: currentSupportRunes },
       optimized: { evaluation: optimizedRuneBuild.evaluation, gearStats: optimizedGearStats, runeBuild: optimizedRuneBuild, supportRunes: targetSupportRunes, gearSelection: selection },
+      stages: {
+        runeOnly: { evaluation: runeOnlyBuild.evaluation, runeBuild: runeOnlyBuild, projection: projection(currentEvaluation, runeOnlyBuild.evaluation, state, data) },
+        gearOnly: { evaluation: gearOnlyEvaluation, projection: projection(currentEvaluation, gearOnlyEvaluation, state, data) },
+        full: { evaluation: optimizedRuneBuild.evaluation, projection: projected }
+      },
       projection: projected,
       baseInfo: baseInfo,
       candidates: candidateByType,
@@ -1049,43 +1118,100 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     };
   }
 
-  function genericDealerRune(cookie, state, data) {
-    var slots = runeSlotsForCookie(state, data, cookie ? cookie.key : "");
-    if (!cookie) return { skillAmp: slots };
-    if (cookie.key === SUPPORT_KEYS.milk) return { atkPercent: slots };
-    if ([SUPPORT_KEYS.cheesecake, SUPPORT_KEYS.pomegranate, SUPPORT_KEYS.macaron, SUPPORT_KEYS.figure, SUPPORT_KEYS.ceylon].indexOf(cookie.key) >= 0) {
-      return { skillAmp: slots };
+  function evaluateGearStatsCurrentRunes(state, data, gearStats) {
+    var baseInfo = currentBase(state, data);
+    var supportRunes = supportRuneDefaults(Object.assign({}, state, { useCurrentSupportRunes: true }), data);
+    var stats = buildStats(baseInfo, gearStats, baseInfo.currentRunes, state, data, supportRunes);
+    return evaluate(stats, state, supportRunes);
+  }
+
+  function allocationFromPattern(slots, pattern) {
+    var allocation = {};
+    for (var i = 0; i < slots; i += 1) {
+      var key = pattern[Math.min(i, pattern.length - 1)];
+      allocation[key] = n(allocation[key], 0) + 1;
     }
-    if (cookie.key === SUPPORT_KEYS.darkChoco) return { skillHaste: slots };
-    if (cookie.role === "Supporter") return { skillAmp: slots };
-    if (cookie.role === "Tanker") return { damageReduction: slots };
-    var rolls = bestRuneRolls(data, 5);
-    var baseCrit = n(state.seeker.critRate, 10) + (hasTeam(state, SUPPORT_KEYS.macaron) ? 60 : 0);
-    var baseCd = n(state.seeker.critDamage, 50) + (hasTeam(state, SUPPORT_KEYS.figure) ? 65 : 0);
-    var baseAmp = n(state.seeker.skillAmp, 0);
-    var baseHaste = n(state.seeker.skillHaste, 0);
-    var best = null;
-    allocationsForSlots(slots).forEach(function (allocation) {
-      var stat = allocationStats(allocation, rolls);
-      var attack = 1 + stat.atkPercent / 100;
-      var amp = 1 + (baseAmp + stat.skillAmp) / 100;
-      var crit = 1 + (baseCrit + stat.critRate) / 100 * (baseCd + stat.critDamage) / 100;
-      var casts = estimatedCasts(baseHaste + stat.skillHaste, state);
-      var value = attack * amp * crit * casts;
-      if (!best || value > best.value) best = { allocation: allocation, value: value };
-    });
-    return best.allocation;
+    return allocation;
+  }
+
+  function cookieRuneProfile(cookie, state, data) {
+    var slots = runeSlotsForCookie(state, data, cookie ? cookie.key : "");
+    var profiles = {
+      cookie4019: {
+        pattern: ["atkPercent","atkPercent","atkPercent","atkPercent","atkPercent","atkPercent","atkPercent","atkPercent"],
+        reason: "치즈로 올라간 우유 공격력이 10중첩 전달량의 원본이므로 공증 최우선."
+      },
+      cookie0037: {
+        pattern: ["skillAmp","skillHaste","skillAmp","skillHaste","skillAmp","skillHaste","skillAmp","damageReduction"],
+        reason: "공격력 버프 부여량은 스증, 7초 버프의 공백 감소는 스가가 담당."
+      },
+      cookie0126: {
+        pattern: ["skillAmp","skillHaste","skillAmp","skillHaste","skillAmp","skillHaste","skillAmp","damageReduction"],
+        reason: "스증은 석류의 스킬증폭 버프량을 키우고, 스가는 9초 버프 공백을 줄임."
+      },
+      cookie0059: {
+        pattern: ["skillHaste","skillAmp","skillHaste","skillAmp","skillAmp","skillHaste","skillAmp","damageReduction"],
+        reason: "치명확률 버프 유지가 우선이라 스가, 남는 칸은 버프 효율용 스증."
+      },
+      cookie0018: {
+        pattern: ["skillHaste","skillAmp","skillHaste","skillAmp","skillHaste","skillAmp","skillAmp","damageReduction"],
+        reason: "치명피해 버프가 짧아 스가로 발동 횟수를 먼저 확보하고 스증을 보강."
+      },
+      cookie0532: {
+        pattern: ["skillHaste","damageReduction","defPercent","skillHaste","hpPercent","damageReduction","skillHaste","defPercent"],
+        reason: "보스피해 버프 재사용과 생존이 핵심. 실론은 스증 몰빵 대상이 아님."
+      },
+      cookie0103: {
+        pattern: ["skillHaste","focusRate","damageReduction","skillHaste","focusRate","damageReduction","skillHaste","defPercent"],
+        reason: "방어력 감소의 발동 빈도·적용 안정성·생존 순으로 스가/집중/피감."
+      },
+      cookie4010: {
+        pattern: ["skillHaste","atkPercent","skillHaste","atkPercent","damageReduction","skillHaste","atkPercent","focusRate"],
+        reason: "피냐타에서는 회복감소 수치가 스증으로 오르지 않으므로 점수용 스가·공증이 우선.",
+        warning: "피노누아: 스증 제외. 점수용은 스가·공증, 죽으면 공증 1칸→피감. 집중은 회복감소가 필요한 콘텐츠만."
+      },
+      cookie0181: {
+        pattern: ["skillAmp","focusRate","atkPercent","skillHaste","skillAmp","critDamage","skillAmp","skillHaste"],
+        reason: "지속피해 화력은 스증, 독침 적용 안정성은 집중, 기본 화력은 공증으로 보강."
+      },
+      cookie3001: {
+        pattern: ["atkPercent","skillHaste","skillAmp","skillAmp","critDamage","skillHaste","skillAmp","critDamage"],
+        reason: "공증·스가·스증을 함께 챙겨 5.25초 스킬의 횟수와 한 방을 균형 있게 강화."
+      },
+      cookie0040: {
+        pattern: ["skillHaste","skillAmp","atkPercent","skillHaste","skillAmp","critDamage","skillHaste","skillAmp"],
+        reason: "긴 스킬 주기와 탑승 시너지 가동률 때문에 스가 우선, 이후 스증·공증."
+      }
+    };
+    var profile = cookie && profiles[cookie.key];
+    if (!profile && cookie && cookie.role === "Supporter") {
+      profile = { pattern: ["skillHaste","skillAmp","damageReduction","skillHaste","skillAmp","damageReduction","skillHaste","skillAmp"], reason: "지원기는 가동률용 스가를 먼저 챙기고 스증·피감으로 보완." };
+    }
+    if (!profile && cookie && cookie.role === "Tanker") {
+      profile = { pattern: ["damageReduction","defPercent","hpPercent","skillHaste","damageReduction","defPercent","hpPercent","skillHaste"], reason: "탱커는 생존을 먼저 확보하고 남는 칸으로 스가를 보강." };
+    }
+    if (!profile) {
+      profile = { pattern: ["skillAmp","skillHaste","critDamage","atkPercent","skillAmp","critDamage","skillHaste","critRate"], reason: "개별 계수가 확인되지 않은 딜러는 스증·스가·치피 중심의 범용 배분." };
+    }
+    return {
+      allocation: allocationFromPattern(slots, profile.pattern),
+      reason: profile.reason,
+      warning: profile.warning || ""
+    };
   }
 
   function teamRuneRecommendations(state, data) {
     var cookieByKey = Object.fromEntries(data.cookies.map(function (cookie) { return [cookie.key, cookie]; }));
     return (state.team || []).filter(function (key) { return key && key !== "cookie4013"; }).map(function (key) {
       var cookie = cookieByKey[key];
+      var profile = cookieRuneProfile(cookie, state, data);
       return {
         cookie: cookie,
         grade: cookieGrade(state, key),
         slotCount: runeSlotsForCookie(state, data, key),
-        allocation: genericDealerRune(cookie, state, data)
+        allocation: profile.allocation,
+        reason: profile.reason,
+        warning: profile.warning
       };
     });
   }
@@ -1123,6 +1249,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     buffChain: buffChain,
     estimatedCasts: estimatedCasts,
     evaluate: evaluate,
+    evaluateGearStatsCurrentRunes: evaluateGearStatsCurrentRunes,
     parseScoreValue: parseScoreValue,
     projection: projection,
     gearCandidates: gearCandidates,
@@ -1139,7 +1266,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   "use strict";
 
   var Engine = window.CrumbOptimizerEngine;
-  var STORAGE_KEY = "crumb.pinata.optimizer.13002.v2";
+  var STORAGE_KEY = "crumb.pinata.optimizer.13002.v5";
+  var LEGACY_STORAGE_KEYS = ["crumb.pinata.optimizer.13002.v4", "crumb.pinata.optimizer.13002.v3", "crumb.pinata.optimizer.13002.v2"];
   var data = null;
   var state = null;
   var saveTimer = null;
@@ -1221,7 +1349,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
         skillHaste: 37.8,
         skillAmp: 0,
         bossDamage: 0,
-        baseSkillCycle: 5.25,
+        baseSkillCycle: 9,
         firstCastSeconds: 2.5,
         basicDamageShare: 0.12,
         runes: defaultRuneSlots(Engine.runeSlotsForGrade(data, grade))
@@ -1257,12 +1385,13 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       },
       gear: defaultGear(),
       calibration: {
-        currentScore: ""
+        currentScore: "",
+        seekerDamageShare: 83.2
       },
       optimizer: {
         rarityCap: 10,
         runeRarity: 5,
-        candidatesPerSlot: 28,
+        candidatesPerSlot: 64,
         rounds: 2
       },
       encounterSeconds: 43,
@@ -1303,6 +1432,12 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   function loadState() {
     var saved = null;
     try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"); } catch (_) {}
+    if (!saved) {
+      for (var i = 0; i < LEGACY_STORAGE_KEYS.length && !saved; i += 1) {
+        try { saved = JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEYS[i]) || "null"); } catch (_) {}
+      }
+      if (saved && saved.seeker && num(saved.seeker.baseSkillCycle, 9) === 5.25) saved.seeker.baseSkillCycle = 9;
+    }
     return mergeDefaults(defaultState(), saved);
   }
 
@@ -1317,7 +1452,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var map = {
       seekerAttack: ["seeker", "attack"], critRate: ["seeker", "critRate"],
       critDamage: ["seeker", "critDamage"], skillHaste: ["seeker", "skillHaste"],
-      skillAmp: ["seeker", "skillAmp"], seekerGrade: ["seeker", "grade"], score: ["calibration", "currentScore"]
+      skillAmp: ["seeker", "skillAmp"], seekerGrade: ["seeker", "grade"], score: ["calibration", "currentScore"],
+      seekerShare: ["calibration", "seekerDamageShare"]
     };
     Object.keys(map).forEach(function (key) {
       if (params.has(key)) target[map[key][0]][map[key][1]] = num(params.get(key), 0);
@@ -1610,7 +1746,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     ["#figure-rune-amp", "supports", "figureRuneAmp"], ["#ceylon-rune-amp", "supports", "ceylonRuneAmp"],
     ["#milk-uptime", "supports", "milkStackUptime"], ["#figure-uptime", "supports", "figureUptime"],
     ["#dark-uptime", "supports", "darkChocoUptime"], ["#boss-defense-weight", "supports", "bossDefenseWeight"],
-    ["#skill-cycle", "seeker", "baseSkillCycle"]
+    ["#skill-cycle", "seeker", "baseSkillCycle"], ["#seeker-share", "calibration", "seekerDamageShare"]
   ];
 
   function bindInputs() {
@@ -1733,6 +1869,7 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
 
   function resetAll() {
     localStorage.removeItem(STORAGE_KEY);
+    LEGACY_STORAGE_KEYS.forEach(function (key) { localStorage.removeItem(key); });
     state = defaultState();
     syncAll();
     $("#result-content").hidden = true;
@@ -1757,9 +1894,9 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var projection = result.projection;
     var cards = [
       { label: "현재 효율", value: "100.0", sub: "입력 장비·룬" },
-      { label: "추천 효율", value: (projection.ratio * 100).toFixed(1), sub: (projection.gainPercent >= 0 ? "+" : "") + projection.gainPercent.toFixed(2) + "%", best: true },
+      { label: "추천 효율", value: (projection.ratio * 100).toFixed(1), sub: "시커 지분 " + format(projection.seekerShare * 100, 1) + "% 반영 · " + (projection.gainPercent >= 0 ? "+" : "") + projection.gainPercent.toFixed(2) + "%", best: true },
       { label: "현재 점수", value: projection.currentScore == null ? "미입력" : compact(projection.currentScore), sub: projection.currentScore == null ? "전투 종료 점수를 입력" : Math.round(projection.currentScore).toLocaleString("ko-KR") },
-      { label: "예상 점수", value: projection.nextScore == null ? "+" + projection.gainPercent.toFixed(1) + "%" : compact(projection.nextScore), sub: projection.nextScore == null ? "현재 점수 입력 시 환산" : Math.round(projection.nextScore).toLocaleString("ko-KR"), best: true }
+      { label: "보수적 예상 점수", value: projection.nextScore == null ? "+" + projection.gainPercent.toFixed(1) + "%" : compact(projection.nextScore), sub: projection.nextScore == null ? "현재 점수 입력 시 환산" : Math.round(projection.nextScore).toLocaleString("ko-KR"), best: true }
     ];
     cards.forEach(function (card) {
       var node = document.createElement("article");
@@ -1769,24 +1906,99 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       var sub = document.createElement("small"); sub.textContent = card.sub;
       node.appendChild(label); node.appendChild(value); node.appendChild(sub); wrap.appendChild(node);
     });
+    var audit = $("#audit-note");
+    if (audit) audit.innerHTML = "<b>검토 결과:</b> 시커 모델 자체 상승은 " +
+      (projection.rawGainPercent >= 0 ? "+" : "") + format(projection.rawGainPercent, 2) +
+      "%이고, 시커 딜 지분 " + format(projection.seekerShare * 100, 1) +
+      "%를 반영한 덱 예상 상승은 " + (projection.gainPercent >= 0 ? "+" : "") +
+      format(projection.gainPercent, 2) + "%. 지원 룬 추천은 과장을 막기 위해 이 점수에 자동 합산하지 않습니다.";
+  }
+
+  function renderRoadmap(result) {
+    var wrap = $("#upgrade-roadmap");
+    wrap.replaceChildren();
+    var runeStage = result.stages && result.stages.runeOnly;
+    var gearStage = result.stages && result.stages.gearOnly;
+    var allocation = result.optimized.runeBuild.allocation;
+    var immediateAllocation = runeStage ? runeStage.runeBuild.allocation : allocation;
+    var allocationChangesAfterGear = Engine.allocationText(immediateAllocation) !== Engine.allocationText(allocation);
+    var changedSlots = Object.keys(result.optimized.gearSelection || {}).filter(function (key) {
+      return result.optimized.gearSelection[key] && !result.optimized.gearSelection[key].current;
+    }).length;
+    var steps = [
+      {
+        title: "시커 룬부터 " + Engine.allocationText(immediateAllocation),
+        detail: seekerGrade() + "성 " + result.optimized.runeBuild.slotCount + "칸·현재 장비 기준 1순위." +
+          (allocationChangesAfterGear ? " 장비 완료 뒤에는 " + Engine.allocationText(allocation) + "로 재조정." : " 장비 완료 뒤에도 같은 배분 유지."),
+        gain: runeStage ? (runeStage.projection.gainPercent >= 0 ? "+" : "") + format(runeStage.projection.gainPercent, 2) + "%" : ""
+      },
+      {
+        title: "장비 보조옵션 " + changedSlots + "부위 조정",
+        detail: "아이템·레벨·주옵션은 유지하고 아래 카드의 제거 → 추가 옵션과 손익분기 수치를 순서대로 맞추기.",
+        gain: gearStage ? (gearStage.projection.gainPercent >= 0 ? "+" : "") + format(gearStage.projection.gainPercent, 2) + "%" : ""
+      },
+      {
+        title: "지원 룬: 우유 공증, 버퍼 스가·스증",
+        detail: "피노누아는 스증을 빼고 스가·공증·피감. 쿠키별 정확한 칸 배분은 아래 추천표대로 적용.",
+        gain: "별도 적용"
+      },
+      {
+        title: "같은 조작으로 3회 A/B 확인",
+        detail: "추가 시전이 실제로 피냐타에 적중했는지 확인하고 3회 중앙값이 높을 때 세팅을 확정.",
+        gain: "실전 확정"
+      }
+    ];
+    steps.forEach(function (step, index) {
+      var row = document.createElement("article"); row.className = "roadmap-step";
+      var number = document.createElement("b"); number.textContent = index + 1;
+      var body = document.createElement("div");
+      var title = document.createElement("strong"); title.textContent = step.title;
+      var detail = document.createElement("small"); detail.textContent = step.detail;
+      var gain = document.createElement("em"); gain.textContent = step.gain;
+      body.appendChild(title); body.appendChild(detail); row.appendChild(number); row.appendChild(body); row.appendChild(gain); wrap.appendChild(row);
+    });
   }
 
   function renderSeekerRunes(result) {
     var wrap = $("#seeker-rune-result");
     wrap.replaceChildren();
+    var build = result.optimized.runeBuild;
+    var summary = document.createElement("div");
+    summary.className = "rune-summary";
+    var headline = document.createElement("strong");
+    headline.textContent = (build.slotCount === 3 ? seekerGrade() + "성 3칸 계산상 1위: " : "최종 추천: ") + Engine.allocationText(build.allocation);
+    var detail = document.createElement("small");
+    detail.textContent = "현재 " + format(result.current.evaluation.stats.skillHaste, 1) + "% / " + result.current.evaluation.casts +
+      "회 → 추천 " + format(build.evaluation.stats.skillHaste, 1) + "% / " + build.evaluation.casts +
+      "회 · 스킬 주기 " + format(state.seeker.baseSkillCycle, 2) + "초 기준";
+    summary.appendChild(headline); summary.appendChild(detail); wrap.appendChild(summary);
     var gradeChip = document.createElement("span");
     gradeChip.className = "rune-chip grade-chip";
-    gradeChip.textContent = seekerGrade() + "성 · " + result.optimized.runeBuild.slotCount + "칸";
+    gradeChip.textContent = seekerGrade() + "성 · " + build.slotCount + "칸";
     wrap.appendChild(gradeChip);
-    var allocation = result.optimized.runeBuild.allocation;
+    var allocation = build.allocation;
     Engine.RUNE_KEYS.forEach(function (key) {
       if (!allocation[key]) return;
       var chip = document.createElement("span");
       chip.className = "rune-chip";
       chip.innerHTML = Engine.RUNE_LABELS[key] + " <b>×" + allocation[key] + "</b> · " +
-        format(result.optimized.runeBuild.rolls[key], 1) + "%/칸";
+        format(build.rolls[key], 1) + "%/칸";
       wrap.appendChild(chip);
     });
+    if (build.alternatives && build.alternatives.length > 1) {
+      var table = document.createElement("table"); table.className = "rune-ranking";
+      var head = document.createElement("thead"); head.innerHTML = "<tr><th>순위</th><th>룬 배분</th><th>예상 시전</th><th>1위 대비</th></tr>"; table.appendChild(head);
+      var body = document.createElement("tbody");
+      build.alternatives.slice(0, 3).forEach(function (row, index) {
+        var tr = document.createElement("tr");
+        var rank = document.createElement("td"); rank.textContent = index + 1;
+        var alloc = document.createElement("td"); alloc.textContent = Engine.allocationText(row.allocation);
+        var casts = document.createElement("td"); casts.textContent = row.casts + "회";
+        var gap = document.createElement("td"); gap.textContent = index === 0 ? "최고" : format(row.gapPercent, 2) + "%";
+        tr.appendChild(rank); tr.appendChild(alloc); tr.appendChild(casts); tr.appendChild(gap); body.appendChild(tr);
+      });
+      table.appendChild(body); wrap.appendChild(table);
+    }
   }
 
   function chainRow(label, value, key) {
@@ -1816,6 +2028,129 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
   function candidateCurrentStats(type) {
     var piece = state.gear.find(function (row) { return num(row.type) === type; });
     return piece ? Engine.gearPieceStats(piece, data) : Engine.emptyStats();
+  }
+
+  function cloneStats(stats) {
+    var copy = Engine.emptyStats();
+    Object.keys(copy).forEach(function (key) { copy[key] = num(stats && stats[key]); });
+    return copy;
+  }
+
+  function currentFullGearStats() {
+    return Engine.gearSetStats(state.gear, data);
+  }
+
+  function fullGearStatsReplacing(type, replacementStats) {
+    var total = cloneStats(currentFullGearStats());
+    var current = candidateCurrentStats(type);
+    Engine.addStats(total, current, -1);
+    Engine.addStats(total, replacementStats, 1);
+    return total;
+  }
+
+  function evaluateSlotCandidate(type, candidateStats) {
+    return Engine.evaluateGearStatsCurrentRunes(state, data, fullGearStatsReplacing(type, candidateStats));
+  }
+
+  function slotGainPercent(type, candidateStats) {
+    var baseline = Engine.evaluateGearStatsCurrentRunes(state, data, currentFullGearStats());
+    var next = evaluateSlotCandidate(type, candidateStats);
+    return (next.objective / Math.max(1, baseline.objective) - 1) * 100;
+  }
+
+  function candidateWithSubValue(candidate, key, value) {
+    var stats = cloneStats(candidate.stats);
+    var found = (candidate.subs || []).find(function (sub) { return sub.key === key; });
+    if (found) stats[key] += num(value) - num(found.value);
+    return stats;
+  }
+
+  function subPoolRange(item, key) {
+    var pool = data.subPools[String(item.subOptionPoolId)] || [];
+    var row = pool.find(function (sub) { return sub.key === key; });
+    if (!row) return null;
+    return {
+      min: Engine.normalizeSubValue(key, row.minRaw),
+      max: Engine.normalizeSubValue(key, row.maxRaw)
+    };
+  }
+
+  function breakEvenValue(type, item, candidate, key) {
+    var range = subPoolRange(item, key);
+    var target = (candidate.subs || []).find(function (sub) { return sub.key === key; });
+    if (!range || !target) return null;
+
+    var baseline = Engine.evaluateGearStatsCurrentRunes(state, data, currentFullGearStats()).objective;
+    var high = Math.min(num(target.value), num(range.max));
+    var low = Math.max(0, num(range.min));
+
+    var highEval = evaluateSlotCandidate(type, candidateWithSubValue(candidate, key, high)).objective;
+    if (highEval + 1e-9 < baseline) return null;
+
+    var lowEval = evaluateSlotCandidate(type, candidateWithSubValue(candidate, key, low)).objective;
+    if (lowEval >= baseline) return low;
+
+    for (var i = 0; i < 26; i += 1) {
+      var mid = (low + high) / 2;
+      var value = evaluateSlotCandidate(type, candidateWithSubValue(candidate, key, mid)).objective;
+      if (value >= baseline) high = mid;
+      else low = mid;
+    }
+    return high;
+  }
+
+  function singleStatRaiseGain(type, currentPiece, key, targetValue) {
+    var current = currentSubMap(currentPiece)[key];
+    if (!current || targetValue <= current.value) return 0;
+    var stats = candidateCurrentStats(type);
+    stats = cloneStats(stats);
+    stats[key] += targetValue - current.value;
+    return slotGainPercent(type, stats);
+  }
+
+  function marginalStatEfficiency() {
+    var baseStats = currentFullGearStats();
+    var baseline = Engine.evaluateGearStatsCurrentRunes(state, data, baseStats).objective;
+    var increments = [
+      ["flatAtk", "공격력 +100", 100],
+      ["atkPercent", "공격력 증폭 +1%", 1],
+      ["critRate", "치명확률 +1%", 1],
+      ["critDamage", "치명피해 +1%", 1],
+      ["skillAmp", "스킬증폭 +1%", 1],
+      ["skillHaste", "스킬가속 +1%", 1],
+      ["bossDamage", "보스피해 +1%", 1]
+    ];
+    return increments.map(function (row) {
+      var stats = cloneStats(baseStats);
+      stats[row[0]] += row[2];
+      var ev = Engine.evaluateGearStatsCurrentRunes(state, data, stats);
+      return { key: row[0], label: row[1], gain: (ev.objective / Math.max(1, baseline) - 1) * 100 };
+    }).sort(function (a, b) { return b.gain - a.gain; });
+  }
+
+  function renderMarginalEfficiency(wrap) {
+    var box = document.createElement("article");
+    box.className = "change-item";
+    var top = document.createElement("div");
+    top.className = "change-top";
+    var title = document.createElement("strong");
+    title.textContent = "현재 전체 장비 기준 옵션 1단위 효율";
+    var tag = document.createElement("em");
+    tag.textContent = "다른 11부위 포함";
+    top.appendChild(title); top.appendChild(tag);
+    box.appendChild(top);
+
+    var p = document.createElement("p");
+    p.textContent = marginalStatEfficiency().map(function (x) {
+      return x.label + " = " + (x.gain >= 0 ? "+" : "") + format(x.gain, 3) + "%";
+    }).join(" · ");
+    box.appendChild(p);
+
+    var note = document.createElement("p");
+    note.className = "note";
+    note.textContent = "이 값은 현재 입력한 12부위 장비·시커 능력치·현재 룬을 모두 반영한 한계효율입니다. 그래서 치피가 이미 높거나 치확이 충분하면 같은 1%라도 효율이 달라집니다.";
+    box.appendChild(note);
+    wrap.appendChild(box);
   }
 
   function optionLabel(key, fallback) {
@@ -1854,6 +2189,16 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     return map;
   }
 
+  function subMapSummary(map) {
+    var keys = Object.keys(map || {});
+    if (!keys.length) return "보조옵션 없음";
+    return keys.map(function (key) {
+      var row = map[key];
+      var suffix = ["flatAtk","accuracy","avoidance","focus","resist"].indexOf(key) >= 0 ? "" : "%";
+      return row.label + " " + format(row.value, 2) + suffix;
+    }).join(" · ");
+  }
+
   function optionChangeText(currentPiece, recommendation) {
     var current = currentSubMap(currentPiece);
     var target = targetSubMap(recommendation);
@@ -1886,39 +2231,89 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     var wrap = $("#gear-changes");
     wrap.replaceChildren();
 
-    var changes = Object.keys(result.optimized.gearSelection).map(function (typeKey) {
+    renderMarginalEfficiency(wrap);
+
+    var baselineEval = Engine.evaluateGearStatsCurrentRunes(state, data, currentFullGearStats());
+
+    var changes = Object.keys(result.candidates).map(function (typeKey) {
       var type = num(typeKey);
-      var recommendation = result.optimized.gearSelection[typeKey];
       var currentPiece = state.gear.find(function (piece) { return num(piece.type) === type; });
       var currentItem = currentPiece && itemForPiece(currentPiece);
-      if (!currentPiece || !currentItem || !recommendation || !recommendation.equipmentId) return null;
+      var candidates = result.candidates[typeKey] || [];
+      if (!currentPiece || !currentItem || !candidates.length) return null;
+
+      var ranked = candidates.map(function (candidate) {
+        var ev = evaluateSlotCandidate(type, candidate.stats);
+        return {
+          candidate: candidate,
+          evaluation: ev,
+          gain: (ev.objective / Math.max(1, baselineEval.objective) - 1) * 100
+        };
+      }).sort(function (a, b) { return b.evaluation.objective - a.evaluation.objective; });
+
+      var best = ranked[0];
+      if (!best || best.candidate.current || best.gain <= 0.0001) return null;
 
       var currentStats = candidateCurrentStats(type);
-      var delta = Engine.emptyStats();
-      Engine.addStats(delta, recommendation.stats);
-      Engine.addStats(delta, currentStats, -1);
-      var impact = num(delta.flatAtk) * state.flatAttackToSeeker + num(delta.atkPercent) * 5200 +
-        num(delta.critRate) * 2400 + num(delta.critDamage) * 1500 + num(delta.skillAmp) * 4200 +
-        num(delta.skillHaste) * 3000 + num(delta.bossDamage) * 4200;
-      var messages = optionChangeText(currentPiece, recommendation);
+      var messages = optionChangeText(currentPiece, best.candidate);
+      var currentMap = currentSubMap(currentPiece);
+      var targetMap = targetSubMap(best.candidate);
+
+      var thresholdLines = [];
+      Object.keys(targetMap).forEach(function (key) {
+        var target = targetMap[key];
+        var before = currentMap[key];
+
+        if (!before) {
+          var threshold = breakEvenValue(type, currentItem, best.candidate, key);
+          if (threshold != null) {
+            thresholdLines.push(target.label + "는 최소 " + format(threshold, 2) +
+              (["flatAtk","accuracy","avoidance","focus","resist"].indexOf(key) >= 0 ? "" : "%") +
+              " 이상이면 현재 장비보다 이득");
+          }
+        } else if (target.value > before.value + 0.005) {
+          var gainOnly = singleStatRaiseGain(type, currentPiece, key, target.value);
+          thresholdLines.push(target.label + " " + format(before.value, 2) + " → " +
+            format(target.value, 2) + "까지 올리면 단독 효율 " +
+            (gainOnly >= 0 ? "+" : "") + format(gainOnly, 3) + "%");
+        }
+      });
+
+      var removed = Object.keys(currentMap).filter(function (key) { return !targetMap[key]; });
+      var added = Object.keys(targetMap).filter(function (key) { return !currentMap[key]; });
+      var trade = "";
+      if (removed.length || added.length) {
+        var left = removed.map(function (key) {
+          var x = currentMap[key];
+          return x.label + " " + format(x.value, 2);
+        }).join(" + ") || "없음";
+        var right = added.map(function (key) {
+          var x = targetMap[key];
+          return x.label + " " + format(x.value, 2);
+        }).join(" + ") || "없음";
+        trade = left + " → " + right;
+      }
 
       return {
         type: type,
-        recommendation: recommendation,
         currentItem: currentItem,
         currentPiece: currentPiece,
         currentStats: currentStats,
-        impact: impact,
-        messages: messages
+        recommendation: best.candidate,
+        rawGain: best.gain,
+        gain: best.gain * result.projection.seekerShare,
+        messages: messages,
+        thresholds: thresholdLines,
+        trade: trade,
+        currentSummary: subMapSummary(currentMap),
+        targetSummary: subMapSummary(targetMap)
       };
-    }).filter(function (change) {
-      return change && change.messages.length > 0;
-    }).sort(function (a, b) { return b.impact - a.impact; });
+    }).filter(Boolean).sort(function (a, b) { return b.gain - a.gain; });
 
     if (!changes.length) {
       var same = document.createElement("p");
       same.className = "note";
-      same.textContent = "현재 입력한 장비 옵션에서 더 높은 공격 효율의 보조옵션 조합이 없습니다.";
+      same.textContent = "현재 입력한 장비 옵션보다 즉시 효율이 높은 보조옵션 조합을 찾지 못했습니다.";
       wrap.appendChild(same);
       return;
     }
@@ -1935,7 +2330,8 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
         change.currentItem.name + " · Lv." + change.currentPiece.level + " 유지";
 
       var priority = document.createElement("em");
-      priority.textContent = index < 3 ? (index + 1) + "순위 조정" : "후순위";
+      var scoreDelta = result.projection.currentScore == null ? "" : " · +" + compact(result.projection.currentScore * change.gain / 100);
+      priority.textContent = "+" + format(change.gain, 3) + "%" + scoreDelta;
 
       top.appendChild(title);
       top.appendChild(priority);
@@ -1944,17 +2340,34 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
       main.textContent = "주옵션 " + change.recommendation.mainLabel + " " +
         format(change.recommendation.mainValue, 2) + " 유지";
 
-      var desc = document.createElement("p");
-      desc.textContent = "바꿀 옵션: " + change.messages.join(" · ");
+      node.appendChild(top);
+      node.appendChild(main);
+
+      var action = document.createElement("div");
+      action.className = "gear-action";
+      action.textContent = "해야 할 변경 · " + change.messages.join(" / ");
+      node.appendChild(action);
+
+      var swap = document.createElement("div"); swap.className = "gear-swap";
+      var before = document.createElement("div"); before.innerHTML = "<small>현재</small><span></span>"; before.querySelector("span").textContent = change.currentSummary;
+      var arrow = document.createElement("div"); arrow.className = "arrow"; arrow.textContent = "→";
+      var after = document.createElement("div"); after.innerHTML = "<small>목표</small><span></span>"; after.querySelector("span").textContent = change.targetSummary;
+      swap.appendChild(before); swap.appendChild(arrow); swap.appendChild(after); node.appendChild(swap);
+
+      change.thresholds.forEach(function (line) {
+        var threshold = document.createElement("p");
+        threshold.className = "note";
+        threshold.textContent = "손익분기 · " + line;
+        node.appendChild(threshold);
+      });
 
       var delta = document.createElement("p");
       delta.className = "note";
-      delta.textContent = "변경 시 능력치 차이: " + statDeltaText(change.currentStats, change.recommendation.stats);
-
-      node.appendChild(top);
-      node.appendChild(main);
-      node.appendChild(desc);
+      delta.textContent = "이 부위만 바꿀 때 능력치 차이: " +
+        statDeltaText(change.currentStats, change.recommendation.stats) +
+        " · 현재 다른 11부위와 현재 룬까지 포함해 계산";
       node.appendChild(delta);
+
       wrap.appendChild(node);
     });
   }
@@ -1965,12 +2378,14 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     Engine.teamRuneRecommendations(state, data).forEach(function (rec) {
       if (!rec.cookie) return;
       var row = document.createElement("div"); row.className = "cookie-rune";
+      if (rec.cookie.key === "cookie4010") row.classList.add("pinot");
       var image = document.createElement("img"); image.src = cookieImage(rec.cookie.key); image.alt = rec.cookie.name;
       var text = document.createElement("div");
       var name = document.createElement("strong"); name.textContent = rec.cookie.name;
       var allocation = document.createElement("span");
       allocation.textContent = "★" + rec.grade + " · " + rec.slotCount + "칸 · " + (Engine.allocationText(rec.allocation) || "생존 룬 " + rec.slotCount);
-      text.appendChild(name); text.appendChild(allocation); row.appendChild(image); row.appendChild(text); wrap.appendChild(row);
+      var reason = document.createElement("small"); reason.textContent = rec.warning || rec.reason;
+      text.appendChild(name); text.appendChild(allocation); text.appendChild(reason); row.appendChild(image); row.appendChild(text); wrap.appendChild(row);
     });
   }
 
@@ -1978,12 +2393,13 @@ input[type="number"] { font-family: ui-monospace, SFMono-Regular, Menlo, monospa
     $("#empty-result").hidden = true;
     $("#result-content").hidden = false;
     renderScoreCards(result);
+    renderRoadmap(result);
     renderSeekerRunes(result);
     renderBuffChain(result);
     renderGearChanges(result);
     renderTeamRunes();
     $("#quick-gain").textContent = (result.projection.gainPercent >= 0 ? "+" : "") + result.projection.gainPercent.toFixed(2) + "%";
-    $("#quick-score").textContent = result.projection.nextScore == null ? "상대 피해 효율" : "예상 " + result.projection.nextScore.toFixed(2) + "점";
+    $("#quick-score").textContent = result.projection.nextScore == null ? "시커 지분 반영 상대효율" : "보수적 예상 " + compact(result.projection.nextScore);
     $("#quick-display").textContent = compact(result.optimized.evaluation.peak.displayAttack);
     $("#quick-effective").textContent = compact(result.optimized.evaluation.peak.effectiveSkillAttack);
     $("#quick-casts").textContent = result.optimized.evaluation.casts + "회";
